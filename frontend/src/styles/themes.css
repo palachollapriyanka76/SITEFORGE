@@ -1,0 +1,10 @@
+/* Custom theme variables */
+.theme-light {
+  --bg-primary: #ffffff;
+  --text-primary: #1a1a1a;
+}
+
+.theme-dark {
+  --bg-primary: #121212;
+  --text-primary: #ffffff;
+}

@@ -1,0 +1,6 @@
+/* Responsive styling overrides */
+@media (max-width: 640px) {
+  .mobile-adjust {
+    padding: 1rem;
+  }
+}
