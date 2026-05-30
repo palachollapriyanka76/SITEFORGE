@@ -72,7 +72,10 @@ export function Toolbar({ websiteId }: { websiteId: string }) {
           )}
         </div>
 
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-sm rounded-md transition-colors">
+        <button 
+          onClick={() => window.open(`/preview/${websiteId}`, "_blank")}
+          className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-sm rounded-md transition-colors"
+        >
           <Play size={14} /> Preview
         </button>
         <button className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-sm font-medium rounded-md transition-colors">

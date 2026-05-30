@@ -171,6 +171,14 @@ export default function GeneratingPage() {
   };
 
   // Confirm selection and launch editor
+  const handlePreviewWebsite = () => {
+    if (!templates) return;
+    const chosen = templates.find(t => t.id === selectedTemplateId);
+    if (!chosen) return;
+    
+    localStorage.setItem("siteforge_temp_preview", JSON.stringify(chosen.websiteJson));
+    window.open("/preview/temp", "_blank");
+  };
   const handleSaveSelection = async () => {
     if (!templates) return;
     
@@ -504,7 +512,7 @@ export default function GeneratingPage() {
                 
                 <div className="grid grid-cols-2 gap-3">
                   <button 
-                    onClick={() => setStage("fullscreen-preview")}
+                    onClick={handlePreviewWebsite}
                     className="flex items-center justify-center gap-1.5 h-10 border border-slate-850 hover:bg-slate-850 text-slate-300 font-extrabold text-[11px] rounded-xl transition-all"
                   >
                     <Eye className="h-3.5 w-3.5" /> Preview Website
@@ -655,93 +663,7 @@ export default function GeneratingPage() {
         )}
       </AnimatePresence>
 
-      {/* Fullscreen Preview overlay modal */}
-      <AnimatePresence>
-        {stage === "fullscreen-preview" && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-950/98 z-50 flex flex-col p-6"
-          >
-            <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-900">
-              <div>
-                <h2 className="text-sm font-bold text-white uppercase tracking-wider">Fullscreen Site Preview</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Style: {activeTemplate?.name}</p>
-              </div>
-              <button 
-                onClick={() => setStage("success")}
-                className="px-5 h-9 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-black shadow transition-all"
-              >
-                Back to Selection
-              </button>
-            </div>
-            
-            <div className="flex-1 w-full bg-white rounded-2xl overflow-y-auto pr-0.5 text-slate-850">
-              <header className="px-8 py-5 bg-white border-b border-slate-100 flex items-center justify-between">
-                <span className="text-lg font-black text-slate-900" style={{ color: previewTheme.primaryColor }}>{businessData.name}</span>
-                <nav className="flex gap-4 text-xs font-bold text-slate-550">
-                  <span>Home</span>
-                  <span>Services</span>
-                  <span>Contact</span>
-                </nav>
-              </header>
-
-              {previewHero && (
-                <section className="py-24 px-8 text-center text-white relative overflow-hidden bg-cover bg-center" style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url(${previewHero.content.backgroundImage})` }}>
-                  <div className="max-w-2xl mx-auto space-y-4">
-                    <h1 className="text-3xl md:text-5xl font-black leading-tight text-white">{previewHero.content.title}</h1>
-                    <p className="text-sm text-zinc-300 font-light leading-relaxed">{previewHero.content.subtitle}</p>
-                    <div className="pt-4">
-                      <span className="inline-block text-xs font-black text-white px-8 py-3.5 rounded-xl shadow" style={{ backgroundColor: previewTheme.primaryColor }}>
-                        {previewHero.content.ctaText}
-                      </span>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              {previewAbout && (
-                <section className="py-20 px-8 bg-slate-50 border-b border-slate-200">
-                  <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-4">
-                      <h2 className="text-2xl font-black text-slate-900">{previewAbout.content.title}</h2>
-                      <p className="text-sm text-slate-600 leading-relaxed">{previewAbout.content.description}</p>
-                    </div>
-                    <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-slate-200 shadow-md">
-                      <img src={previewAbout.content.image} className="w-full h-full object-cover" alt="about-image" />
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              {previewServices && (
-                <section className="py-20 px-8 bg-white border-b border-slate-200">
-                  <div className="max-w-5xl mx-auto space-y-12">
-                    <div className="text-center space-y-2">
-                      <h2 className="text-2xl font-black text-slate-900">{previewServices.content.title}</h2>
-                      <p className="text-xs text-slate-450">{previewServices.content.subtitle}</p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {(previewServices.content.services || []).map((srv: any, idx: number) => (
-                        <div key={idx} className="p-6 border border-slate-100 rounded-2xl space-y-2 bg-slate-50">
-                          <span className="text-sm font-black text-slate-900 block">{srv.name}</span>
-                          <p className="text-xs text-slate-500 leading-relaxed">{srv.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              <footer className="py-12 px-8 bg-slate-900 text-slate-400 text-center text-xs space-y-2">
-                <span className="block font-black text-white text-sm">{businessData.name}</span>
-                <p>© {new Date().getFullYear()} {businessData.name}. All Rights Reserved.</p>
-              </footer>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Fullscreen Preview overlay modal removed as preview now opens in a new browser tab */}
 
     </div>
   );

@@ -31,16 +31,16 @@ export function AIEditorAssistant() {
 
     setIsProcessing(true);
     try {
-      // In a real implementation, we send websiteJSON + finalPrompt to /api/ai/edit
-      // const res = await axios.post("/api/ai/edit", { websiteJSON, prompt: finalPrompt });
-      // setWebsite(res.data.websiteJSON);
-
-      // Mock delay
-      await new Promise(r => setTimeout(r, 1500));
-      console.log("Mock AI edit for:", finalPrompt);
-      
+      console.log("Submitting AI edit request:", finalPrompt);
+      const res = await axios.post("/api/ai/edit", { websiteJSON, prompt: finalPrompt });
+      if (res.data && res.data.success && res.data.websiteJSON) {
+        setWebsite(res.data.websiteJSON);
+        console.log("Visual canvas updated instantly with AI edit!");
+      } else {
+        throw new Error("Failed to process AI edit request");
+      }
     } catch (e) {
-      console.error(e);
+      console.error("AI edit failed:", e);
     } finally {
       setIsProcessing(false);
       if (!overridePrompt) setPrompt("");
