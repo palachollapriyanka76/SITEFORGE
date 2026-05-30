@@ -1,330 +1,213 @@
 "use client";
 
-import { useRef } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  Utensils, 
-  Cake, 
-  Scissors, 
-  Shirt, 
-  Smartphone, 
-  Apple, 
-  Dumbbell, 
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight
-} from "lucide-react";
-import { Button } from "@siteforge/ui";
+import { ArrowUpRight, Sparkles, Store, Scissors, Smartphone, Apple, Shirt } from "lucide-react";
+import { Button } from "../ui/Button";
 
 const templates = [
   {
-    id: "restaurant",
-    type: "Restaurant",
-    icon: Utensils,
-    themeColor: "from-orange-500/20 to-amber-500/20 border-orange-500/30",
-    badgeColor: "bg-orange-500/10 text-orange-400 border-orange-500/20",
-    textColor: "text-orange-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Curry Palace</span>
-          <span className="text-[7px] text-zinc-500">Menu</span>
-        </div>
-        <div className="space-y-1.5 my-2">
-          <div className="h-6 rounded bg-zinc-800 flex items-center justify-between px-2 text-[8px] text-zinc-300">
-            <span>Butter Chicken Special</span>
-            <span className="font-bold text-orange-400">Rs.350</span>
-          </div>
-          <div className="h-6 rounded bg-zinc-800 flex items-center justify-between px-2 text-[8px] text-zinc-300">
-            <span>Garlic Naan Combo</span>
-            <span className="font-bold text-orange-400">Rs.120</span>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-orange-600 flex items-center justify-center text-[7px] font-bold text-white uppercase tracking-wider">
-          Order Online
-        </div>
-      </div>
-    )
+    id: "bakery",
+    name: "Sartaj Sweets & Bakery",
+    category: "Bakery",
+    icon: Store,
+    color: "from-[#84A98C]/20 to-[#52796F]/20",
+    borderColor: "group-hover:border-[#52796F]/30",
+    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=600&auto=format&fit=crop",
+    menu: [
+      { item: "Premium Motiichoor Ladoo", price: "Rs. 600/kg" },
+      { item: "Kaju Katli Special", price: "Rs. 950/kg" }
+    ],
+    themeColor: "text-[#52796F]"
   },
   {
-    id: "bakery",
-    type: "Bakery & Cafe",
-    icon: Cake,
-    themeColor: "from-pink-500/20 to-rose-500/20 border-pink-500/30",
-    badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/20",
-    textColor: "text-pink-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Sweet Crumbs</span>
-          <span className="text-[7px] text-zinc-500">Cakes</span>
-        </div>
-        <div className="grid grid-cols-2 gap-1.5 my-2">
-          <div className="h-10 rounded bg-zinc-800/80 p-1 flex flex-col justify-between">
-            <div className="h-4 w-full bg-pink-500/20 rounded-sm" />
-            <span className="text-[7px] text-zinc-300 scale-95 origin-left">Cupcakes</span>
-          </div>
-          <div className="h-10 rounded bg-zinc-800/80 p-1 flex flex-col justify-between">
-            <div className="h-4 w-full bg-rose-500/20 rounded-sm" />
-            <span className="text-[7px] text-zinc-300 scale-95 origin-left">Croissants</span>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-pink-600 flex items-center justify-center text-[7px] font-bold text-white">
-          Book Custom Cake
-        </div>
-      </div>
-    )
+    id: "restaurant",
+    name: "Spice Route Dine-In",
+    category: "Restaurant",
+    icon: Store,
+    color: "from-[#84A98C]/20 to-[#52796F]/20",
+    borderColor: "group-hover:border-[#52796F]/30",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600&auto=format&fit=crop",
+    menu: [
+      { item: "Paneer Tikka Kebab", price: "Rs. 310" },
+      { item: "Veg Dum Biryani", price: "Rs. 280" }
+    ],
+    themeColor: "text-[#52796F]"
   },
   {
     id: "salon",
-    type: "Salon & Spa",
+    name: "Grace Hair Lounge",
+    category: "Salon",
     icon: Scissors,
-    themeColor: "from-purple-500/20 to-indigo-500/20 border-purple-500/30",
-    badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",
-    textColor: "text-purple-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Classic Scissors</span>
-          <span className="text-[8px] text-purple-400 font-bold">★ 4.9</span>
-        </div>
-        <div className="space-y-1.5 my-2">
-          <div className="flex justify-between text-[7px] text-zinc-400">
-            <span>Next Available Slot:</span>
-            <span className="text-white font-bold">Today, 4:00 PM</span>
-          </div>
-          <div className="grid grid-cols-3 gap-1">
-            <span className="text-[7px] text-center bg-zinc-800 rounded py-0.5 text-zinc-300 border border-zinc-700">4:00 PM</span>
-            <span className="text-[7px] text-center bg-purple-600/20 rounded py-0.5 text-purple-300 border border-purple-500/30">4:30 PM</span>
-            <span className="text-[7px] text-center bg-zinc-800 rounded py-0.5 text-zinc-300 border border-zinc-700">5:00 PM</span>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-purple-600 flex items-center justify-center text-[7px] font-bold text-white">
-          Book Appointment
-        </div>
-      </div>
-    )
-  },
-  {
-    id: "fashion",
-    type: "Fashion & Boutique",
-    icon: Shirt,
-    themeColor: "from-teal-500/20 to-emerald-500/20 border-teal-500/30",
-    badgeColor: "bg-teal-500/10 text-teal-400 border-teal-500/20",
-    textColor: "text-teal-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Thread Craft</span>
-          <span className="text-[7px] bg-teal-500/20 text-teal-400 px-1 rounded-sm">Sale</span>
-        </div>
-        <div className="grid grid-cols-2 gap-1.5 my-2">
-          <div className="bg-zinc-800/80 rounded p-1 text-[7px] flex flex-col gap-0.5 text-zinc-300">
-            <div className="aspect-[4/3] bg-teal-500/10 rounded-sm" />
-            <span className="truncate">Saree Collection</span>
-          </div>
-          <div className="bg-zinc-800/80 rounded p-1 text-[7px] flex flex-col gap-0.5 text-zinc-300">
-            <div className="aspect-[4/3] bg-emerald-500/10 rounded-sm" />
-            <span className="truncate">Kurtis & Tops</span>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-teal-600 flex items-center justify-center text-[7px] font-bold text-white">
-          Explore Collection
-        </div>
-      </div>
-    )
+    color: "from-[#84A98C]/20 to-[#52796F]/20",
+    borderColor: "group-hover:border-[#52796F]/30",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop",
+    menu: [
+      { item: "Hair Styling & Wash", price: "Rs. 450" },
+      { item: "Premium Herbal Facial", price: "Rs. 999" }
+    ],
+    themeColor: "text-[#52796F]"
   },
   {
     id: "electronics",
-    type: "Electronics Store",
+    name: "Digital Hub Tech",
+    category: "Electronics",
     icon: Smartphone,
-    themeColor: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
-    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    textColor: "text-blue-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Electro Hub</span>
-          <span className="text-[7px] text-zinc-500 font-medium">Cart (0)</span>
-        </div>
-        <div className="space-y-1.5 my-2">
-          <div className="flex items-center gap-2 p-1 bg-zinc-800 rounded">
-            <div className="h-6 w-6 bg-blue-500/20 rounded flex items-center justify-center text-[8px]">📱</div>
-            <div className="flex-1 flex flex-col">
-              <span className="text-[7px] text-white truncate">Redmi Note 12</span>
-              <span className="text-[6px] text-blue-400 font-bold">Rs.14,999</span>
-            </div>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-blue-600 flex items-center justify-center text-[7px] font-bold text-white">
-          Buy Now
-        </div>
-      </div>
-    )
+    color: "from-[#84A98C]/20 to-[#52796F]/20",
+    borderColor: "group-hover:border-[#52796F]/30",
+    image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=600&auto=format&fit=crop",
+    menu: [
+      { item: "Noise Cancel Wireless Earbuds", price: "Rs. 1,899" },
+      { item: "Smart Watch Active 2", price: "Rs. 2,499" }
+    ],
+    themeColor: "text-[#52796F]"
   },
   {
     id: "grocery",
-    type: "Grocery & Organic",
+    name: "Apna Bazaar Organics",
+    category: "Grocery",
     icon: Apple,
-    themeColor: "from-emerald-500/20 to-green-500/20 border-emerald-500/30",
-    badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    textColor: "text-emerald-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Green Grocers</span>
-          <span className="text-[7px] text-emerald-400 font-semibold">100% Organic</span>
-        </div>
-        <div className="grid grid-cols-2 gap-1.5 my-2">
-          <div className="h-10 bg-zinc-800/80 rounded p-1 flex flex-col justify-between text-[7px]">
-            <span className="text-[8px]">🍎</span>
-            <div className="flex justify-between text-zinc-400 scale-95 origin-left">
-              <span>Apple</span>
-              <span className="font-bold text-emerald-400">Rs.180/kg</span>
-            </div>
-          </div>
-          <div className="h-10 bg-zinc-800/80 rounded p-1 flex flex-col justify-between text-[7px]">
-            <span className="text-[8px]">🥑</span>
-            <div className="flex justify-between text-zinc-400 scale-95 origin-left">
-              <span>Avocado</span>
-              <span className="font-bold text-emerald-400">Rs.290/kg</span>
-            </div>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-emerald-600 flex items-center justify-center text-[7px] font-bold text-white">
-          Add to Cart
-        </div>
-      </div>
-    )
+    color: "from-[#84A98C]/20 to-[#52796F]/20",
+    borderColor: "group-hover:border-[#52796F]/30",
+    image: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600&auto=format&fit=crop",
+    menu: [
+      { item: "Organic Kashmir Apples", price: "Rs. 220/kg" },
+      { item: "Premium Basmati Rice", price: "Rs. 140/kg" }
+    ],
+    themeColor: "text-[#52796F]"
   },
   {
-    id: "gym",
-    type: "Fitness & Gym",
-    icon: Dumbbell,
-    themeColor: "from-red-500/20 to-orange-500/20 border-red-500/30",
-    badgeColor: "bg-red-500/10 text-red-400 border-red-500/20",
-    textColor: "text-red-400",
-    mockUp: (
-      <div className="w-full h-full flex flex-col justify-between p-3.5 bg-zinc-900 rounded-xl border border-zinc-800">
-        <div className="flex justify-between items-center">
-          <span className="text-[10px] font-bold text-white">Iron Peak Gym</span>
-          <span className="text-[7px] text-zinc-500">Classes</span>
-        </div>
-        <div className="space-y-1.5 my-2">
-          <div className="bg-zinc-800 p-1.5 rounded flex justify-between items-center">
-            <span className="text-[7px] text-zinc-300">Monthly Pass</span>
-            <span className="text-[7px] font-bold text-red-400">Rs.1,499</span>
-          </div>
-          <div className="bg-zinc-800 p-1.5 rounded flex justify-between items-center">
-            <span className="text-[7px] text-zinc-300">Yearly Pro</span>
-            <span className="text-[7px] font-bold text-red-400">Rs.9,999</span>
-          </div>
-        </div>
-        <div className="h-4 rounded bg-red-600 flex items-center justify-center text-[7px] font-bold text-white">
-          Join Memberships
-        </div>
-      </div>
-    )
+    id: "fashion",
+    name: "Urban Thread Boutique",
+    category: "Fashion",
+    icon: Shirt,
+    color: "from-[#84A98C]/20 to-[#52796F]/20",
+    borderColor: "group-hover:border-[#52796F]/30",
+    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=600&auto=format&fit=crop",
+    menu: [
+      { item: "Designer Georgette Saree", price: "Rs. 3,500" },
+      { item: "Silk Kurta Combo Set", price: "Rs. 1,800" }
+    ],
+    themeColor: "text-[#52796F]"
   }
 ];
 
 export default function TemplatesShowcase() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollAmount = clientWidth * 0.75;
-      scrollRef.current.scrollTo({
-        left: direction === "left" ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
-        behavior: "smooth"
-      });
-    }
-  };
+  const categories = ["All", "Bakery", "Restaurant", "Salon", "Electronics", "Grocery", "Fashion"];
+
+  const filteredTemplates = activeCategory === "All"
+    ? templates
+    : templates.filter(t => t.category === activeCategory);
 
   return (
-    <section id="templates" className="py-24 bg-zinc-950 border-t border-zinc-900 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
-        {/* Title & Controls */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-          <div className="max-w-2xl space-y-4">
-            <h2 className="font-display text-sm font-semibold tracking-wider text-indigo-400 uppercase">
-              Proven Layouts
+    <section id="templates" className="py-24 bg-[#CAD2C5]/30 border-t border-[#2F3E46]/12 relative overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div className="max-w-2xl text-left space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#52796F]/30 bg-[#52796F]/10 px-3.5 py-1 text-xs font-semibold text-[#52796F]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Realistic Storefront Layouts</span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-[#2F3E46]">
+              Launch With Professional Templates
             </h2>
-            <p className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-              Tailored for Every Business Type
-            </p>
-            <p className="text-zinc-400 text-sm sm:text-base">
-              Don&apos;t start from scratch. Browse our ready-to-customize layouts optimized for speed, search engines, and conversions. Select one and watch our AI populate it with your shop&apos;s details.
+            <p className="text-[#354F52] text-sm sm:text-base">
+              Choose your industry, and watch the AI assemble product catalogs, booking features, 
+              and local marketing assets customized to your business name.
             </p>
           </div>
 
-          {/* Navigation Arrows */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => scroll("left")}
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+          {/* Category Tabs */}
+          <div className="flex flex-wrap gap-2 md:justify-end">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-250 ${
+                  activeCategory === cat
+                    ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/25"
+                    : "bg-white text-[#354F52] border border-[#2F3E46]/12 hover:text-[#2F3E46] hover:bg-zinc-50"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Horizontal scroll panel */}
-        <div 
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8 select-none"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {templates.map((template) => {
-            const IconComponent = template.icon;
+        {/* Templates Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredTemplates.map((tpl, idx) => {
+            const Icon = tpl.icon;
             return (
               <motion.div
-                key={template.id}
-                className="w-[280px] sm:w-[325px] shrink-0 snap-start bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/80 rounded-2xl p-5 flex flex-col justify-between group hover:border-indigo-500/20 transition-all duration-300"
+                key={tpl.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group relative overflow-hidden rounded-[32px] border border-[#2F3E46]/12 bg-white p-4 transition-all duration-300 shadow-sm hover:shadow-md"
               >
-                <div>
-                  {/* Top Preview Container */}
-                  <div className={`aspect-[4/3] rounded-xl bg-gradient-to-br ${template.themeColor} border p-3 flex items-center justify-center mb-5 group-hover:scale-[1.02] transition-transform duration-300`}>
-                    {template.mockUp}
+                {/* Template Mockup Display */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-zinc-100 border border-[#2F3E46]/10">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${tpl.color} opacity-40 z-10 transition-opacity group-hover:opacity-60`} />
+                  
+                  {/* Fake Browser Chrome */}
+                  <div className="absolute top-0 left-0 right-0 h-6 bg-white/90 backdrop-blur border-b border-[#2F3E46]/10 z-20 flex items-center px-4 gap-1.5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                    <div className="h-3.5 w-32 rounded bg-[#CAD2C5]/30 mx-auto text-[7px] text-center text-[#354F52] flex items-center justify-center font-mono select-none">
+                      {tpl.id}.siteforge.app
+                    </div>
                   </div>
 
-                  {/* Template Meta */}
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-zinc-800 border border-white/5">
-                      <IconComponent className={`h-3.5 w-3.5 ${template.textColor}`} />
+                  {/* Simulated Image */}
+                  <img
+                    src={tpl.image}
+                    alt={tpl.name}
+                    className="h-full w-full object-cover pt-6 transition-transform duration-500 group-hover:scale-105"
+                  />
+                  
+                  {/* Hover Action Overlay */}
+                  <div className="absolute inset-0 bg-white/95 opacity-0 group-hover:opacity-100 z-30 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-4">
+                    <span className="text-[#2F3E46] font-extrabold text-xs tracking-widest uppercase">Live Generated Shop</span>
+                    
+                    {/* Simulated live menu mockup on hover */}
+                    <div className="w-full space-y-2 bg-[#CAD2C5]/10 border border-[#2F3E46]/10 p-3 rounded-xl text-[9px] text-[#354F52]">
+                      <p className="font-extrabold text-[#2F3E46] text-center pb-1.5 border-b border-[#2F3E46]/10">{tpl.name}</p>
+                      {tpl.menu.map((item, mIdx) => (
+                        <div key={mIdx} className="flex justify-between items-center">
+                          <span>{item.item}</span>
+                          <span className={`font-black ${tpl.themeColor}`}>{item.price}</span>
+                        </div>
+                      ))}
                     </div>
-                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${template.badgeColor}`}>
-                      {template.type}
-                    </span>
+
+                    <Button className="rounded-full flex items-center gap-1.5 px-5 py-2 text-[10px] uppercase font-black tracking-widest shadow-md">
+                      Select Theme <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
                 </div>
 
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <h3 className="font-display text-lg font-bold text-white">
-                      {template.type} Blueprint
-                    </h3>
-                    <p className="text-[13px] text-zinc-500 mt-1">
-                      Ready with automated catalogs, bookings, and regional language translations.
-                    </p>
+                {/* Info Area */}
+                <div className="mt-4 px-2 flex justify-between items-center">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1 rounded bg-[#CAD2C5]/20 border border-[#2F3E46]/12 text-[#52796F]">
+                        <Icon className="h-3.5 w-3.5" />
+                      </div>
+                      <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">{tpl.category}</span>
+                    </div>
+                    <h3 className="text-sm font-bold text-[#2F3E46] tracking-tight">{tpl.name}</h3>
                   </div>
-
-                  <Link href="/sign-up" className="block">
-                    <Button className="w-full bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 py-2.5 rounded-xl font-medium text-xs flex items-center justify-center gap-1.5 transition-all group-hover:bg-indigo-600 group-hover:border-indigo-500 group-hover:text-white">
-                      Use Template <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                    </Button>
-                  </Link>
+                  
+                  <span className="text-[8px] bg-[#84A98C]/15 border border-[#84A98C]/20 text-[#52796F] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    Ready
+                  </span>
                 </div>
               </motion.div>
             );

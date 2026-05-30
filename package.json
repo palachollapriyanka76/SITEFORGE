@@ -7,7 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=@siteforge/web --filter=@siteforge/api --filter=@siteforge/ai-engine",
+    "dev:admin": "turbo run dev --filter=@siteforge/admin",
+    "dev:all": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",

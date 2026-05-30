@@ -1,109 +1,131 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
-import { Sparkles, Twitter, Github, Linkedin, MessageSquare, Heart } from "lucide-react";
+import { Sparkles, Heart, Twitter, Instagram, Facebook, Youtube, Send } from "lucide-react";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail("");
+    }
+  };
+
   return (
-    <footer className="bg-zinc-950 border-t border-zinc-900 pt-20 pb-10 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <footer className="bg-[#2F3E46] border-t border-[#2F3E46] py-20 relative overflow-hidden text-[#CAD2C5]">
+      {/* Ambient bottom glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-[#84A98C]/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Top Grid section */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-10 pb-16 border-b border-zinc-900">
+        {/* Main 4-Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-16 border-b border-white/10">
           
-          {/* Logo & Bio Column */}
-          <div className="col-span-2 space-y-6">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 shadow-[0_0_15px_rgba(99,102,241,0.3)]">
-                <Sparkles className="h-4 w-4 text-white" />
+          {/* Column 1: Brand (4 cols) */}
+          <div className="lg:col-span-4 space-y-6">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#84A98C] to-[#52796F] text-white shadow-md">
+                <Sparkles className="h-4.5 w-4.5" />
               </div>
-              <span className="font-display text-lg font-bold tracking-tight text-white group-hover:text-indigo-400 transition-colors">
+              <span className="font-display text-lg font-extrabold tracking-tight text-white">
                 SiteForge
               </span>
             </Link>
-            <p className="text-xs text-zinc-500 leading-relaxed max-w-xs">
-              SiteForge is an AI-powered SaaS builder empowering small business owners, local shops, and vendors across India to launch professional, high-performance websites instantly.
+            <p className="text-[#CAD2C5]/80 text-xs sm:text-sm max-w-sm leading-relaxed">
+              Empowering local shops, small stores, and regional vendors to instantly launch 
+              beautiful storefronts, display catalogs, and receive direct WhatsApp checkouts.
             </p>
-
-            {/* Premium Made in India Badge */}
-            <div className="inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-1.5 text-xs font-semibold text-zinc-400 shadow-sm">
-              <span className="flex items-center gap-0.5">
-                <span className="h-2 w-3 bg-[#FF9933] inline-block rounded-xs" />
-                <span className="h-2 w-3 bg-[#FFFFFF] inline-block rounded-xs" />
-                <span className="h-2 w-3 bg-[#138808] inline-block rounded-xs" />
-              </span>
-              <span>Made in India</span>
+            {/* Social Icons */}
+            <div className="flex gap-4">
+              {[
+                { icon: Twitter, href: "#", color: "hover:text-white" },
+                { icon: Instagram, href: "#", color: "hover:text-white" },
+                { icon: Facebook, href: "#", color: "hover:text-white" },
+                { icon: Youtube, href: "#", color: "hover:text-white" }
+              ].map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <a
+                    key={idx}
+                    href={item.href}
+                    className={`h-8 w-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#84A98C] transition-colors ${item.color}`}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          {/* Column 2: Product */}
-          <div className="col-span-1 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Product</h4>
-            <ul className="space-y-2.5 text-xs text-zinc-500">
-              <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#templates" className="hover:text-white transition-colors">Templates</a></li>
-              <li><a href="#demo" className="hover:text-white transition-colors">AI Engine</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+          {/* Column 2: Product (2 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-widest">Product</h4>
+            <ul className="space-y-3 text-xs text-[#84A98C]">
+              <li><a href="#features" className="hover:text-white transition-colors">AI Features</a></li>
+              <li><a href="#templates" className="hover:text-white transition-colors">Catalog Templates</a></li>
+              <li><a href="#demo" className="hover:text-white transition-colors">Live Simulation</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing Plans</a></li>
             </ul>
           </div>
 
-          {/* Column 3: Resources */}
-          <div className="col-span-1 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Resources</h4>
-            <ul className="space-y-2.5 text-xs text-zinc-500">
-              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">WhatsApp Guide</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+          {/* Column 3: Support (2 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-widest">Support & Legal</h4>
+            <ul className="space-y-3 text-xs text-[#84A98C]">
+              <li><Link href="/contact" className="hover:text-white transition-colors">Guides & Support</Link></li>
+              <li><span className="hover:text-white transition-colors cursor-pointer">Terms of Service</span></li>
+              <li><span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span></li>
+              <li><span className="hover:text-white transition-colors cursor-pointer">Refund Policy</span></li>
             </ul>
           </div>
 
-          {/* Column 4: Company */}
-          <div className="col-span-1 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Company</h4>
-            <ul className="space-y-2.5 text-xs text-zinc-500">
-              <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-            </ul>
-          </div>
+          {/* Column 4: Newsletter (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-widest">Stay Updated</h4>
+            <p className="text-xs text-[#CAD2C5]/80 max-w-sm leading-relaxed">
+              Subscribe to get free guides on how to grow your local shop's online foot traffic.
+            </p>
+            
+            <form onSubmit={handleSubscribe} className="flex gap-2">
+              <input
+                required
+                type="email"
+                placeholder="bhaiya@store.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 bg-white/5 border border-white/10 text-xs text-white placeholder-[#CAD2C5]/50 rounded-xl px-4 h-11 outline-none focus:border-[#84A98C] transition-colors"
+              />
+              <button
+                type="submit"
+                className="h-11 w-11 rounded-xl bg-[#52796F] hover:bg-[#354F52] border border-white/10 flex items-center justify-center text-white transition-all shadow-md shrink-0"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </form>
 
-          {/* Column 5: Legal */}
-          <div className="col-span-1 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Legal</h4>
-            <ul className="space-y-2.5 text-xs text-zinc-500">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Refund Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
-            </ul>
+            {subscribed && (
+              <p className="text-[10px] text-[#84A98C] font-bold animate-pulse">
+                Dhanyavaad! 🙏 You have successfully subscribed.
+              </p>
+            )}
           </div>
 
         </div>
 
-        {/* Bottom copyright & Socials */}
-        <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-[11px] text-zinc-600">
-          <p>© {new Date().getFullYear()} SiteForge. All rights reserved.</p>
-
-          <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-white transition-colors" aria-label="Twitter">
-              <Twitter className="h-4.5 w-4.5" />
-            </a>
-            <a href="#" className="hover:text-white transition-colors" aria-label="GitHub">
-              <Github className="h-4.5 w-4.5" />
-            </a>
-            <a href="#" className="hover:text-white transition-colors" aria-label="LinkedIn">
-              <Linkedin className="h-4.5 w-4.5" />
-            </a>
-            <a href="#" className="hover:text-white transition-colors" aria-label="WhatsApp Support">
-              <MessageSquare className="h-4.5 w-4.5" />
-            </a>
+        {/* Bottom Credits */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-[#CAD2C5]/70 font-bold uppercase tracking-wider font-mono">
+          <p>© {new Date().getFullYear()} SiteForge Inc. All rights reserved.</p>
+          
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3.5 py-1 text-white">
+            <span>Made with</span>
+            <Heart className="h-3.5 w-3.5 fill-[#84A98C] text-[#84A98C]" />
+            <span>in India</span>
           </div>
-
-          <p className="flex items-center gap-1">
-            Built with <Heart className="h-3.5 w-3.5 fill-red-500/80 text-red-500/80" /> for Indian Businesses.
-          </p>
         </div>
 
       </div>

@@ -1,155 +1,194 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Check, HelpCircle, ArrowRight } from "lucide-react";
-import { Button } from "@siteforge/ui";
+import { Check, Sparkles, AlertCircle } from "lucide-react";
+import { Button } from "../ui/Button";
 
-const plans = [
-  {
-    name: "Free",
-    price: "Rs. 0",
-    period: "forever",
-    description: "Perfect for testing the AI generation and launching a basic store.",
-    cta: "Get Started Free",
-    ctaLink: "/sign-up",
-    isPopular: false,
-    features: [
-      "1 AI-Generated Website",
-      "Free siteforge.app Subdomain",
-      "Standard Web Editor",
-      "Basic SEO Metadata",
-      "Community Email Support",
-    ],
-  },
-  {
-    name: "Pro",
-    price: "Rs. 999",
-    period: "month",
-    description: "Perfect for growing retail stores, local shops, and active salons.",
-    cta: "Get Started Pro",
-    // In a real application, this triggers our Stripe checkout session endpoint
-    ctaLink: "/api/checkout/session?plan=pro",
-    isPopular: true,
-    features: [
-      "3 AI-Generated Websites",
-      "Custom Domain Mapping (e.g., yourshop.com)",
-      "Standard WhatsApp Widget",
-      "Advanced Web Editor",
-      "Automated Daily Backups",
-      "Full SEO Optimization Suite",
-      "Priority Email Support (24h response)",
-    ],
-  },
-  {
-    name: "Business",
-    price: "Rs. 2,499",
-    period: "month",
-    description: "Best for multi-branch outlets, restaurants with ordering, and advanced users.",
-    cta: "Get Started Business",
-    ctaLink: "/api/checkout/session?plan=business",
-    isPopular: false,
-    features: [
-      "Unlimited AI-Generated Websites",
-      "Custom Domain Mapping + SSL",
-      "Smart Voice Editing (Voice Prompt Builder)",
-      "Custom Order forms with Catalogs",
-      "WhatsApp Automated Chatbots & Ordering",
-      "Advanced Lead Analytics Dashboard",
-      "24/7 Phone & WhatsApp Support",
-    ],
-  },
+const proFeatures = [
+  "Unlimited AI Generations & Edits",
+  "Voice Prompt Customization Widget",
+  "Custom Domain Mapping + Free SSL",
+  "WhatsApp Shop & Orders Integration",
+  "Premium Fast loading CDN Hosting",
+  "Real-time Analytics Dashboard",
+  "Priority 24/7 WhatsApp Support"
+];
+
+const freeFeatures = [
+  "1 Generated Website",
+  "SiteForge Subdomain Hosting",
+  "Basic Page Customization",
+  "Email Support"
+];
+
+const enterpriseFeatures = [
+  "Up to 10 Websites",
+  "White-label Branding Removal",
+  "Dedicated Developer Support",
+  "API Access for Catalog sync",
+  "Advanced Custom SEO Tools"
 ];
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-24 bg-zinc-950 border-t border-zinc-900 relative">
-      {/* Background glow behind featured card */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-indigo-600/5 rounded-full blur-[140px] pointer-events-none" />
-
+    <section id="pricing" className="py-24 bg-[#CAD2C5]/30 border-t border-[#2F3E46]/12 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <h2 className="font-display text-sm font-semibold tracking-wider text-indigo-400 uppercase">
-            Flexible Pricing
+          <h2 className="font-display text-sm font-semibold tracking-wider text-[#52796F] uppercase">
+            Pricing Plans
           </h2>
-          <p className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Transparent Pricing for Local Businesses
+          <p className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-[#2F3E46]">
+            Simple, Transparent Pricing
           </p>
-          <p className="text-zinc-400 text-sm sm:text-base">
-            No hidden fees. Scale, upgrade, or cancel your subscription at any time. Start building for free today.
+          <p className="text-[#354F52] text-sm sm:text-base">
+            No complex contracts or hidden fees. Start free and scale as your shop grows.
           </p>
         </div>
 
-        {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-          {plans.map((plan, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className={`relative rounded-3xl border flex flex-col justify-between p-8 bg-zinc-900/40 backdrop-blur-sm transition-all duration-300 ${
-                plan.isPopular 
-                  ? "border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.15)] md:scale-105 z-10" 
-                  : "border-zinc-800/80 hover:border-zinc-700/80"
-              }`}
-            >
-              {/* Popular floating badge */}
-              {plan.isPopular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-[11px] font-extrabold tracking-wider uppercase px-4 py-1.5 rounded-full shadow-lg border border-indigo-400/20">
-                  Most Popular
-                </div>
-              )}
-
-              <div>
-                {/* Plan Meta */}
-                <div className="space-y-2">
-                  <h3 className="font-display text-xl font-bold text-white">{plan.name}</h3>
-                  <p className="text-zinc-400 text-xs leading-relaxed">{plan.description}</p>
-                </div>
-
-                {/* Pricing Display */}
-                <div className="my-8 flex items-baseline gap-1">
-                  <span className="font-display text-4xl sm:text-5xl font-extrabold text-white">{plan.price}</span>
-                  <span className="text-zinc-500 text-sm">/ {plan.period}</span>
-                </div>
-
-                {/* Features List */}
-                <ul className="space-y-4 border-t border-zinc-800/80 pt-6">
-                  {plan.features.map((feature, fIdx) => (
-                    <li key={fIdx} className="flex items-start gap-3 text-xs text-zinc-300">
-                      <div className="h-4.5 w-4.5 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="h-3 w-3" />
-                      </div>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+        {/* Pricing Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
+          
+          {/* Card 1: Free Plan */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            whileHover={{ y: -6 }}
+            className="rounded-[32px] border border-[#2F3E46]/12 bg-white p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300"
+          >
+            <div className="space-y-6">
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-bold text-[#2F3E46] tracking-tight">Free Starter</h3>
+                <p className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Perfect for testing the AI</p>
               </div>
 
-              {/* Action Button */}
-              <div className="mt-8 pt-6 border-t border-zinc-800/60">
-                <Link href={plan.ctaLink}>
-                  <Button 
-                    className={`w-full h-11 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
-                      plan.isPopular
-                        ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_20px_rgba(99,102,241,0.35)]"
-                        : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white border border-zinc-700/50"
-                    }`}
-                  >
-                    {plan.cta} <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-                <div className="flex items-center justify-center gap-1 mt-3.5 text-[10px] text-zinc-500">
-                  <HelpCircle className="h-3 w-3" />
-                  <span>GST invoicing available</span>
-                </div>
+              <div className="flex items-baseline text-[#2F3E46]">
+                <span className="text-3xl font-black">Rs. 0</span>
+                <span className="text-xs text-[#354F52] font-bold ml-1.5">/ month</span>
               </div>
-            </motion.div>
-          ))}
+
+              <hr className="border-[#2F3E46]/10" />
+
+              <ul className="space-y-3">
+                {freeFeatures.map((feat, idx) => (
+                  <li key={idx} className="flex items-center gap-2.5 text-xs text-[#354F52] font-medium">
+                    <Check className="h-4 w-4 text-[#84A98C] shrink-0" />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="pt-8">
+              <Link href="/auth/signup">
+                <Button variant="outline" className="w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider">
+                  Get Started Free
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Card 2: Pro Plan (Middle Highlighted Glow) */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            whileHover={{ scale: 1.02 }}
+            className="rounded-[32px] bg-[#52796F] hover:bg-[#354F52] p-8 sm:p-10 flex flex-col justify-between relative shadow-[0_15px_30px_rgba(82,121,111,0.25)] transition-colors duration-300 text-white"
+          >
+            {/* Top highlight badge */}
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-white px-4 py-1 text-[9px] font-black uppercase tracking-wider text-[#52796F] shadow-md border border-[#52796F]/10">
+              <Sparkles className="h-3 w-3 text-[#52796F]" />
+              <span>Recommended Choice</span>
+            </div>
+
+            <div className="space-y-6">
+              <div className="space-y-1.5 text-center">
+                <h3 className="text-xl font-extrabold text-white tracking-tight">Pro Vendor Plan</h3>
+                <p className="text-xs text-[#CAD2C5] font-bold uppercase tracking-wider">Deploy and scale your sales</p>
+              </div>
+
+              <div className="flex items-baseline justify-center text-white">
+                <span className="text-4xl font-black tracking-tight">Rs. 999</span>
+                <span className="text-xs text-[#CAD2C5] font-bold ml-1.5">/ month</span>
+              </div>
+
+              <hr className="border-white/20" />
+
+              <ul className="space-y-3.5">
+                {proFeatures.map((feat, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-[#CAD2C5] font-semibold">
+                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-white/10 text-white mt-0.5 shrink-0">
+                      <Check className="h-3 w-3" />
+                    </div>
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="pt-8 space-y-3">
+              <Link href="/auth/signup">
+                <button
+                  className="w-full h-12 rounded-full bg-white text-[#52796F] hover:bg-[#CAD2C5] hover:text-[#354F52] font-extrabold text-xs uppercase tracking-wider shadow-md transition-all duration-200"
+                >
+                  Upgrade to Pro
+                </button>
+              </Link>
+              <div className="flex items-center justify-center gap-1.5 text-[9px] text-[#CAD2C5] font-bold">
+                <AlertCircle className="h-3.5 w-3.5" />
+                <span>14-day money-back guarantee</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 3: Enterprise Plan */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{ y: -6 }}
+            className="rounded-[32px] border border-[#2F3E46]/12 bg-white p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300"
+          >
+            <div className="space-y-6">
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-bold text-[#2F3E46] tracking-tight">Agency Premium</h3>
+                <p className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">For multi-store creators</p>
+              </div>
+
+              <div className="flex items-baseline text-[#2F3E46]">
+                <span className="text-3xl font-black">Rs. 4,999</span>
+                <span className="text-xs text-[#354F52] font-bold ml-1.5">/ month</span>
+              </div>
+
+              <hr className="border-[#2F3E46]/10" />
+
+              <ul className="space-y-3">
+                {enterpriseFeatures.map((feat, idx) => (
+                  <li key={idx} className="flex items-center gap-2.5 text-xs text-[#354F52] font-medium">
+                    <Check className="h-4 w-4 text-[#84A98C] shrink-0" />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="pt-8">
+              <Link href="/auth/signup">
+                <Button variant="outline" className="w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider">
+                  Contact Sales
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </section>

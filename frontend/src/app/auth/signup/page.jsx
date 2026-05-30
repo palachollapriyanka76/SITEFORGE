@@ -5,29 +5,83 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Chrome, Mail, Lock, User } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
+import axios from "axios";
 
 export default function SignupPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
+    setError("");
+
+    // 1. Front-end Validation: Invalid Email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError("Invalid email format.");
       setIsLoading(false);
-      router.push("/onboarding");
-    }, 1500);
+      return;
+    }
+
+    // 2. Front-end Validation: Password too short
+    if (password.length < 8) {
+      setError("Password must contain at least 8 characters.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // 3. Validate duplicate email (backend + database check)
+      const emailCheck = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/check-email?email=${encodeURIComponent(email.trim())}`
+      );
+      if (emailCheck.data.exists) {
+        setError(emailCheck.data.error || "This email is already registered. Please sign in instead.");
+        setIsLoading(false);
+        return;
+      }
+
+      // 4. Register user
+      const signupResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/signup`,
+        { name, email: email.trim(), password }
+      );
+
+      if (signupResponse.data.success) {
+        const userId = signupResponse.data.user.id;
+        localStorage.setItem("siteforge-auth-user", userId);
+        console.log("STEP 10: User Created - " + userId);
+        
+        // Go to onboarding
+        router.push("/onboarding");
+      }
+    } catch (err) {
+      console.error("Signup validation error:", err);
+      if (!err.response) {
+        setError("Network error. Please try again.");
+      } else {
+        setError(err.response.data?.error || "Registration failed. Please check your inputs.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleSignup = () => {
     setIsLoading(true);
+    const mockUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
+    localStorage.setItem("siteforge-auth-user", mockUserId);
+    console.log("STEP 10: User Created - " + mockUserId);
+    
     setTimeout(() => {
       setIsLoading(false);
       router.push("/onboarding");
-    }, 1200);
+    }, 1000);
   };
 
   return (
@@ -57,6 +111,13 @@ export default function SignupPage() {
         <span className="h-px bg-[#2F3E46]/10 flex-1" />
       </div>
 
+      {/* Error Warnings alerts */}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-xs font-semibold text-center leading-relaxed">
+          ⚠️ {error}
+        </div>
+      )}
+
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
@@ -75,6 +136,8 @@ export default function SignupPage() {
             />
           </div>
         </div>
+
+
 
         <div className="space-y-1.5">
           <label className="text-[10px] font-bold text-[#354F52] uppercase tracking-wider block">

@@ -29,11 +29,13 @@ export interface BusinessData {
 }
 
 interface OnboardingState {
+  userId: string | null;
   businessData: BusinessData;
   messages: Message[];
-  currentStep: number; // 0 to 9 for Q1-Q10, 10 is complete
+  currentStep: number;
   isComplete: boolean;
   isGenerating: boolean;
+  setUserId: (userId: string | null) => void;
   updateBusinessData: (data: Partial<BusinessData>) => void;
   addMessage: (message: Message) => void;
   setStep: (step: number) => void;
@@ -72,12 +74,28 @@ const initialMessages: Message[] = [
 
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
+      userId: null,
       businessData: initialBusinessData,
       messages: initialMessages,
       currentStep: 0,
       isComplete: false,
       isGenerating: false,
+      setUserId: (id) => {
+        const storedUserId = get().userId;
+        if (id !== storedUserId) {
+          console.log(`[Store Reset] User context changed from ${storedUserId} to ${id}. Wiping onboarding session history.`);
+          // Force state wipe
+          set({
+            businessData: initialBusinessData,
+            messages: initialMessages,
+            currentStep: 0,
+            isComplete: false,
+            isGenerating: false,
+          });
+        }
+        set({ userId: id });
+      },
       updateBusinessData: (data) =>
         set((state) => ({
           businessData: {

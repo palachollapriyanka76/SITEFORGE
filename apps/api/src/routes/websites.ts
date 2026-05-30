@@ -162,4 +162,115 @@ router.delete("/:id", requireAuth(), async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/websites/:id/json — Get website in WebsiteJSON format
+router.get("/:id/json", requireAuth(), async (req: Request, res: Response) => {
+  try {
+    const { userId } = getAuth(req);
+    if (!userId) return res.status(401).json({ success: false, error: { code: "UNAUTHORIZED", message: "Not authenticated" } });
+
+    const user = await prisma.user.findUnique({ where: { clerkId: userId } });
+    if (!user) return res.status(404).json({ success: false, error: { code: "USER_NOT_FOUND", message: "User not found" } });
+
+    const website = await prisma.website.findFirst({
+      where: { id: req.params.id as string, userId: user.id },
+      include: { pages: true },
+    });
+
+    if (!website) return res.status(404).json({ success: false, error: { code: "NOT_FOUND", message: "Website not found" } });
+
+    const config = (website.config as any) || {};
+    const result = {
+      meta: config.meta || {
+        title: website.name,
+        description: website.description || "",
+        favicon: website.faviconUrl || "🌐",
+        keywords: []
+      },
+      theme: config.theme || {
+        primaryColor: config.colorTheme || "#0f172a",
+        secondaryColor: "#334155",
+        accentColor: "#3b82f6",
+        fontFamily: "Inter",
+        style: config.style || "modern"
+      },
+      globalSettings: config.globalSettings || {
+        navbarStyle: "glass",
+        footerStyle: "simple",
+        whatsappButton: config.whatsappEnabled !== undefined ? config.whatsappEnabled : true,
+        whatsappNumber: config.whatsappNumber || null
+      },
+      pages: website.pages.sort((a, b) => a.order - b.order).map(page => ({
+        name: page.title,
+        slug: page.slug === "home" ? "/" : `/${page.slug}`,
+        sections: (page.components as any) || []
+      }))
+    };
+
+    return res.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Error fetching website JSON:", error);
+    return res.status(500).json({ success: false, error: { code: "INTERNAL_ERROR", message: "Failed to fetch website JSON" } });
+  }
+});
+
+// PATCH /api/websites/:id/json — Save website config and pages
+router.patch("/:id/json", requireAuth(), async (req: Request, res: Response) => {
+  try {
+    const { userId } = getAuth(req);
+    if (!userId) return res.status(401).json({ success: false, error: { code: "UNAUTHORIZED", message: "Not authenticated" } });
+
+    const user = await prisma.user.findUnique({ where: { clerkId: userId } });
+    if (!user) return res.status(404).json({ success: false, error: { code: "USER_NOT_FOUND", message: "User not found" } });
+
+    const websiteId = req.params.id as string;
+    const website = await prisma.website.findFirst({
+      where: { id: websiteId, userId: user.id }
+    });
+
+    if (!website) return res.status(404).json({ success: false, error: { code: "NOT_FOUND", message: "Website not found" } });
+
+    const websiteJson = req.body;
+    if (!websiteJson || !websiteJson.pages || !websiteJson.theme || !websiteJson.meta) {
+      return res.status(400).json({ success: false, error: { code: "VALIDATION_ERROR", message: "Invalid WebsiteJSON structure" } });
+    }
+
+    const { meta, theme, globalSettings, pages } = websiteJson;
+
+    await prisma.$transaction([
+      prisma.website.update({
+        where: { id: websiteId },
+        data: {
+          description: meta.description || website.description,
+          config: {
+            meta,
+            theme,
+            globalSettings
+          }
+        }
+      }),
+      prisma.page.deleteMany({
+        where: { websiteId: websiteId }
+      }),
+      ...pages.map((page: any, index: number) => {
+        return prisma.page.create({
+          data: {
+            websiteId: websiteId,
+            title: page.name,
+            slug: page.slug === "/" ? "home" : page.slug.replace(/^\//, ""),
+            description: page.name + " Page",
+            isHomepage: page.slug === "/" || page.slug === "home",
+            components: page.sections,
+            order: index
+          }
+        });
+      })
+    ]);
+
+    return res.json({ success: true, data: { saved: true } });
+  } catch (error) {
+    console.error("Error saving website JSON:", error);
+    return res.status(500).json({ success: false, error: { code: "INTERNAL_ERROR", message: "Failed to save website JSON" } });
+  }
+});
+
 export default router;

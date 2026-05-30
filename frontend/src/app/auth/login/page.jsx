@@ -15,18 +15,26 @@ export default function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push("/onboarding");
-    }, 1500);
-  };
-
-  const handleGoogleLogin = () => {
-    setIsLoading(true);
+    
+    // Scopes user ID in localStorage
+    const mockUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
+    localStorage.setItem("siteforge-auth-user", mockUserId);
+    
     setTimeout(() => {
       setIsLoading(false);
       router.push("/onboarding");
     }, 1200);
+  };
+
+  const handleGoogleLogin = () => {
+    setIsLoading(true);
+    const mockUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
+    localStorage.setItem("siteforge-auth-user", mockUserId);
+    
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/onboarding");
+    }, 1000);
   };
 
   return (

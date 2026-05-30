@@ -81,7 +81,7 @@ router.post("/complete", requireAuth(), async (req: Request, res: Response) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { businessData } = req.body;
+  const { businessData, websiteJson } = req.body;
 
   if (!businessData) {
     return res.status(400).json({ error: "Missing businessData payload." });
@@ -102,71 +102,73 @@ router.post("/complete", requireAuth(), async (req: Request, res: Response) => {
       ? businessData.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + `-${Math.floor(100 + Math.random() * 900)}`
       : `shop-${Math.floor(10000 + Math.random() * 90000)}`;
 
-    // 3. Create Website and default Homepage in a database transaction
+    console.log("STEP 7: Website database transaction starting...");
+
+    // 3. Create Website & Pages in a database transaction
     const transaction = await prisma.$transaction(async (tx) => {
+      const theme = websiteJson?.theme || {};
+      const meta = websiteJson?.meta || {};
+      const globalSettings = websiteJson?.globalSettings || {};
+      const pages = websiteJson?.pages || [];
+
       // Create Website record
       const website = await tx.website.create({
         data: {
           userId: user.id,
           name: businessData.name || "My Business Shop",
           slug,
-          description: businessData.audience ? `Serving custom specialties to ${businessData.audience}` : "Local retail business.",
+          description: meta.description || (businessData.audience ? `Serving custom specialties to ${businessData.audience}` : "Local retail business."),
           config: {
-            style: businessData.style,
-            colorTheme: businessData.colorTheme,
-            logoUrl: businessData.logoUrl,
-            whatsappNumber: businessData.whatsappNumber,
-            whatsappEnabled: businessData.whatsappEnabled,
-            socialLinks: businessData.socialLinks,
-            orderingEnabled: businessData.ordering
+            meta,
+            theme,
+            globalSettings
           },
           status: "DRAFT"
         }
       });
 
-      // Create default Home page with mockup components matching style and color preference
-      await tx.page.create({
-        data: {
-          websiteId: website.id,
-          title: "Home",
-          slug: "home",
-          isHomepage: true,
-          components: [
-            {
-              type: "HeroSection",
-              title: `Welcome to ${businessData.name || "Our Shop"}`,
-              subtitle: `Serving the best quality products for ${businessData.audience || "our customers"}.`,
-              ctaText: businessData.whatsappEnabled ? "Order on WhatsApp" : "Learn More",
-              ctaLink: businessData.whatsappEnabled ? `https://wa.me/${businessData.whatsappNumber}` : "#about"
-            },
-            {
-              type: "AboutSection",
-              content: `Since our beginning, ${businessData.name || "our shop"} has been dedicated to delivering high-quality options. We specialize in bringing the best retail value to our local Pune customers.`
-            },
-            {
-              type: "ServicesSection",
-              services: businessData.products && businessData.products.length > 0
-                ? businessData.products
-                : ["Premium Quality Service", "Local Delivery Available"]
-            },
-            {
-              type: "ContactSection",
-              phone: businessData.whatsappNumber || "+91 99999 99999",
-              instagram: businessData.socialLinks?.instagram || "",
-              facebook: businessData.socialLinks?.facebook || ""
-            }
-          ]
-        }
-      });
+      // Create Page records
+      if (pages.length > 0) {
+        await Promise.all(
+          pages.map((page: any, index: number) => {
+            return tx.page.create({
+              data: {
+                websiteId: website.id,
+                title: page.name,
+                slug: page.slug === "/" ? "home" : page.slug.replace(/^\//, ""),
+                description: page.name + " Page",
+                isHomepage: page.slug === "/" || page.slug === "home",
+                components: page.sections,
+                order: index
+              }
+            });
+          })
+        );
+      } else {
+        // Fallback simple home page
+        await tx.page.create({
+          data: {
+            websiteId: website.id,
+            title: "Home",
+            slug: "home",
+            isHomepage: true,
+            components: [],
+          }
+        });
+      }
 
       return website;
     });
 
-    return res.status(201).json({
-      success: true,
-      message: "Website record scaffolded successfully in database.",
-      data: transaction
-    });
+     console.log("STEP 7: Website saved successfully to database: " + transaction.id);
+     console.log("STEP 10: Onboarding Saved - Website ID: " + transaction.id);
+     console.log("STEP 10: Website ID Created - " + transaction.id);
+
+     return res.status(201).json({
+       success: true,
+       message: "Website record scaffolded successfully in database.",
+       data: transaction
+     });
 
   } catch (error: any) {
     console.error("❌ Onboarding completion database error:", error.message);

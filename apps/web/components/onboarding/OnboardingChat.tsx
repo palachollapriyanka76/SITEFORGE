@@ -19,6 +19,8 @@ import LivePreviewPanel from "./LivePreviewPanel";
 import axios from "axios";
 import Link from "next/link";
 import { Button } from "@siteforge/ui";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 const STEPS_CHECKLIST = [
   { step: 0, label: "Business Name" },
@@ -97,7 +99,9 @@ const QUESTIONS_CONFIG = [
 ];
 
 export default function OnboardingChat() {
+  const { user: clerkUser } = useUser();
   const { 
+    setUserId,
     businessData, 
     messages, 
     currentStep, 
@@ -111,9 +115,19 @@ export default function OnboardingChat() {
     resetOnboarding 
   } = useOnboardingStore();
 
+  const router = useRouter();
+
   const [inputVal, setInputVal] = useState("");
   const [isAiTyping, setIsAiTyping] = useState(false);
   const chatScrollRef = useRef<HTMLDivElement>(null);
+
+  // Sync Clerk User ID & Trigger reset if user has changed
+  useEffect(() => {
+    if (clerkUser?.id) {
+      console.log("STEP 10: Onboarding Started - Clerk User ID: " + clerkUser.id);
+      setUserId(clerkUser.id);
+    }
+  }, [clerkUser, setUserId]);
 
   // Auto Scroll Chat
   useEffect(() => {
@@ -168,32 +182,26 @@ export default function OnboardingChat() {
       });
 
       const aiAckText = response.data.acknowledgment;
-      
       if (isLastStep) {
-        // Complete onboarding
+        console.log("STEP 1: Onboarding completed successfully.");
+        console.log("STEP 2: Preparing to send business data to the SiteForge Design Studio...");
+
+        // Complete onboarding in store
+        setComplete(true);
         setGenerating(true);
-        
+
         // Push final AI completion message
         addMessage({
           id: `ai-${Date.now()}`,
           sender: "ai",
-          text: "Dhanyavaad! 🙏 All details saved. Building your website, setup domains, and creating your local pages... Stand by!",
+          text: "Dhanyavaad! 🙏 All details saved. Sending you to the SiteForge Design Studio to watch your brand identity and templates build... Stand by!",
           timestamp: new Date().toISOString()
         });
 
-        // Trigger database creation and generator
-        await axios.post("/api/onboarding/complete", {
-          businessData: {
-            ...businessData,
-            ...parsedData
-          }
-        });
-
+        // STEP 1: Immediately redirect to /generating
         setTimeout(() => {
-          setGenerating(false);
-          setComplete(true);
-          setStep(10);
-        }, 4000);
+          router.push("/generating");
+        }, 1500);
 
       } else {
         // Post next question

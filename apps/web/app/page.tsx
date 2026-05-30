@@ -1,101 +1,56 @@
-"use client";
-
-import { motion } from "framer-motion";
+import React from "react";
 import Navbar from "../components/landing/Navbar";
 import Hero from "../components/landing/Hero";
+import SocialProof from "../components/landing/SocialProof";
 import Features from "../components/landing/Features";
 import TemplatesShowcase from "../components/landing/TemplatesShowcase";
 import AIDemoSection from "../components/landing/AIDemoSection";
+import TrustSection from "../components/landing/TrustSection";
 import Testimonials from "../components/landing/Testimonials";
 import Pricing from "../components/landing/Pricing";
 import FAQ from "../components/landing/FAQ";
 import Footer from "../components/landing/Footer";
 
-// Scroll reveal animations for sections
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1], // Custom cubic-bezier for smooth deceleration
-    },
-  },
-};
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <div className="dark min-h-screen bg-zinc-950 text-white selection:bg-indigo-500/30 overflow-x-hidden font-sans antialiased">
-      {/* 1. Header Navigation */}
+    <div className="bg-[#CAD2C5] min-h-screen text-[#354F52] font-sans overflow-x-hidden relative selection:bg-[#52796F] selection:text-white">
+      {/* Eco-friendly warm background glow highlights */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#84A98C]/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-[120vh] right-1/4 w-[500px] h-[500px] bg-[#52796F]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[200vh] left-1/3 w-[550px] h-[550px] bg-[#354F52]/5 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[50vh] right-1/3 w-[450px] h-[450px] bg-[#84A98C]/15 rounded-full blur-[120px] pointer-events-none animate-pulse" style={{ animationDuration: "15s" }} />
+
+      {/* Sticky Glassmorphism Header */}
       <Navbar />
 
-      <main className="relative z-10">
-        {/* 2. Hero Section (Built-in entrance animations) */}
-        <Hero />
+      {/* Hero section */}
+      <Hero />
 
-        {/* 3. Features Bento Grid Section */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={sectionVariants}
-        >
-          <Features />
-        </motion.section>
+      {/* Social Proof */}
+      <SocialProof />
 
-        {/* 4. Horizontal Templates Showcase Section */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={sectionVariants}
-        >
-          <TemplatesShowcase />
-        </motion.section>
+      {/* Bento grid layout features panel */}
+      <Features />
 
-        {/* 5. Conversational AI Generation Demo Section */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={sectionVariants}
-        >
-          <AIDemoSection />
-        </motion.section>
+      {/* Realistic templates section */}
+      <TemplatesShowcase />
 
-        {/* 6. Vendor Testimonials Grid Section */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={sectionVariants}
-        >
-          <Testimonials />
-        </motion.section>
+      {/* AI Realtime chat conversation demo */}
+      <AIDemoSection />
 
-        {/* 7. Flexible Pricing Options Section */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={sectionVariants}
-        >
-          <Pricing />
-        </motion.section>
+      {/* Google Reviews & Speed Metrics Trust section */}
+      <TrustSection />
 
-        {/* 8. Frequently Asked Questions Accordion Section */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={sectionVariants}
-        >
-          <FAQ />
-        </motion.section>
-      </main>
+      {/* Snapping horizontal scrolling testimonials */}
+      <Testimonials />
 
-      {/* 9. Footer Section */}
+      {/* Pricing panels focusing on Rs 999 plan */}
+      <Pricing />
+
+      {/* Accordion FAQ list */}
+      <FAQ />
+
+      {/* newsletter & Brand footer */}
       <Footer />
     </div>
   );

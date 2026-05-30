@@ -6,6 +6,26 @@ import { verifyClerkToken, AuthenticatedRequest } from "../middleware/auth.middl
 
 const router = Router();
 
+// GET /api/auth/check-email — Check if email already exists in local DB before Clerk creation
+router.get("/check-email", async (req: Request, res: Response) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ exists: false, error: "Missing email parameter" });
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: { email: String(email).trim().toLowerCase() }
+    });
+
+    if (user) {
+      return res.status(200).json({ exists: true, error: "This email is already registered. Please sign in instead." });
+    }
+    return res.status(200).json({ exists: false });
+  } catch (error: any) {
+    console.error("Check email database error:", error.message);
+    return res.status(500).json({ exists: false, error: "Database query failed" });
+  }
+});
+
 // =========================================================================
 // POST /api/auth/sync-user — Sync authenticated Clerk user with local DB
 // =========================================================================
@@ -114,7 +134,7 @@ router.post("/webhook", async (req: Request, res: Response) => {
     if (eventType === "user.created") {
       const { id, email_addresses, first_name, last_name, image_url } = evt.data;
 
-      await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           clerkId: id,
           email: email_addresses[0]?.email_address || "",
@@ -124,6 +144,7 @@ router.post("/webhook", async (req: Request, res: Response) => {
         },
       });
 
+      console.log("STEP 10: User Created - Database Record Cuid: " + newUser.id + ", Clerk ID: " + id);
       console.log(`✅ Webhook: User record generated for clerkId: ${id}`);
     }
 

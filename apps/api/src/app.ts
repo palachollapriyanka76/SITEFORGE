@@ -12,6 +12,9 @@ import aiRoutes from "./routes/ai.js";
 import uploadRoutes from "./routes/uploads.js";
 import healthRoutes from "./routes/health.js";
 import onboardingRoutes from "./routes/onboarding.routes.js";
+import generationRoutes from "./routes/generation.routes.js";
+import publishRoutes from "./routes/publish.routes.js";
+import domainRoutes from "./routes/domain.routes.js";
 
 const app = express();
 
@@ -41,6 +44,9 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/onboarding", onboardingRoutes);
+app.use("/api/generate", generationRoutes);
+app.use("/api/publish", publishRoutes);
+app.use("/api/domains", domainRoutes);
 
 // ---- Error Handler ----
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

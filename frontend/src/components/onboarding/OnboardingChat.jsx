@@ -97,6 +97,7 @@ const QUESTIONS_CONFIG = [
 
 export default function OnboardingChat() {
   const { 
+    setUserId,
     businessData, 
     messages, 
     currentStep, 
@@ -113,6 +114,17 @@ export default function OnboardingChat() {
   const [inputVal, setInputVal] = useState("");
   const [isAiTyping, setIsAiTyping] = useState(false);
   const chatScrollRef = useRef(null);
+
+  // Sync Logged In User ID & trigger session isolation checks
+  useEffect(() => {
+    let activeUserId = localStorage.getItem("siteforge-auth-user");
+    if (!activeUserId) {
+      activeUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
+      localStorage.setItem("siteforge-auth-user", activeUserId);
+    }
+    console.log("STEP 10: Onboarding Started - User ID: " + activeUserId);
+    setUserId(activeUserId);
+  }, [setUserId]);
 
   // Auto Scroll Chat
   useEffect(() => {
@@ -154,45 +166,55 @@ export default function OnboardingChat() {
     
     // 3. Move to next step or complete onboarding
     setIsAiTyping(true);
-
     try {
       const nextStepIdx = currentStep + 1;
       const isLastStep = nextStepIdx >= QUESTIONS_CONFIG.length;
 
-      // Request conversational acknowledgment from API backend
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/onboarding/chat`, {
-        messages: [...messages, userMsg],
-        currentQuestionField: configStep.field,
-        answer: answerText
-      });
-
-      const aiAckText = response.data.acknowledgment;
+      let aiAckText = "Got it! Thanks for sharing.";
+      try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/onboarding/chat`, {
+          messages: [...messages, userMsg],
+          currentQuestionField: configStep.field,
+          answer: answerText
+        });
+        aiAckText = response.data.acknowledgment;
+      } catch (err) {
+        console.warn("AI onboarding chat api error, using fallback acknowledgment:", err.message);
+        const fallbacks = {
+          name: "Wah! That's a beautiful name for your business.",
+          type: "Perfect! Running a business in this sector is fantastic.",
+          products: "Aacha, these products and services sound excellent! Customers will love them.",
+          audience: "Superb! Focus on your target customers is key.",
+          style: "Wah! That layout style will make your site look extremely premium.",
+          colorTheme: "Superb choice! These colors will give a very modern look to your brand.",
+          logoUrl: "Got it! We have saved your logo preference.",
+          ordering: "Perfect! Enabling these catalog options helps grow sales.",
+          whatsappEnabled: "Bilkul! Receiving orders directly on WhatsApp is very popular in India.",
+          socialLinks: "Excellent! Having your social profiles linked will help customers find you easily."
+        };
+        aiAckText = fallbacks[configStep.field] || "Perfect! Acknowledged and saved.";
+      }
       
       if (isLastStep) {
+        console.log("STEP 1: Onboarding completed successfully.");
+        console.log("STEP 2: Preparing to send business data to the SiteForge Design Studio...");
+
         // Complete onboarding
+        setComplete(true);
         setGenerating(true);
         
         // Push final AI completion message
         addMessage({
           id: `ai-${Date.now()}`,
           sender: "ai",
-          text: "Dhanyavaad! 🙏 All details saved. Building your website, setup domains, and creating your local pages... Stand by!",
+          text: "Dhanyavaad! 🙏 All details saved. Sending you to the SiteForge Design Studio to watch your brand identity and templates build... Stand by!",
           timestamp: new Date().toISOString()
         });
 
-        // Trigger database creation and generator
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/onboarding/complete`, {
-          businessData: {
-            ...businessData,
-            ...parsedData
-          }
-        });
-
+        // STEP 1: Immediately redirect to /generating
         setTimeout(() => {
-          setGenerating(false);
-          setComplete(true);
-          setStep(10);
-        }, 4000);
+          window.location.href = "/generating";
+        }, 1500);
 
       } else {
         // Post next question
@@ -227,6 +249,7 @@ export default function OnboardingChat() {
       setIsAiTyping(false);
     }
   };
+
 
   const handleVoiceInput = (transcript) => {
     setInputVal(transcript);

@@ -31,12 +31,28 @@ const initialMessages = [
 
 export const useOnboardingStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
+      userId: null,
       businessData: initialBusinessData,
       messages: initialMessages,
       currentStep: 0,
       isComplete: false,
       isGenerating: false,
+      setUserId: (id) => {
+        const storedUserId = get().userId;
+        if (id !== storedUserId) {
+          console.log(`[Store Reset] User context changed from ${storedUserId} to ${id}. Wiping onboarding session history.`);
+          // Force state wipe
+          set({
+            businessData: initialBusinessData,
+            messages: initialMessages,
+            currentStep: 0,
+            isComplete: false,
+            isGenerating: false,
+          });
+        }
+        set({ userId: id });
+      },
       updateBusinessData: (data) =>
         set((state) => ({
           businessData: {
