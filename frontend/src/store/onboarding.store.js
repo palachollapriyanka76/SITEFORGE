@@ -23,7 +23,7 @@ const initialMessages = [
   {
     id: "welcome-ai",
     sender: "ai",
-    text: "Namaste! 🙏 I am your SiteForge digital advisor. I will help you build a professional, premium website for your shop or business. Let's get started!\n\nFirst, **what is the name of your business?**",
+    text: "👋 Welcome to SiteForge\n\nLet's build your website.\n\n🏪 What's your business name?",
     timestamp: new Date().toISOString(),
     type: "text",
   },

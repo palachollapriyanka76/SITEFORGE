@@ -40,6 +40,13 @@ const UNSPLASH_IMAGES = {
     "https://images.unsplash.com/photo-1496181130204-7552cc145cdb?auto=format&fit=crop&w=800&q=80", // minimal laptop setups
     "https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=800&q=80"  // wireless soundbar and TV
   ],
+  fashion: [
+    "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=800&q=80", // fashion runway
+    "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80", // luxury boutique
+    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80", // elegant outfit
+    "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80", // fashion model
+    "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80"  // clothing rack display
+  ],
   generic: [
     "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80", // premium office glass tower
     "https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=800&q=80", // design meeting notes
@@ -56,7 +63,8 @@ function parseBusinessCategory(rawType) {
   if (type.includes("rest") || type.includes("cafe") || type.includes("food") || type.includes("dine") || type.includes("bistro")) return "restaurant";
   if (type.includes("salon") || type.includes("spa") || type.includes("hair") || type.includes("beauty") || type.includes("nail")) return "salon";
   if (type.includes("gym") || type.includes("fit") || type.includes("crossfit") || type.includes("wellness")) return "gym";
-  if (type.includes("elect") || type.includes("phone") || type.includes("gadg") || type.includes("store") || type.includes("tech")) return "electronics";
+  if (type.includes("elect") || type.includes("phone") || type.includes("gadg") || type.includes("tech")) return "electronics";
+  if (type.includes("fashion") || type.includes("cloth") || type.includes("apparel") || type.includes("boutique") || type.includes("wear") || type.includes("saree") || type.includes("kurti")) return "fashion";
   return "generic";
 }
 
@@ -97,6 +105,11 @@ function runAIAnalysis(businessData, style) {
     customerType = `Tech adopters, audiophiles, and smart home enthusiasts seeking official brand warranties.`;
     conversionGoal = "Promote current product offers, easy finance approvals, and technical support";
     designRecommendation = "Tech-specification sharp grids, Stark carbon grey colors, clean sans-serif layouts, and high-contrast call-to-actions.";
+  } else if (category === "fashion") {
+    brandPersonality = style === "luxury" ? "High-End Couture & Designer Boutique" : style === "minimal" ? "Scandinavian Capsule Wardrobe Studio" : "Trendy Contemporary Fashion House";
+    customerType = `Style-conscious shoppers, fashion influencers, and professionals seeking curated ethnic & western collections in Pune.`;
+    conversionGoal = "Drive online fashion orders, showcase seasonal lookbooks, and build brand loyalty";
+    designRecommendation = "Editorial fashion grids, lifestyle photography hero banners, elegant serif or modern sans-serif typography, and neutral earth-tone palettes.";
   }
 
   return {
@@ -224,7 +237,14 @@ function generateSectionContent(businessData, style, sectionType) {
   const name = businessData.name || "Premium Shop";
   const rawType = businessData.type || "Retail";
   const category = parseBusinessCategory(rawType);
-  const images = getUnsplashImages(category);
+  const rawImages = getUnsplashImages(category);
+
+  // Offset dynamic images array based on style to guarantee different imagery per variation
+  let offset = 0;
+  if (style === "luxury") offset = 1;
+  else if (style === "minimal") offset = 2;
+
+  const images = [...rawImages.slice(offset), ...rawImages.slice(0, offset)];
 
   switch (sectionType) {
     case "hero":
@@ -234,20 +254,71 @@ function generateSectionContent(businessData, style, sectionType) {
       let ctaLink = businessData.whatsappEnabled && businessData.whatsappNumber ? `https://wa.me/${businessData.whatsappNumber.replace(/\D/g,'')}` : "#contact";
 
       if (category === "bakery") {
-        heroTitle = `Artisanal Warmth & Oven-Fresh Cakes at ${name}`;
-        heroSubtitle = `Indulge in French-inspired sourdough breads, buttery-rich croissants, and custom celebration cakes baked fresh daily in Pune using pure organic local ingredients.`;
+        if (style === "luxury") {
+          heroTitle = `Artisanal French Patisserie & Luxury Celebration Cakes at ${name}`;
+          heroSubtitle = `Savor elegant, handcrafted multi-tier celebration cakes, French-style buttery croissants, and organic wild-yeast sourdough breads baked fresh in Pune.`;
+        } else if (style === "minimal") {
+          heroTitle = `${name} | Pure Artisanal Sourdough & Bakehouse`;
+          heroSubtitle = `Crafted with simple, organic ingredients and wild yeast. Sourdough boules, fresh baguettes, and clean pastries baked daily in Koregaon Park.`;
+        } else {
+          heroTitle = `Artisanal Warmth & Oven-Fresh Cakes at ${name}`;
+          heroSubtitle = `Indulge in French-inspired sourdough breads, buttery-rich croissants, and custom celebration cakes baked fresh daily in Pune using pure organic local ingredients.`;
+        }
       } else if (category === "restaurant") {
-        heroTitle = `Exquisite Culinary Masterpieces & Fine Dining at ${name}`;
-        heroSubtitle = `Savor authentic regional delicacies and modern fusion cuisine prepared in our live kitchen by top Pune culinary chefs. Experience real taste, ambient seating, and warm hospitality.`;
+        if (style === "luxury") {
+          heroTitle = `The Grand Heritage Atelier & Gastronomy of ${name}`;
+          heroSubtitle = `An immersive, upscale regional dining experience. Savor authentic culinary masterpieces cooked slow-charred by top Pune chefs.`;
+        } else if (style === "minimal") {
+          heroTitle = `${name} | Modern Culinary Bistro`;
+          heroSubtitle = `Honest local cooking, strictly organic sourcing, clean flavors. Dine in comfort or pick up your hot takeaway order in 15 minutes.`;
+        } else {
+          heroTitle = `Exquisite Culinary Masterpieces & Fine Dining at ${name}`;
+          heroSubtitle = `Savor authentic regional delicacies and modern fusion cuisine prepared in our live kitchen by top Pune culinary chefs. Experience real taste, ambient seating, and warm hospitality.`;
+        }
       } else if (category === "salon") {
-        heroTitle = `Reveal Your Ultimate Confidence at ${name} Luxury Salon`;
-        heroSubtitle = `Pamper yourself with premium hair styling, personalized skin facials, high-definition bridal makeovers, and soothing beauty therapies curated by master stylist experts.`;
+        if (style === "luxury") {
+          heroTitle = `The Elite Beauty Sanctuary & Spa Retreat of ${name}`;
+          heroSubtitle = `Indulge in premium European hair design, luxury botanical facials, and couture bridal styling in a private, high-pampering retreat.`;
+        } else if (style === "minimal") {
+          heroTitle = `${name} | Precision Hair & Scalp Studio`;
+          heroSubtitle = `Focus-oriented skin and scalp rejuvenation, clinical precision cuts, and imported botanical bond treatments.`;
+        } else {
+          heroTitle = `Reveal Your Ultimate Confidence at ${name} Luxury Salon`;
+          heroSubtitle = `Pamper yourself with premium hair styling, personalized skin facials, high-definition bridal makeovers, and soothing beauty therapies curated by master stylist experts.`;
+        }
       } else if (category === "gym") {
-        heroTitle = `Unleash Your Absolute Peak Strength at ${name}`;
-        heroSubtitle = `Transform your mind and body with elite certified trainers, state-of-the-art strength gear decks, customized calorie diets, and high-energy workout group programs in Pune.`;
+        if (style === "luxury") {
+          heroTitle = `The Elite Performance Club & Private Gym of ${name}`;
+          heroSubtitle = `A premium body transformation sanctuary. Features Olympic-level mechanical strength gear, personal medical coach consults, and custom diet macro programming.`;
+        } else if (style === "minimal") {
+          heroTitle = `${name} | Strength & Iron Vault`;
+          heroSubtitle = `No gimmicks. Only performance. High-octane compound lifting decks, weekly caliper body fat tracking, and certified strength coaches.`;
+        } else {
+          heroTitle = `Unleash Your Absolute Peak Strength at ${name}`;
+          heroSubtitle = `Transform your mind and body with elite certified trainers, state-of-the-art strength gear decks, customized calorie diets, and high-energy workout group programs in Pune.`;
+        }
       } else if (category === "electronics") {
-        heroTitle = `Smart Living & Premium Gadget Innovation at ${name}`;
-        heroSubtitle = `Explore authorized smart home solutions, Hybrid ANC headphones, OLED curved display watches, and elite laptops at the best prices with instant zero-downpayment EMIs.`;
+        if (style === "luxury") {
+          heroTitle = `The Premium Smart Tech & Audio Atelier by ${name}`;
+          heroSubtitle = `Explore authorized luxury smart home integration, ultra-premium hybrid noise-cancelling audiophile setups, and VIP doorstep technical care.`;
+        } else if (style === "minimal") {
+          heroTitle = `${name} | Authorized Gadget & Smart Lab`;
+          heroSubtitle = `Curated smart speakers, AMOLED sports smartwatches, and minimalist laptop workstations. Zero-downpayment EMIs and official brand warranties.`;
+        } else {
+          heroTitle = `Smart Living & Premium Gadget Innovation at ${name}`;
+          heroSubtitle = `Explore authorized smart home solutions, Hybrid ANC headphones, OLED curved display watches, and elite laptops at the best prices with instant zero-downpayment EMIs.`;
+        }
+      } else if (category === "fashion") {
+        if (style === "luxury") {
+          heroTitle = `The Couture Atelier & Luxury Designer Boutique of ${name}`;
+          heroSubtitle = `Step into gold-standard handwoven Banarasi silk sarees, premium bridal lehengas, and designer couture wear handpicked from India's finest master weavers.`;
+        } else if (style === "minimal") {
+          heroTitle = `${name} | Capsule Wardrobe & Sustainable Styling`;
+          heroSubtitle = `Timeless cuts, minimal aesthetics, and organic Indian fabrics. An elegant collection of sarees, kurtis, and everyday essentials.`;
+        } else {
+          heroTitle = `Discover Your Signature Style at ${name}`;
+          heroSubtitle = `Explore curated collections of designer sarees, contemporary kurtis, western wear, and ethnic fusion outfits handpicked for the modern fashion-conscious shopper in Pune.`;
+        }
       }
 
       return {
@@ -283,6 +354,10 @@ function generateSectionContent(businessData, style, sectionType) {
         aboutTitle = `Leading Pune's Smart Gadget Revolutions`;
         aboutDesc = `Since our launch, ${name} has stood as the go-to smart lab for technology fans. We bridge the gap between innovation and accessibility. As authorized dealers, we guarantee 100% authentic brand warranty cards, zero-downpayment Easy EMIs, and a dedicated post-sales tech support desk to help resolve issues.`;
         highlights = ["100% Authorized Products", "Official Brand Warranty Cards", "Zero Downpayment Easy EMIs", "Expert Technical Support Desk"];
+      } else if (category === "fashion") {
+        aboutTitle = `Crafting Style Stories Since Day One`;
+        aboutDesc = `At ${name}, fashion is more than clothing—it's self-expression. We curate designer ethnic wear, contemporary western styles, and fusion collections from the finest artisan weavers and boutique designers across India. Every piece is handpicked for quality, comfort, and timeless elegance.`;
+        highlights = ["Handpicked Designer Collections", "Premium Fabric Quality", "Seasonal Trend Lookbooks", "Personalized Styling Advice"];
       }
 
       return {
@@ -341,6 +416,14 @@ function generateSectionContent(businessData, style, sectionType) {
           { name: "Smart Home Integration", description: "Continuous security cameras, voice smart speakers, and automated accent lighting.", icon: "Cpu" },
           { name: "Post-Purchase Technical Care", description: "Complete official manufacturer claim handlings, replacement, and firmware updates.", icon: "ShieldCheck" }
         ];
+      } else if (category === "fashion") {
+        servTitle = "Our Fashion Services";
+        servSubtitle = "Curated styling experiences for every occasion";
+        services = [
+          { name: "Personal Styling Sessions", description: "One-on-one consultations with our in-house stylist for wardrobe curation and outfit planning.", icon: "Sparkles" },
+          { name: "Custom Tailoring & Alterations", description: "Perfect-fit alterations by master tailors for sarees, lehengas, and formal western wear.", icon: "Scissors" },
+          { name: "Seasonal Lookbook Previews", description: "Exclusive first access to new arrivals, limited edition prints, and festival collections.", icon: "ShoppingBag" }
+        ];
       }
 
       return {
@@ -393,6 +476,14 @@ function generateSectionContent(businessData, style, sectionType) {
           { name: "Pro Sound ANC Wireless Headphones", price: "Rs. 7,499", description: "Wireless hybrid active noise-cancelling overhead headphones with 40h battery.", image: images[2] },
           { name: "Forge Lite Amoled Smartwatch", price: "Rs. 3,499", description: "AMOLED curved display with continuous heart and blood oxygen monitor.", image: images[3] },
           { name: "Smart Sync Voice Speaker", price: "Rs. 4,999", description: "Full-range 360 sound smart assistant speaker with direct Spotify connect.", image: images[4] }
+        ];
+      } else if (category === "fashion") {
+        prodTitle = "Trending Collections";
+        prodSubtitle = "Handpicked designer pieces curated for the modern wardrobe";
+        products = [
+          { name: "Banarasi Silk Designer Saree", price: "Rs. 4,999", description: "Pure handwoven Banarasi silk with intricate zari work and rich pallu draping.", image: images[2] },
+          { name: "Embroidered Anarkali Kurti Set", price: "Rs. 2,499", description: "Luxurious chiffon Anarkali with thread embroidery and matching dupatta.", image: images[3] },
+          { name: "Premium Leather Tote Handbag", price: "Rs. 3,299", description: "Genuine Italian-finish leather tote with brass hardware and suede lining.", image: images[4] }
         ];
       }
 
@@ -469,6 +560,11 @@ function generateSectionContent(businessData, style, sectionType) {
           { name: "Arjun Gawde", role: "Audiophile", content: `Tried the Pro Sound hybrid noise cancel headphones. Incredible audio quality, seamless easy EMIs setup. Friendly staff assistance!`, rating: 5, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" },
           { name: "Sheetal Joshi", role: "Smart Home Owner", content: `Installed continuous cameras and voice smart sync in my flat. Complete authorized manufacturer warranty, solid technical support. Very reliable!`, rating: 5, avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" }
         ];
+      } else if (category === "fashion") {
+        testimonials = [
+          { name: "Priyanka Desai", role: "Fashion Blogger", content: `The Banarasi silk collection is absolutely stunning! Every piece feels premium and the fabric quality is unmatched. My go-to boutique in Pune.`, rating: 5, avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" },
+          { name: "Kavita Mehta", role: "Regular Shopper", content: `Ordered a custom lehenga set for my sister's wedding. The embroidery detail was exceptional and the fit was perfect. Will definitely return!`, rating: 5, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" }
+        ];
       }
 
       return {
@@ -507,6 +603,11 @@ function generateSectionContent(businessData, style, sectionType) {
         faqs = [
           { question: "What documents are required for zero-downpayment EMIs?", answer: "You only need basic digital identity proofs (Aadhar, PAN card) for instant, paperless financing approvals at our counter." },
           { question: "How does the authorized warranty process work?", answer: "Every product includes an official manufacturer warranty card. If issues occur, bring it back and we handle direct brand replacements." }
+        ];
+      } else if (category === "fashion") {
+        faqs = [
+          { question: "Do you offer custom tailoring and alterations?", answer: "Yes! All purchases include complimentary basic alterations. Custom tailoring for blouses, lehenga fits, and western wear is available at nominal charges." },
+          { question: "What is your return and exchange policy?", answer: "We offer a 7-day easy exchange policy for unworn items with original tags. Custom-tailored pieces are non-returnable but we guarantee fit adjustments." }
         ];
       }
 
@@ -700,21 +801,37 @@ function selectLayoutAndSections(businessData, style) {
   } else if (category === "electronics") {
     // Hero, Product Categories (services), Featured Products (products), Offers (promotions), Reviews (testimonials), Support (faq), Contact
     sectionsList = ["hero", "services", "products", "promotions", "testimonials", "faq", "contact"];
+  } else if (category === "fashion") {
+    // Hero, About Brand Story, Collections (products), Services (styling/tailoring), Lookbook Gallery (gallery), Reviews (testimonials), FAQ, Contact
+    sectionsList = ["hero", "about", "products", "services", "gallery", "testimonials", "faq", "contact"];
   } else {
     // Default
     sectionsList = ["hero", "about", "services", "gallery", "testimonials", "faq", "contact"];
   }
 
-  // Shuffle middle sections to create a truly unique layout arrangement upon every generation
+  // Ensure different variations have different layout compositions & orders
   if (sectionsList.length > 2) {
     const hero = sectionsList[0];
     const contact = sectionsList[sectionsList.length - 1];
-    const middle = sectionsList.slice(1, -1);
+    let middle = sectionsList.slice(1, -1);
 
-    // Dynamic random shuffle
-    for (let i = middle.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [middle[i], middle[j]] = [middle[j], middle[i]];
+    if (style === "luxury") {
+      // Luxury: Sort sections to prioritize visual elements first
+      const preferredOrder = ["gallery", "success-stories", "about", "team", "testimonials", "menu", "services", "products", "memberships", "promotions", "pricing", "booking", "faq"];
+      middle.sort((a, b) => {
+        const idxA = preferredOrder.indexOf(a);
+        const idxB = preferredOrder.indexOf(b);
+        return (idxA !== -1 ? idxA : 99) - (idxB !== -1 ? idxB : 99);
+      });
+    } else if (style === "minimal") {
+      // Minimal: Concise and reversed order, omit less critical faq or promotions sections
+      middle = middle.reverse().filter(s => s !== "faq" && s !== "promotions");
+    } else {
+      // Modern: Shift order dynamically to differentiate from luxury/minimal
+      if (middle.length > 1) {
+        const first = middle.shift();
+        middle.push(first);
+      }
     }
 
     sectionsList = [hero, ...middle, contact];
@@ -723,23 +840,55 @@ function selectLayoutAndSections(businessData, style) {
   return sectionsList;
 }
 
+// Helper async functions for parallelized execution
+async function generateContentAsync(businessData, style, sectionsList) {
+  const contentMap = {};
+  sectionsList.forEach(type => {
+    contentMap[type] = generateSectionContent(businessData, style, type);
+  });
+  contentMap["footer"] = generateSectionContent(businessData, style, "footer");
+  return contentMap;
+}
+
+async function generateImagesAsync(category) {
+  return UNSPLASH_IMAGES[category] || UNSPLASH_IMAGES.generic;
+}
+
+async function generateLayoutAsync(style, colorThemePreference) {
+  return generateDesignTokens(style, colorThemePreference);
+}
+
+async function generateSEOAsync(name, rawType, category) {
+  return {
+    title: `${name} | Pune's Premium ${rawType}`,
+    description: `Welcome to ${name}. Discover standard-setting ${rawType.toLowerCase()} crafted meticulously for you in Pune.`,
+    favicon: category === "bakery" ? "🧁" : category === "restaurant" ? "🍽️" : category === "salon" ? "💇‍♀️" : category === "gym" ? "💪" : category === "electronics" ? "🔌" : "✨",
+    keywords: [name.toLowerCase(), category, "Pune's finest", "premium quality", "local shop"]
+  };
+}
+
 // Main compiler: Creates a complete Website JSON representing true AI schema
-function compileWebsiteJSON(businessData, style, colorThemePreference) {
+async function compileWebsiteJSON(businessData, style, colorThemePreference) {
   const name = businessData.name || "My Business";
   const rawType = businessData.type || "Retail Shop";
   const category = parseBusinessCategory(rawType);
 
-  const themeTokens = generateDesignTokens(style, colorThemePreference);
   const sectionsList = selectLayoutAndSections(businessData, style);
 
-  // 1. Build Pages and Sections
+  // Run Content, Images, Layout and SEO generation in parallel!
+  const [contentMap, imageList, themeTokens, seo] = await Promise.all([
+    generateContentAsync(businessData, style, sectionsList),
+    generateImagesAsync(category),
+    generateLayoutAsync(style, colorThemePreference),
+    generateSEOAsync(name, rawType, category)
+  ]);
+
+  // Build Pages and Sections
   const sectionsArray = [];
-  const contentMap = {};
 
   sectionsList.forEach((type, idx) => {
     const id = `sec_${type}_${Math.random().toString(36).substring(2, 6)}`;
-    const content = generateSectionContent(businessData, style, type);
-    contentMap[type] = content;
+    const content = contentMap[type] || {};
 
     sectionsArray.push({
       id,
@@ -758,8 +907,7 @@ function compileWebsiteJSON(businessData, style, colorThemePreference) {
 
   // Always append footer
   const footerId = `sec_footer_${Math.random().toString(36).substring(2, 6)}`;
-  const footerContent = generateSectionContent(businessData, style, "footer");
-  contentMap["footer"] = footerContent;
+  const footerContent = contentMap["footer"] || {};
   sectionsArray.push({
     id: footerId,
     type: "footer",
@@ -768,14 +916,6 @@ function compileWebsiteJSON(businessData, style, colorThemePreference) {
     content: footerContent,
     styles: {}
   });
-
-  // 2. Build SEO Meta
-  const seo = {
-    title: `${name} | Pune's Premium ${rawType}`,
-    description: `Welcome to ${name}. Discover standard-setting ${rawType.toLowerCase()} crafted meticulously for you in Pune.`,
-    favicon: category === "bakery" ? "🧁" : category === "restaurant" ? "🍽️" : category === "salon" ? "💇‍♀️" : category === "gym" ? "💪" : category === "electronics" ? "🔌" : "✨",
-    keywords: [name.toLowerCase(), category, "Pune's finest", "premium quality", "local shop"]
-  };
 
   const pages = [
     {
@@ -811,14 +951,17 @@ function compileWebsiteJSON(businessData, style, colorThemePreference) {
   };
 }
 
-// Generate Variation A (Modern), B (Luxury), C (Minimal)
-function generateThreeVariations(businessData) {
+// Generate Variation A (Modern), B (Luxury), C (Minimal) in parallel
+async function generateThreeVariations(businessData) {
   const name = businessData.name || "Elite Business";
   const userColor = businessData.colorTheme || null;
 
-  const modernBase = compileWebsiteJSON(businessData, "modern", userColor);
-  const luxuryBase = compileWebsiteJSON(businessData, "luxury", userColor);
-  const minimalBase = compileWebsiteJSON(businessData, "minimal", userColor);
+  // Run compilations in parallel!
+  const [modernBase, luxuryBase, minimalBase] = await Promise.all([
+    compileWebsiteJSON(businessData, "modern", userColor),
+    compileWebsiteJSON(businessData, "luxury", userColor),
+    compileWebsiteJSON(businessData, "minimal", userColor)
+  ]);
 
   return [
     {

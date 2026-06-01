@@ -31,21 +31,85 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', uptime: process.uptime() });
 });
 
+const variationsCache = new Map();
+
 // POST /api/generate/website-variations
-app.post('/api/generate/website-variations', (req, res) => {
+app.post('/api/generate/website-variations', async (req, res) => {
   const { businessData } = req.body;
   console.log("STEP 3: Generation API called for variations (AI-Driven)");
   console.log("STEP 4: AI Analysis & Design Generation started");
 
-  try {
-    const templates = aiGenerator.generateThreeVariations(businessData || {});
-    console.log("STEP 5: Dynamic Layouts, Sections and Design Tokens generated successfully");
-    console.log("STEP 6: Website JSON variation outputs parsed");
-    res.json({ success: true, data: { templates } });
-  } catch (err) {
-    console.error("AI Generation failed:", err);
-    res.status(500).json({ success: false, error: err.message });
+  // AUDIT LOG ONBOARDING STATE
+  console.log("=== WEBSITE GENERATION ENGINE AUDIT LOG ===");
+  console.log(`businessName:   ${businessData?.name ? `"${businessData.name}"` : "MISSING"}`);
+  console.log(`industry:       ${businessData?.type ? `"${businessData.type}"` : "MISSING"}`);
+  console.log(`products:       ${businessData?.products && businessData.products.length ? JSON.stringify(businessData.products) : "MISSING"}`);
+  console.log(`targetAudience: ${businessData?.audience ? `"${businessData.audience}"` : "MISSING"}`);
+  console.log(`style:          ${businessData?.style ? `"${businessData.style}"` : "MISSING"}`);
+  console.log(`colors:         ${businessData?.colorTheme ? `"${businessData.colorTheme}"` : "MISSING"}`);
+  console.log(`logo:           ${businessData?.logoUrl ? "PRESENT" : "MISSING"}`);
+  console.log(`whatsapp:       Enabled: ${businessData?.whatsappEnabled}, Number: ${businessData?.whatsappNumber || "MISSING"}`);
+  console.log(`socialLinks:    ${businessData?.socialLinks ? JSON.stringify(businessData.socialLinks) : "MISSING"}`);
+  console.log("==========================================");
+
+  // Validate values
+  const missing = [];
+  if (!businessData?.name) missing.push("businessName");
+  if (!businessData?.type) missing.push("industry");
+  if (!businessData?.products || !businessData.products.length) missing.push("products");
+  if (!businessData?.audience) missing.push("targetAudience");
+  if (!businessData?.style) missing.push("style");
+  if (!businessData?.colorTheme) missing.push("colors");
+  if (missing.length > 0) {
+    console.warn(`[WARNING] Some onboarding inputs are missing: ${missing.join(", ")}`);
+  } else {
+    console.log("[SUCCESS] All core onboarding inputs are present!");
   }
+
+  const cacheKey = JSON.stringify(businessData || {});
+  let templates;
+
+  if (variationsCache.has(cacheKey)) {
+    console.log("[Cache Hit] Returning cached website variations from memory cache");
+    templates = variationsCache.get(cacheKey);
+  } else {
+    try {
+      templates = await aiGenerator.generateThreeVariations(businessData || {});
+      console.log("STEP 5: Dynamic Layouts, Sections and Design Tokens generated successfully");
+      console.log("STEP 6: Website JSON variation outputs parsed");
+      
+      // Save to cache
+      variationsCache.set(cacheKey, templates);
+    } catch (err) {
+      console.error("AI Generation failed:", err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  // VERIFY WEBSITE JSON DETAILS
+  console.log("=== GENERATED WEBSITE JSON VERIFICATION ===");
+  templates.forEach((variant) => {
+    console.log(`\n--- Variant: ${variant.name} (${variant.id}) ---`);
+    const websiteJson = variant.websiteJson;
+    console.log(`- Theme Style:   ${websiteJson?.theme?.style || "MISSING"}`);
+    console.log(`- Typography:    ${websiteJson?.theme?.fontFamily || "MISSING"}`);
+    console.log(`- Colors:        Primary=${websiteJson?.theme?.primaryColor}, Accent=${websiteJson?.theme?.accentColor}`);
+    console.log(`- Global Settings Navigation/WhatsApp: Number=${websiteJson?.globalSettings?.whatsappNumber}, Enabled=${websiteJson?.globalSettings?.whatsappButton}`);
+    console.log(`- Pages:         ${JSON.stringify(websiteJson?.pages?.map(p => ({ name: p.name, slug: p.slug })))}`);
+    console.log(`- Sections:      ${JSON.stringify(websiteJson?.sections?.map(s => s.type))}`);
+    
+    // Check if sections have images
+    const sectionsWithImages = websiteJson?.sections?.filter(s => s.content?.backgroundImage || s.content?.image || s.content?.products?.some(p => p.image) || s.content?.images?.length);
+    console.log(`- Sections containing imagery: ${JSON.stringify(sectionsWithImages?.map(s => s.type))}`);
+  });
+  console.log("\n==========================================");
+
+  // Print full JSON payload of Variant A (Modern)
+  console.log("\n=== FULL GENERATED JSON PAYLOAD (VARIANT A: MODERN) ===");
+  console.log(JSON.stringify(templates[0].websiteJson, null, 2));
+  console.log("======================================================");
+
+  res.json({ success: true, data: { templates } });
 });
 
 
@@ -113,7 +177,7 @@ app.patch('/api/websites/:id/json', (req, res) => {
 });
 
 // POST /api/onboarding/complete (mock)
-app.post('/api/onboarding/complete', (req, res) => {
+app.post('/api/onboarding/complete', async (req, res) => {
   const { businessData, websiteJson, userId } = req.body;
   const mockId = `site_${Math.floor(100000 + Math.random() * 900000)}`;
   
@@ -121,8 +185,10 @@ app.post('/api/onboarding/complete', (req, res) => {
   console.log("STEP 7: Website saved in memory: " + mockId);
   console.log("STEP 8: Website ID generated: " + mockId);
   
+  const finalJson = websiteJson || await aiGenerator.compileWebsiteJSON(businessData || {}, 'modern');
+  
   websitesDb[mockId] = {
-    ...(websiteJson || aiGenerator.compileWebsiteJSON(businessData || {}, 'modern')),
+    ...finalJson,
     userId: userId || "anonymous"
   };
   

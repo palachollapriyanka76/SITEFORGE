@@ -497,7 +497,7 @@ export default function GeneratingPage() {
   const fetchVariations = async () => {
     try {
       setError(null);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/generate/website-variations`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/generate/website-variations`, {
         businessData
       });
       
@@ -601,7 +601,7 @@ export default function GeneratingPage() {
       setError(null);
       addLog("[System] Launching instant fallback industry template...");
       
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/generate/website-variations`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/generate/website-variations`, {
         businessData: { ...businessData, useFallbackOnly: true }
       });
       
@@ -629,7 +629,7 @@ export default function GeneratingPage() {
     addLog(`[Database] Saving chosen template configuration "${chosen.name}"...`);
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/onboarding/complete`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/onboarding/complete`, {
         businessData,
         websiteJson: chosen.websiteJson,
         userId: localStorage.getItem("siteforge-auth-user") || "anonymous"

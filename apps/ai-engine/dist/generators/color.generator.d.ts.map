@@ -1,0 +1,1 @@
+{"version":3,"file":"color.generator.d.ts","sourceRoot":"","sources":["../../src/generators/color.generator.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,YAAY;IAC3B,YAAY,EAAE,MAAM,CAAC;IACrB,cAAc,EAAE,MAAM,CAAC;IACvB,WAAW,EAAE,MAAM,CAAC;CACrB;AAED,eAAO,MAAM,oBAAoB,GAAI,YAAY,MAAM,GAAG,SAAS,EAAE,cAAc,MAAM,KAAG,YAoC3F,CAAC"}

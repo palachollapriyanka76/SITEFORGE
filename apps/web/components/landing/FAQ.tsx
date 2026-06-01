@@ -28,9 +28,9 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [openIdx, setOpenIdx] = useState(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  const toggle = (idx) => {
+  const toggle = (idx: number) => {
     setOpenIdx(openIdx === idx ? null : idx);
   };
 

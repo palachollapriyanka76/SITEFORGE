@@ -2,12 +2,14 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { ArrowUpRight, Sparkles, Store, Scissors, Smartphone, Apple, Shirt } from "lucide-react";
 import { Button } from "../ui/Button";
 
 const templates = [
   {
     id: "bakery",
+    previewId: "bakery-artisan",
     name: "Sartaj Sweets & Bakery",
     category: "Bakery",
     icon: Store,
@@ -22,6 +24,7 @@ const templates = [
   },
   {
     id: "restaurant",
+    previewId: "restaurant-modern",
     name: "Spice Route Dine-In",
     category: "Restaurant",
     icon: Store,
@@ -36,6 +39,7 @@ const templates = [
   },
   {
     id: "salon",
+    previewId: "salon-luxury",
     name: "Grace Hair Lounge",
     category: "Salon",
     icon: Scissors,
@@ -50,6 +54,7 @@ const templates = [
   },
   {
     id: "electronics",
+    previewId: "electronics-modern",
     name: "Digital Hub Tech",
     category: "Electronics",
     icon: Smartphone,
@@ -64,6 +69,7 @@ const templates = [
   },
   {
     id: "grocery",
+    previewId: "grocery-minimal",
     name: "Apna Bazaar Organics",
     category: "Grocery",
     icon: Apple,
@@ -78,6 +84,7 @@ const templates = [
   },
   {
     id: "fashion",
+    previewId: "fashion-luxury",
     name: "Urban Thread Boutique",
     category: "Fashion",
     icon: Shirt,
@@ -187,9 +194,11 @@ export default function TemplatesShowcase() {
                       ))}
                     </div>
 
-                    <Button className="rounded-full flex items-center gap-1.5 px-5 py-2 text-[10px] uppercase font-black tracking-widest shadow-md">
-                      Select Theme <ArrowUpRight className="h-3.5 w-3.5" />
-                    </Button>
+                    <Link href={`/templates/${tpl.previewId}`} target="_blank" className="w-full">
+                      <Button className="w-full rounded-full flex items-center justify-center gap-1.5 px-5 py-2 text-[10px] uppercase font-black tracking-widest shadow-md">
+                        Preview Layout <ArrowUpRight className="h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
                   </div>
                 </div>
 
@@ -212,6 +221,19 @@ export default function TemplatesShowcase() {
               </motion.div>
             );
           })}
+        </div>
+
+        {/* View Template Marketplace CTA */}
+        <div className="mt-16 text-center">
+          <Link href="/templates">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-8 py-4 rounded-full bg-[#52796F] hover:bg-[#354F52] text-white text-xs font-black uppercase tracking-widest shadow-lg inline-flex items-center gap-2"
+            >
+              Explore Template Marketplace (50+ Themes) <ArrowUpRight className="h-4 w-4" />
+            </motion.button>
+          </Link>
         </div>
       </div>
     </section>

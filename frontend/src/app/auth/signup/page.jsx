@@ -38,7 +38,7 @@ export default function SignupPage() {
     try {
       // 3. Validate duplicate email (backend + database check)
       const emailCheck = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/check-email?email=${encodeURIComponent(email.trim())}`
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/auth/check-email?email=${encodeURIComponent(email.trim())}`
       );
       if (emailCheck.data.exists) {
         setError(emailCheck.data.error || "This email is already registered. Please sign in instead.");
@@ -48,7 +48,7 @@ export default function SignupPage() {
 
       // 4. Register user
       const signupResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/signup`,
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/auth/signup`,
         { name, email: email.trim(), password }
       );
 

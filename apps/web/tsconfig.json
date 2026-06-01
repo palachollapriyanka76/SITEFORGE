@@ -9,7 +9,7 @@
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*", "./*"],
       "@siteforge/ui": ["../../packages/ui/src"],
       "@siteforge/types": ["../../packages/types/src"],
       "@siteforge/database": ["../../packages/database/src"]

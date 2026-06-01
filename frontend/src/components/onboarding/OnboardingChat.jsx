@@ -9,7 +9,9 @@ import {
   ArrowLeft,
   RotateCcw,
   Loader2,
-  Check
+  Check,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import { useOnboardingStore } from "../../store/onboarding.store";
 import ChatMessage from "./ChatMessage";
@@ -22,7 +24,7 @@ import { Button } from "../ui/Button";
 const STEPS_CHECKLIST = [
   { step: 0, label: "Business Name" },
   { step: 1, label: "Industry Category" },
-  { step: 2, label: "Products / Services" },
+  { step: 2, label: "Products & Services" },
   { step: 3, label: "Target Audience" },
   { step: 4, label: "Visual Style" },
   { step: 5, label: "Color Palette" },
@@ -36,61 +38,61 @@ const QUESTIONS_CONFIG = [
   {
     step: 0,
     field: "name",
-    nextPrompt: "Great! Next, what type of business is it? (Select from choices below or speak it)",
+    nextPrompt: "🏪 Business Category?",
     type: "type_choice"
   },
   {
     step: 1,
     field: "type",
-    nextPrompt: "Nice. What are the key products or services you offer? Separate them with commas.",
-    type: "text"
+    nextPrompt: "🍰 Offerings & Specialties? (Select tags below or list custom items separated by commas)",
+    type: "products_tags"
   },
   {
     step: 2,
     field: "products",
-    nextPrompt: "Got it! Who is your target audience? (e.g., 'families', 'young professionals', 'fitness enthusiasts')",
-    type: "text"
+    nextPrompt: "🎯 Target Audience?",
+    type: "audience_choice"
   },
   {
     step: 3,
     field: "audience",
-    nextPrompt: "Understood. Let's design the layout. Select a visual style for your website:",
+    nextPrompt: "🎨 Select Visual Style Layout:",
     type: "style_choice"
   },
   {
     step: 4,
     field: "style",
-    nextPrompt: "Superb choice! Now pick a color theme that matches your brand energy:",
+    nextPrompt: "🌈 Pick Color Theme Palette:",
     type: "color_choice"
   },
   {
     step: 5,
     field: "colorTheme",
-    nextPrompt: "Looking fantastic! Upload your shop logo (optional):",
+    nextPrompt: "📷 Upload logo:",
     type: "logo_upload"
   },
   {
     step: 6,
     field: "logoUrl",
-    nextPrompt: "Almost there! Do you need online ordering enabled on your catalog?",
+    nextPrompt: "🛒 Enable online orders?",
     type: "boolean_choice"
   },
   {
     step: 7,
     field: "ordering",
-    nextPrompt: "Excellent! Do you want to connect a floating WhatsApp widget to receive customer orders in your inbox?",
+    nextPrompt: "📱 Add a WhatsApp widget for direct orders?",
     type: "whatsapp_input"
   },
   {
     step: 8,
     field: "whatsappEnabled",
-    nextPrompt: "Perfect! Lastly, paste any social media links (optional):",
+    nextPrompt: "🌐 Add social handles?",
     type: "social_input"
   },
   {
     step: 9,
     field: "socialLinks",
-    nextPrompt: "All details verified! Generating your website now...",
+    nextPrompt: "✨ Creating your site...",
     type: "text"
   }
 ];
@@ -113,6 +115,9 @@ export default function OnboardingChat() {
 
   const [inputVal, setInputVal] = useState("");
   const [isAiTyping, setIsAiTyping] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [toastMessage, setToastMessage] = useState(null);
+  
   const chatScrollRef = useRef(null);
 
   // Sync Logged In User ID & trigger session isolation checks
@@ -122,14 +127,41 @@ export default function OnboardingChat() {
       activeUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
       localStorage.setItem("siteforge-auth-user", activeUserId);
     }
-    console.log("STEP 10: Onboarding Started - User ID: " + activeUserId);
     setUserId(activeUserId);
   }, [setUserId]);
+
+  // Voice synthesis: speak AI prompts aloud
+  const speakText = (text) => {
+    if (!voiceEnabled || typeof window === "undefined" || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    
+    // Clean string: strip formatting/emojis
+    const clean = text.replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF]/g, '').replace(/\*+/g, '');
+    const utterance = new SpeechSynthesisUtterance(clean);
+    
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => v.lang.includes("en") || v.lang.includes("IN"));
+    if (preferredVoice) utterance.voice = preferredVoice;
+    
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Speak welcome message on load
+  useEffect(() => {
+    if (messages.length === 1 && messages[0].id === "welcome-ai") {
+      speakText(messages[0].text);
+    }
+  }, [messages]);
 
   // Auto Scroll Chat
   useEffect(() => {
     chatScrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isAiTyping]);
+
+  const triggerLocalToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 2500);
+  };
 
   // Submit Answer
   const handleAnswerSubmit = async (answerText, updatedData) => {
@@ -144,6 +176,7 @@ export default function OnboardingChat() {
     };
     addMessage(userMsg);
     setInputVal("");
+    triggerLocalToast("✓ Website Updated");
 
     // 2. Update local state store
     const configStep = QUESTIONS_CONFIG[currentStep];
@@ -170,89 +203,64 @@ export default function OnboardingChat() {
       const nextStepIdx = currentStep + 1;
       const isLastStep = nextStepIdx >= QUESTIONS_CONFIG.length;
 
-      let aiAckText = "Got it! Thanks for sharing.";
-      try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/onboarding/chat`, {
-          messages: [...messages, userMsg],
-          currentQuestionField: configStep.field,
-          answer: answerText
-        });
-        aiAckText = response.data.acknowledgment;
-      } catch (err) {
-        console.warn("AI onboarding chat api error, using fallback acknowledgment:", err.message);
-        const fallbacks = {
-          name: "Wah! That's a beautiful name for your business.",
-          type: "Perfect! Running a business in this sector is fantastic.",
-          products: "Aacha, these products and services sound excellent! Customers will love them.",
-          audience: "Superb! Focus on your target customers is key.",
-          style: "Wah! That layout style will make your site look extremely premium.",
-          colorTheme: "Superb choice! These colors will give a very modern look to your brand.",
-          logoUrl: "Got it! We have saved your logo preference.",
-          ordering: "Perfect! Enabling these catalog options helps grow sales.",
-          whatsappEnabled: "Bilkul! Receiving orders directly on WhatsApp is very popular in India.",
-          socialLinks: "Excellent! Having your social profiles linked will help customers find you easily."
-        };
-        aiAckText = fallbacks[configStep.field] || "Perfect! Acknowledged and saved.";
-      }
+      // Snappy, concise client-side acknowledgments (70% text reduction)
+      const fallbacks = {
+        name: "Great name! Let's keep building.",
+        type: "Category saved. Moving forward.",
+        products: "Excellent list. Added to preview.",
+        audience: "Audience noted.",
+        style: "Beautiful style choice applied.",
+        colorTheme: "Gradients loaded.",
+        logoUrl: "Logo processed.",
+        ordering: "Catalog settings updated.",
+        whatsappEnabled: "WhatsApp widget enabled.",
+        socialLinks: "All set!"
+      };
+      
+      const aiAckText = fallbacks[configStep.field] || "Perfect. Saved.";
       
       if (isLastStep) {
-        console.log("STEP 1: Onboarding completed successfully.");
-        console.log("STEP 2: Preparing to send business data to the SiteForge Design Studio...");
-
-        // Complete onboarding
         setComplete(true);
         setGenerating(true);
         
-        // Push final AI completion message
+        const endMsg = "All details saved! Watch your site compile in the editor... Stand by!";
         addMessage({
           id: `ai-${Date.now()}`,
           sender: "ai",
-          text: "Dhanyavaad! 🙏 All details saved. Sending you to the SiteForge Design Studio to watch your brand identity and templates build... Stand by!",
+          text: endMsg,
           timestamp: new Date().toISOString()
         });
+        speakText(endMsg);
 
-        // STEP 1: Immediately redirect to /generating
         setTimeout(() => {
           window.location.href = "/generating";
         }, 1500);
 
       } else {
-        // Post next question
-        const nextQuestion = QUESTIONS_CONFIG[nextStepIdx];
+        const nextPrompt = `${aiAckText}\n\n${configStep.nextPrompt}`;
         
         addMessage({
           id: `ai-${Date.now()}`,
           sender: "ai",
-          text: `${aiAckText}\n\n${nextQuestion.nextPrompt}`,
+          text: nextPrompt,
           timestamp: new Date().toISOString(),
-          type: nextQuestion.type
+          type: configStep.type
         });
 
         setStep(nextStepIdx);
+        speakText(nextPrompt);
       }
     } catch (err) {
       console.error("AI chat error:", err);
-      // Fallback in case of server failure
-      const nextStepIdx = currentStep + 1;
-      if (nextStepIdx < QUESTIONS_CONFIG.length) {
-        const nextQuestion = QUESTIONS_CONFIG[nextStepIdx];
-        addMessage({
-          id: `ai-err-${Date.now()}`,
-          sender: "ai",
-          text: `Got it! Let's continue.\n\n${nextQuestion.nextPrompt}`,
-          timestamp: new Date().toISOString(),
-          type: nextQuestion.type
-        });
-        setStep(nextStepIdx);
-      }
     } finally {
       setIsAiTyping(false);
     }
   };
 
-
   const handleVoiceInput = (transcript) => {
     setInputVal(transcript);
+    // Submit answer automatically
+    handleAnswerSubmit(transcript);
   };
 
   const handleSendClick = () => {
@@ -292,7 +300,7 @@ export default function OnboardingChat() {
         <div className="space-y-8">
           <div>
             <h2 className="text-xs font-bold text-[#2F3E46] uppercase tracking-widest">Onboarding Progress</h2>
-            <p className="text-[10px] text-zinc-500 mt-1">Complete all steps to build your site</p>
+            <p className="text-[10px] text-zinc-550 mt-1">Complete all steps to build your site</p>
           </div>
 
           <nav className="space-y-3.5">
@@ -339,15 +347,32 @@ export default function OnboardingChat() {
             <Link href="/" className="text-[#354F52]/60 hover:text-[#2F3E46] transition-colors mr-2">
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <h2 className="text-sm font-bold text-[#2F3E46] tracking-wide">AI Website Builder</h2>
+            <h2 className="text-sm font-bold text-[#2F3E46] tracking-wide flex items-center gap-1.5">
+              SiteForge Design Studio
+            </h2>
           </div>
-          {isComplete && (
-            <Link href="/">
-              <Button className="bg-[#52796F] hover:bg-[#354F52] text-white h-9 px-4 rounded-full text-xs font-bold shadow-sm">
-                Go to Homepage
-              </Button>
-            </Link>
-          )}
+          
+          <div className="flex items-center gap-2">
+            {/* Voice toggle */}
+            <button 
+              onClick={() => {
+                setVoiceEnabled(!voiceEnabled);
+                triggerLocalToast(voiceEnabled ? "Voice Assistant muted" : "Voice Assistant active");
+              }} 
+              className={`p-2 rounded-full border transition-all ${voiceEnabled ? "bg-indigo-50 border-indigo-200 text-indigo-600" : "bg-zinc-50 border-zinc-200 text-zinc-400"}`}
+              title="Toggle Voice Assistant"
+            >
+              {voiceEnabled ? <Volume2 className="h-4.5 w-4.5 animate-pulse" /> : <VolumeX className="h-4.5 w-4.5" />}
+            </button>
+
+            {isComplete && (
+              <Link href="/">
+                <Button className="bg-[#52796F] hover:bg-[#354F52] text-white h-9 px-4 rounded-full text-xs font-bold shadow-sm">
+                  Go to Homepage
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Chat Log Logs */}
@@ -422,6 +447,14 @@ export default function OnboardingChat() {
           <LivePreviewPanel />
         </div>
       </div>
+
+      {/* Floating local toast notification */}
+      {toastMessage && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[#2F3E46] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2 border border-[#354F52] animate-bounce">
+          <Check className="h-4 w-4 text-emerald-400" />
+          <span className="text-xs font-bold">{toastMessage}</span>
+        </div>
+      )}
 
     </div>
   );

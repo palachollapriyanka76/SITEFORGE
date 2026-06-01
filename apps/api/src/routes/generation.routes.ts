@@ -748,7 +748,7 @@ router.post("/test-bakery", async (req: Request, res: Response) => {
 
 // GET /api/generate/status/:id — SSE progress stream
 router.get("/status/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const id = req.params.id as string;
 
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");

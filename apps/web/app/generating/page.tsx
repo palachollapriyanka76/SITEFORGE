@@ -464,7 +464,7 @@ export default function GeneratingPage() {
               <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl space-y-4">
                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Select Variant</h3>
                 <div className="space-y-3">
-                  {templates.map((temp) => {
+                  {templates?.map((temp) => {
                     const isSelected = selectedTemplateId === temp.id;
                     const palette = temp.websiteJson.theme;
                     

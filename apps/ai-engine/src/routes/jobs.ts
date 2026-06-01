@@ -24,7 +24,7 @@ router.post("/process", async (req: Request, res: Response) => {
     });
 
     const startTime = Date.now();
-    let result: Record<string, unknown> = {};
+    let result: any = {};
     let tokensUsed = 0;
 
     switch (type) {
@@ -132,7 +132,7 @@ router.post("/generate-sync", async (req: Request, res: Response) => {
 
 // GET /api/jobs/:id — Get job status
 router.get("/:id", async (req: Request, res: Response) => {
-  const job = await prisma.aIJob.findUnique({ where: { id: req.params.id } });
+  const job = await prisma.aIJob.findUnique({ where: { id: req.params.id as string } });
   if (!job) return res.status(404).json({ success: false, error: "Job not found" });
   return res.json({ success: true, data: job });
 });

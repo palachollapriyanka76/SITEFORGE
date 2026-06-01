@@ -1,5 +1,14 @@
 import React from "react";
 
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+  variant?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+}
+
 export function Button({ 
   children, 
   onClick, 
@@ -7,7 +16,7 @@ export function Button({
   variant = "primary", 
   type = "button",
   disabled = false
-}) {
+}: ButtonProps) {
   const getVariantClasses = () => {
     switch (variant) {
       case "outline":
