@@ -72,16 +72,23 @@ export default function SignupPage() {
     }
   };
 
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+  const isGoogleConfigured = googleClientId.length > 0;
+
   const handleGoogleSignup = () => {
+    if (!isGoogleConfigured) return;
     setIsLoading(true);
-    const mockUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
-    localStorage.setItem("siteforge-auth-user", mockUserId);
-    console.log("STEP 10: User Created - " + mockUserId);
+    const redirectUri = `${window.location.origin}/auth/callback`;
     
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push("/onboarding");
-    }, 1000);
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+      `client_id=${encodeURIComponent(googleClientId)}` +
+      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+      `&response_type=token%20id_token` +
+      `&scope=openid%20email%20profile` +
+      `&prompt=select_account` +
+      `&nonce=${Math.random().toString(36).substring(2)}`;
+    
+    window.location.href = googleAuthUrl;
   };
 
   return (
@@ -96,14 +103,29 @@ export default function SignupPage() {
       </div>
 
       {/* Social Google Signup */}
-      <button
-        onClick={handleGoogleSignup}
-        disabled={isLoading}
-        className="w-full bg-[#CAD2C5]/20 border border-[#2F3E46]/12 hover:bg-[#CAD2C5]/40 text-[#354F52] rounded-full h-11 transition-all duration-200 flex items-center justify-center gap-2.5 text-xs font-semibold shadow-sm"
-      >
-        <Chrome className="h-4 w-4 text-[#52796F]" />
-        <span>Sign up with Google</span>
-      </button>
+      {isGoogleConfigured ? (
+        <button
+          onClick={handleGoogleSignup}
+          disabled={isLoading}
+          className="w-full bg-[#CAD2C5]/20 border border-[#2F3E46]/12 hover:bg-[#CAD2C5]/40 text-[#354F52] rounded-full h-11 transition-all duration-200 flex items-center justify-center gap-2.5 text-xs font-semibold shadow-sm"
+        >
+          <Chrome className="h-4 w-4 text-[#52796F]" />
+          <span>Sign up with Google</span>
+        </button>
+      ) : (
+        <div className="space-y-2">
+          <button
+            disabled
+            className="w-full bg-zinc-100 border border-zinc-200 text-zinc-400 rounded-full h-11 transition-all duration-200 flex items-center justify-center gap-2.5 text-xs font-semibold cursor-not-allowed"
+          >
+            <Chrome className="h-4 w-4 text-zinc-300" />
+            <span>Google Sign In is not configured</span>
+          </button>
+          <p className="text-[9px] text-zinc-400 text-center font-medium leading-relaxed">
+            Set <code className="bg-zinc-100 px-1 py-0.5 rounded font-mono font-bold">NEXT_PUBLIC_GOOGLE_CLIENT_ID</code> in <code className="bg-zinc-100 px-1 py-0.5 rounded font-mono font-bold">frontend/.env</code> or <code className="bg-zinc-100 px-1 py-0.5 rounded font-mono font-bold">.env.local</code>
+          </p>
+        </div>
+      )}
 
       <div className="flex items-center gap-3 py-1">
         <span className="h-px bg-[#2F3E46]/10 flex-1" />
