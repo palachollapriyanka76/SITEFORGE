@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
   Sparkles, 
@@ -20,6 +21,7 @@ const features = [
     glowColor: "rgba(82, 121, 111, 0.08)",
     badge: "Magical",
     span: "md:col-span-2",
+    href: "/features/ai-website-builder",
     illustration: (
       <div className="relative w-full h-36 bg-[#CAD2C5]/30 rounded-2xl border border-[#2F3E46]/12 overflow-hidden flex items-center justify-center">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#84A98C]/20 rounded-full blur-[40px] animate-pulse" />
@@ -45,6 +47,7 @@ const features = [
     glowColor: "rgba(132, 169, 140, 0.08)",
     badge: "India's First",
     span: "md:col-span-1",
+    href: "/features/voice-editing",
     illustration: (
       <div className="relative w-full h-36 bg-[#CAD2C5]/30 rounded-2xl border border-[#2F3E46]/12 overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-tr from-[#84A98C]/10 to-transparent" />
@@ -68,6 +71,7 @@ const features = [
     description: "Need to make quick tweaks? Use our ultra-simple visual editor. Swap text blocks, upload files, and publish with a single tap.",
     glowColor: "rgba(82, 121, 111, 0.08)",
     span: "md:col-span-1",
+    href: "/features/ai-website-builder",
     illustration: (
       <div className="relative w-full h-36 bg-[#CAD2C5]/30 rounded-2xl border border-[#2F3E46]/12 overflow-hidden flex items-center justify-center p-4">
         <div className="w-full h-full bg-white border border-[#2F3E46]/10 rounded-xl flex items-center justify-between px-4 relative">
@@ -91,6 +95,7 @@ const features = [
     glowColor: "rgba(16, 185, 129, 0.08)",
     badge: "Popular",
     span: "md:col-span-2",
+    href: "/features/ai-website-builder",
     illustration: (
       <div className="relative w-full h-36 bg-[#CAD2C5]/30 rounded-2xl border border-[#2F3E46]/12 overflow-hidden flex items-center justify-center p-4">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#84A98C]/15 rounded-full blur-[40px] pointer-events-none" />
@@ -113,6 +118,7 @@ const features = [
     description: "Let customers select products and checkout. Items are grouped automatically and sent as a neat receipt to your WhatsApp.",
     glowColor: "rgba(245, 158, 11, 0.08)",
     span: "md:col-span-2",
+    href: "/features/voice-editing",
     illustration: (
       <div className="relative w-full h-36 bg-[#CAD2C5]/30 rounded-2xl border border-[#2F3E46]/12 overflow-hidden flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white border border-[#2F3E46]/12 rounded-xl p-3 space-y-2 shadow-sm">
@@ -139,6 +145,7 @@ const features = [
     glowColor: "rgba(82, 121, 111, 0.08)",
     badge: "Real-time",
     span: "md:col-span-1",
+    href: "/features/voice-editing",
     illustration: (
       <div className="relative w-full h-36 bg-[#CAD2C5]/30 rounded-2xl border border-[#2F3E46]/12 overflow-hidden flex items-center justify-center p-4">
         <div className="w-full h-full bg-white border border-[#2F3E46]/12 rounded-xl p-3 flex flex-col justify-between shadow-sm">
@@ -231,10 +238,13 @@ export default function Features() {
                 </div>
 
                 {/* Bottom link decoration */}
-                <div className="mt-6 pt-4 border-t border-[#2F3E46]/10 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#354F52] group-hover:text-[#52796F] transition-colors">
+                <Link
+                  href={feat.href}
+                  className="mt-6 pt-4 border-t border-[#2F3E46]/10 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#354F52] hover:text-[#52796F] transition-colors duration-200 cursor-pointer group/btn w-fit relative z-20 pointer-events-auto"
+                >
                   <span>Learn more</span>
-                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                </div>
+                  <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover/btn:translate-x-1.5 group-hover:translate-x-1.5" />
+                </Link>
               </motion.div>
             );
           })}

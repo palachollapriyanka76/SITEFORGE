@@ -6,11 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Menu, X, ArrowRight } from "lucide-react";
 
 const navLinks = [
-  { name: "Features", href: "#features" },
-  { name: "Templates", href: "#templates" },
-  { name: "AI Builder", href: "#demo" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Features", href: "/#features" },
+  { name: "Templates", href: "/#templates" },
+  { name: "AI Builder", href: "/#demo" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQ", href: "/#faq" },
 ];
 
 export default function Navbar() {

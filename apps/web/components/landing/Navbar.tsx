@@ -6,11 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Menu, X, ArrowRight } from "lucide-react";
 
 const navLinks = [
-  { name: "Features", href: "#features" },
-  { name: "Templates", href: "#templates" },
-  { name: "AI Builder", href: "#demo" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Features", href: "/#features" },
+  { name: "Templates", href: "/#templates" },
+  { name: "AI Builder", href: "/#demo" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQ", href: "/#faq" },
 ];
 
 export default function Navbar() {
@@ -68,10 +68,10 @@ export default function Navbar() {
 
             {/* CTA Button Right */}
             <div className="hidden md:flex items-center gap-4">
-              <Link href="/auth/login" className="text-xs font-bold uppercase tracking-wider text-[#354F52] hover:text-[#2F3E46] transition-colors">
+              <Link href="/sign-in" className="text-xs font-bold uppercase tracking-wider text-[#354F52] hover:text-[#2F3E46] transition-colors">
                 Sign In
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/sign-up">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
@@ -132,13 +132,13 @@ export default function Navbar() {
               className="flex flex-col gap-4"
             >
               <Link
-                href="/auth/login"
+                href="/sign-in"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full text-center py-3.5 rounded-full border border-[#2F3E46]/10 bg-white/50 text-[#354F52] font-bold uppercase tracking-wider text-xs hover:text-[#2F3E46] transition-colors"
               >
                 Sign In
               </Link>
-              <Link href="/auth/signup" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href="/sign-up" onClick={() => setIsMobileMenuOpen(false)}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   className="w-full py-3.5 rounded-full bg-[#52796F] text-white font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-1.5 shadow-md"

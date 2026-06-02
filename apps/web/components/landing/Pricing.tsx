@@ -85,7 +85,7 @@ export default function Pricing() {
             </div>
 
             <div className="pt-8">
-              <Link href="/auth/signup">
+              <Link href="/sign-up">
                 <Button variant="outline" className="w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider">
                   Get Started Free
                 </Button>
@@ -134,7 +134,7 @@ export default function Pricing() {
             </div>
 
             <div className="pt-8 space-y-3">
-              <Link href="/auth/signup">
+              <Link href="/sign-up">
                 <button
                   className="w-full h-12 rounded-full bg-white text-[#52796F] hover:bg-[#CAD2C5] hover:text-[#354F52] font-extrabold text-xs uppercase tracking-wider shadow-md transition-all duration-200"
                 >
@@ -181,7 +181,7 @@ export default function Pricing() {
             </div>
 
             <div className="pt-8">
-              <Link href="/auth/signup">
+              <Link href="/sign-up">
                 <Button variant="outline" className="w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider">
                   Contact Sales
                 </Button>

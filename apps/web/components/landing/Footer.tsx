@@ -66,10 +66,10 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <h4 className="text-[10px] font-bold text-white uppercase tracking-widest">Product</h4>
             <ul className="space-y-3 text-xs text-[#84A98C]">
-              <li><a href="#features" className="hover:text-white transition-colors">AI Features</a></li>
-              <li><a href="#templates" className="hover:text-white transition-colors">Catalog Templates</a></li>
-              <li><a href="#demo" className="hover:text-white transition-colors">Live Simulation</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing Plans</a></li>
+              <li><a href="/#features" className="hover:text-white transition-colors">AI Features</a></li>
+              <li><a href="/#templates" className="hover:text-white transition-colors">Catalog Templates</a></li>
+              <li><a href="/#demo" className="hover:text-white transition-colors">Live Simulation</a></li>
+              <li><a href="/#pricing" className="hover:text-white transition-colors">Pricing Plans</a></li>
             </ul>
           </div>
 

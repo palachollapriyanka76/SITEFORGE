@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Sparkles, Store, Scissors, Smartphone, Apple, Shirt } from "lucide-react";
 import { Button } from "../ui/Button";
@@ -187,9 +188,11 @@ export default function TemplatesShowcase() {
                       ))}
                     </div>
 
-                    <Button className="rounded-full flex items-center gap-1.5 px-5 py-2 text-[10px] uppercase font-black tracking-widest shadow-md">
-                      Select Theme <ArrowUpRight className="h-3.5 w-3.5" />
-                    </Button>
+                    <Link href="/sign-up">
+                      <Button className="rounded-full flex items-center gap-1.5 px-5 py-2 text-[10px] uppercase font-black tracking-widest shadow-md">
+                        Select Theme <ArrowUpRight className="h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
                   </div>
                 </div>
 
