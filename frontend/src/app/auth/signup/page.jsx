@@ -38,7 +38,7 @@ export default function SignupPage() {
     try {
       // 3. Validate duplicate email (backend + database check)
       const emailCheck = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/auth/check-email?email=${encodeURIComponent(email.trim())}`
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/check-email?email=${encodeURIComponent(email.trim())}`
       );
       if (emailCheck.data.exists) {
         setError(emailCheck.data.error || "This email is already registered. Please sign in instead.");
@@ -48,14 +48,21 @@ export default function SignupPage() {
 
       // 4. Register user
       const signupResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/auth/signup`,
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/signup`,
         { name, email: email.trim(), password }
       );
 
       if (signupResponse.data.success) {
-        const userId = signupResponse.data.user.id;
-        localStorage.setItem("siteforge-auth-user", userId);
-        console.log("STEP 10: User Created - " + userId);
+        const { token, user } = signupResponse.data;
+        
+        // Securely store in localStorage for full backward-compatibility with other views
+        localStorage.setItem("siteforge-auth-user", user.id);
+        
+        // Securely store in cookies for root Next.js middleware route protection
+        document.cookie = `siteforge-auth-token=${token}; path=/; max-age=86400; SameSite=Lax`;
+        document.cookie = `siteforge-auth-user=${user.id}; path=/; max-age=86400; SameSite=Lax`;
+        
+        console.log("STEP 10: User Created - " + user.id);
         
         // Go to onboarding
         router.push("/onboarding");

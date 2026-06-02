@@ -57,6 +57,7 @@ async function runTests() {
 
     assert(response.status === 200, "Should return HTTP 200 OK");
     assert(response.data.success === true, "Should return success: true");
+    assert(response.data.token && response.data.token.length > 20, "Should return signed JWT session token");
     assert(response.data.user.email === email, `Should return correct user email: ${email}`);
     assert(response.data.user.id.startsWith("user_"), `Should return generated user ID format: ${response.data.user.id}`);
     
@@ -71,6 +72,7 @@ async function runTests() {
 
     assert(response2.status === 200, "Should return HTTP 200 OK");
     assert(response2.data.success === true, "Should return success: true");
+    assert(response2.data.token && response2.data.token.length > 20, "Should return signed JWT session token for existing user");
     assert(response2.data.user.id === userId1, "Should return the existing user ID (not create duplicate)");
 
     // Test Case 3: Reject Login if token signature is invalid

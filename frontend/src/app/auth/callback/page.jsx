@@ -40,8 +40,16 @@ export default function GoogleCallbackPage() {
 
         if (response.data.success) {
           setStatus("success");
-          const userId = response.data.user.id;
-          localStorage.setItem("siteforge-auth-user", userId);
+          const { token, user } = response.data;
+          
+          // Securely store in localStorage for template compatibility
+          localStorage.setItem("siteforge-auth-user", user.id);
+          
+          // Securely store in cookies for root Next.js middleware route protection
+          document.cookie = `siteforge-auth-token=${token}; path=/; max-age=86400; SameSite=Lax`;
+          document.cookie = `siteforge-auth-user=${user.id}; path=/; max-age=86400; SameSite=Lax`;
+          
+          console.log(`[Google Auth Success] Session created for User: ${user.id}`);
           
           // Smooth redirection to onboarding
           setTimeout(() => {
@@ -53,11 +61,7 @@ export default function GoogleCallbackPage() {
       } catch (err) {
         console.error("Callback authentication error:", err);
         setStatus("error");
-        if (err.response && err.response.data && err.response.data.error) {
-          setErrorMessage(err.response.data.error);
-        } else {
-          setErrorMessage(err.message || "An unexpected error occurred during backend verification.");
-        }
+        setErrorMessage("Google authentication failed. Please try again.");
       }
     };
 

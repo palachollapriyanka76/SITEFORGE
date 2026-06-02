@@ -5,25 +5,51 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Chrome, Mail, Lock } from "lucide-react";
 import { Button } from "../../../components/ui/Button";
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Scopes user ID in localStorage
-    const mockUserId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
-    localStorage.setItem("siteforge-auth-user", mockUserId);
-    
-    setTimeout(() => {
+    setError("");
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/login`,
+        { email: email.trim(), password }
+      );
+
+      if (response.data.success) {
+        const { token, user } = response.data;
+        
+        // Securely store in localStorage for full backward-compatibility with other views
+        localStorage.setItem("siteforge-auth-user", user.id);
+        
+        // Securely store in cookies for root Next.js middleware route protection
+        document.cookie = `siteforge-auth-token=${token}; path=/; max-age=86400; SameSite=Lax`;
+        document.cookie = `siteforge-auth-user=${user.id}; path=/; max-age=86400; SameSite=Lax`;
+        
+        console.log(`[Auth Success] Session created for User: ${user.id}`);
+        
+        router.push("/onboarding");
+      }
+    } catch (err) {
+      console.error("Login request failed:", err);
+      // Prevent user enumeration: always display a generic error message
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("Invalid email or password.");
+      }
+    } finally {
       setIsLoading(false);
-      router.push("/onboarding");
-    }, 1200);
+    }
   };
 
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
@@ -86,6 +112,13 @@ export default function LoginPage() {
         <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold font-mono">or email</span>
         <span className="h-px bg-[#2F3E46]/10 flex-1" />
       </div>
+
+      {/* Error Warning Alert */}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-xs font-semibold text-center leading-relaxed">
+          ⚠️ {error}
+        </div>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">

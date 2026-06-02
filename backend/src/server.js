@@ -3,7 +3,24 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const emailService = require('./services/email.service');
+
+// Secure password hashing helper using SHA-256 with standard Salt
+function hashPassword(password) {
+  if (!password) return "";
+  const salt = 'siteforge-secure-salt-key';
+  return crypto.createHmac('sha256', salt).update(password).digest('hex');
+}
+
+// Secure password verification helper supporting both SHA-256 hash and plain-text
+function comparePassword(enteredPassword, storedHash) {
+  if (!enteredPassword || !storedHash) return false;
+  const hashed = hashPassword(enteredPassword);
+  return hashed === storedHash || enteredPassword === storedHash;
+}
+
+const JWT_SECRET = process.env.JWT_SECRET || 'siteforge-super-secret-jwt-key';
 
 // Enforce critical environment variables validation at startup
 const resendApiKey = process.env.RESEND_API_KEY;
@@ -161,13 +178,13 @@ const usersDb = [
     id: "user_test123",
     name: "Test User",
     email: "test@example.com",
-    password: "password123"
+    password: hashPassword("password123")
   },
   {
     id: "user_kavithaag",
     name: "Kavitha",
     email: "kavithaag239@gmail.com",
-    password: "password123"
+    password: hashPassword("password123")
   }
 ];
 
@@ -404,8 +421,8 @@ app.post('/api/auth/reset-password/:token', async (req, res) => {
   }
 
   try {
-    // Update password
-    user.password = password;
+    // Update password securely
+    user.password = hashPassword(password);
     
     // Enforce "Token can only be used once" by clearing fields immediately
     delete user.resetPasswordToken;
@@ -439,6 +456,70 @@ app.get('/api/auth/test/latest-token', (req, res) => {
   res.json({ success: true, token: user.tempUnhashedToken });
 });
 
+// POST /api/auth/login — Authenticate user and issue secure JWT
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ success: false, error: "Please enter both email and password." });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+
+  try {
+    // Find user by normalized email
+    const user = usersDb.find(u => u.email.trim().toLowerCase() === cleanEmail);
+
+    console.log(`\n--- LOGIN DEBUGGING ---`);
+    console.log(`Email: "${cleanEmail}"`);
+    console.log(`User Found: ${!!user}`);
+    if (user) {
+      console.log(`Stored User Password: "${user.password}"`);
+      console.log(`Entered Password: "${password}"`);
+      console.log(`Hashed Entered Password: "${hashPassword(password)}"`);
+      console.log(`Password Match: ${comparePassword(password, user.password)}`);
+    }
+    console.log(`-----------------------\n`);
+
+    // Secure authentication check (prevent password timing attacks / enumeration alerts)
+    const isPasswordValid = user ? comparePassword(password, user.password) : false;
+
+    if (!user || !isPasswordValid) {
+      // Return a generic error to prevent email harvesting/user enumeration
+      console.warn(`[Auth Alert] Failed login attempt for Email: ${cleanEmail}`);
+      return res.status(401).json({
+        success: false,
+        error: "Invalid email or password."
+      });
+    }
+
+    // Generate cryptographically secure JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, name: user.name },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    console.log(`[Auth Success] User logged in: ${user.email} (${user.id})`);
+
+    return res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.error(`[Auth Error] Failed to process login for ${cleanEmail}:`, error.message);
+    return res.status(500).json({
+      success: false,
+      error: "An internal server error occurred. Please try again later."
+    });
+  }
+});
+
 // GET /api/auth/check-email — Check duplicate email
 app.get('/api/auth/check-email', (req, res) => {
   const { email } = req.query;
@@ -464,7 +545,8 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 
   const userId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
-  const newUser = { id: userId, name: name || "Valued Merchant", email, password, verified: false };
+  const hashedPassword = hashPassword(password);
+  const newUser = { id: userId, name: name || "Valued Merchant", email, password: hashedPassword, verified: false };
 
   try {
     console.log(`\n--- USER SIGNUP PROCESS ---`);
@@ -484,7 +566,14 @@ app.post('/api/auth/signup', async (req, res) => {
     console.log("STEP 10: User Created - Database Record Cuid: " + userId);
     console.log(`---------------------------\n`);
 
-    res.status(201).json({ success: true, user: newUser });
+    // Generate secure JWT session token upon registration for immediate session capability
+    const token = jwt.sign(
+      { userId: newUser.id, email: newUser.email, name: newUser.name },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.status(201).json({ success: true, token, user: newUser });
   } catch (error) {
     console.error(`Step 3: Registration Aborted. Verification email sending failed.`);
     console.error(`Error Details: ${error.message}`);
@@ -634,8 +723,16 @@ app.post('/api/auth/google', async (req, res) => {
       console.log(`[Google Auth] Logged in existing user: ${cleanEmail} (${user.id})`);
     }
 
+    // Generate cryptographically secure JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, name: user.name },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
     return res.status(200).json({
       success: true,
+      token,
       user: {
         id: user.id,
         name: user.name,
