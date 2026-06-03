@@ -1,0 +1,133 @@
+{
+  "id": "fashion_and_apparel_boutique_minimal",
+  "name": "Minimal Boutique Template",
+  "category": "FASHION_AND_APPAREL",
+  "subcategory": "Boutique",
+  "websiteJson": {
+    "theme": {
+      "primaryColor": "#111827",
+      "secondaryColor": "#F9FAFB",
+      "accentColor": "#374151",
+      "fontFamily": "Inter",
+      "style": "minimal",
+      "spacing": "medium"
+    },
+    "globalSettings": {
+      "whatsappNumber": "+919876543210",
+      "whatsappButton": true,
+      "businessName": "Elite Boutique"
+    },
+    "pages": [
+      {
+        "name": "Home",
+        "slug": "/"
+      },
+      {
+        "name": "Services",
+        "slug": "/services"
+      },
+      {
+        "name": "Contact",
+        "slug": "/contact"
+      }
+    ],
+    "sections": [
+      {
+        "id": "hero-1",
+        "type": "hero",
+        "content": {
+          "title": "Experience the Best Boutique Services",
+          "subtitle": "Premium quality, expert craftsmanship, and unmatched dedication tailored specifically for your needs.",
+          "ctaText": "Explore Now",
+          "ctaLink": "#services",
+          "backgroundImage": "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80"
+        }
+      },
+      {
+        "id": "about-1",
+        "type": "about",
+        "content": {
+          "title": "About Our Boutique",
+          "description": "We are dedicated to setting standard-setting quality in our local community. Every service is crafted meticulously, naturally sourced, and delivered daily with absolute passion.",
+          "image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80",
+          "highlights": [
+            "100% Genuine Care",
+            "Elite Local Team",
+            "Standard-Setting Dedication",
+            "Customer First"
+          ]
+        }
+      },
+      {
+        "id": "services-1",
+        "type": "services",
+        "content": {
+          "title": "Our Specialised Boutique Offerings",
+          "subtitle": "Prepared with maximum dedication and premium standards",
+          "services": [
+            {
+              "name": "Premium Advisory",
+              "description": "Get direct support from industry leaders tailored to your exact goal.",
+              "icon": "Sparkles"
+            },
+            {
+              "name": "Local On-Demand Delivery",
+              "description": "Freshly packaged orders delivered direct to your home with complete safety.",
+              "icon": "Clock"
+            },
+            {
+              "name": "Customer-First Support",
+              "description": "Connect with our representative anytime on WhatsApp for support.",
+              "icon": "Heart"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gallery-1",
+        "type": "gallery",
+        "content": {
+          "title": "Visual Gallery",
+          "subtitle": "A walkthrough of our premium spaces and Boutique products",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80",
+              "caption": "Elegance in Detail"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=800&q=80",
+              "caption": "Prepared Fresh"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80",
+              "caption": "Standard of Perfection"
+            }
+          ]
+        }
+      },
+      {
+        "id": "testimonials-1",
+        "type": "testimonials",
+        "content": {
+          "title": "Loved by Our Community",
+          "testimonials": [
+            {
+              "name": "Anjali Rao",
+              "role": "Local Guide",
+              "content": "Absolutely exceptional experience. Their service is always professional and product quality is standard-setting!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+            },
+            {
+              "name": "Vikram Malhotra",
+              "role": "Regular Client",
+              "content": "The absolute best in terms of reliability and product standards. Clean staff, fast response, and elite environment!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

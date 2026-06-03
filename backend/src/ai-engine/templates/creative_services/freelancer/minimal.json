@@ -1,0 +1,133 @@
+{
+  "id": "creative_services_freelancer_minimal",
+  "name": "Minimal Freelancer Template",
+  "category": "CREATIVE_SERVICES",
+  "subcategory": "Freelancer",
+  "websiteJson": {
+    "theme": {
+      "primaryColor": "#0F172A",
+      "secondaryColor": "#F1F5F9",
+      "accentColor": "#1E293B",
+      "fontFamily": "Playfair Display",
+      "style": "minimal",
+      "spacing": "medium"
+    },
+    "globalSettings": {
+      "whatsappNumber": "+919876543210",
+      "whatsappButton": true,
+      "businessName": "Elite Freelancer"
+    },
+    "pages": [
+      {
+        "name": "Home",
+        "slug": "/"
+      },
+      {
+        "name": "Services",
+        "slug": "/services"
+      },
+      {
+        "name": "Contact",
+        "slug": "/contact"
+      }
+    ],
+    "sections": [
+      {
+        "id": "hero-1",
+        "type": "hero",
+        "content": {
+          "title": "Experience the Best Freelancer Services",
+          "subtitle": "Premium quality, expert craftsmanship, and unmatched dedication tailored specifically for your needs.",
+          "ctaText": "Explore Now",
+          "ctaLink": "#services",
+          "backgroundImage": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80"
+        }
+      },
+      {
+        "id": "about-1",
+        "type": "about",
+        "content": {
+          "title": "About Our Freelancer",
+          "description": "We are dedicated to setting standard-setting quality in our local community. Every service is crafted meticulously, naturally sourced, and delivered daily with absolute passion.",
+          "image": "https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=800&q=80",
+          "highlights": [
+            "100% Genuine Care",
+            "Elite Local Team",
+            "Standard-Setting Dedication",
+            "Customer First"
+          ]
+        }
+      },
+      {
+        "id": "services-1",
+        "type": "services",
+        "content": {
+          "title": "Our Specialised Freelancer Offerings",
+          "subtitle": "Prepared with maximum dedication and premium standards",
+          "services": [
+            {
+              "name": "Premium Advisory",
+              "description": "Get direct support from industry leaders tailored to your exact goal.",
+              "icon": "Sparkles"
+            },
+            {
+              "name": "Local On-Demand Delivery",
+              "description": "Freshly packaged orders delivered direct to your home with complete safety.",
+              "icon": "Clock"
+            },
+            {
+              "name": "Customer-First Support",
+              "description": "Connect with our representative anytime on WhatsApp for support.",
+              "icon": "Heart"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gallery-1",
+        "type": "gallery",
+        "content": {
+          "title": "Visual Gallery",
+          "subtitle": "A walkthrough of our premium spaces and Freelancer products",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80",
+              "caption": "Elegance in Detail"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+              "caption": "Prepared Fresh"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80",
+              "caption": "Standard of Perfection"
+            }
+          ]
+        }
+      },
+      {
+        "id": "testimonials-1",
+        "type": "testimonials",
+        "content": {
+          "title": "Loved by Our Community",
+          "testimonials": [
+            {
+              "name": "Anjali Rao",
+              "role": "Local Guide",
+              "content": "Absolutely exceptional experience. Their service is always professional and product quality is standard-setting!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+            },
+            {
+              "name": "Vikram Malhotra",
+              "role": "Regular Client",
+              "content": "The absolute best in terms of reliability and product standards. Clean staff, fast response, and elite environment!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -185,6 +185,12 @@ const usersDb = [
     name: "Kavitha",
     email: "kavithaag239@gmail.com",
     password: hashPassword("password123")
+  },
+  {
+    id: "user_priyanka",
+    name: "Priyanka",
+    email: "palachollapriyanka76@gmail.com",
+    password: hashPassword("password123")
   }
 ];
 

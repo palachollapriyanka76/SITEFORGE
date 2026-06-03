@@ -36,8 +36,14 @@ export default function TemplatesMarketplacePage() {
   // Filter templates
   const filteredTemplates = useMemo(() => {
     return TEMPLATES_LIST.filter(tpl => {
-      const matchesSearch = tpl.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            tpl.tagline.toLowerCase().includes(searchQuery.toLowerCase());
+      const queryLower = searchQuery.toLowerCase();
+      const matchesSearch = 
+        tpl.name.toLowerCase().includes(queryLower) ||
+        tpl.tagline.toLowerCase().includes(queryLower) ||
+        tpl.category.toLowerCase().includes(queryLower) || // matches subcategory, e.g. "Bakery"
+        tpl.mainCategory.toLowerCase().includes(queryLower) || // matches main category / industry, e.g. "Food & Beverage"
+        tpl.style.toLowerCase().includes(queryLower); // matches style / layout type
+
       const matchesCategory = activeCategory === "All" || tpl.categoryId === activeCategory;
       const matchesStyle = activeStyle === "All" || tpl.style === activeStyle;
 
@@ -131,7 +137,7 @@ export default function TemplatesMarketplacePage() {
 
           <div className="flex items-center gap-4">
             <span className="text-[10px] font-mono bg-white/70 border border-[#2F3E46]/12 text-[#52796F] px-3 py-1 rounded-full font-black uppercase tracking-wider">
-              50 Ready Themes
+              {TEMPLATES_LIST.length} Ready Themes
             </span>
           </div>
         </div>
@@ -147,7 +153,7 @@ export default function TemplatesMarketplacePage() {
           SaaS Template Marketplace
         </h1>
         <p className="text-[#52796F] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-          Browse 50 premium website layouts tailored across 10 distinct industries. 
+          Browse {TEMPLATES_LIST.length} premium website layouts tailored across {CATEGORIES.length} distinct industries. 
           Preview complete page hierarchies (Home, About, Services, Contact), customize style tokens with AI, and launch instantly.
         </p>
       </section>
@@ -192,12 +198,12 @@ export default function TemplatesMarketplacePage() {
             </div>
           </div>
 
-          {/* Industry Category Scroll Tabs */}
+          {/* Flat Category Scroll Tabs */}
           <div className="border-t border-[#84A98C]/15 pt-6">
             <span className="text-[10px] font-black uppercase text-[#354F52]/60 mb-3 block flex items-center gap-1">
-              <LayoutGrid className="h-3 w-3" /> Industry Category:
+              <LayoutGrid className="h-3 w-3" /> Business Categories:
             </span>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pr-2 border border-[#84A98C]/10 p-4 rounded-2xl bg-[#EAF4EA]/10">
               <button
                 onClick={() => setActiveCategory("All")}
                 className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
@@ -206,21 +212,24 @@ export default function TemplatesMarketplacePage() {
                     : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
                 }`}
               >
-                All Industries
+                All Categories ({TEMPLATES_LIST.length})
               </button>
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
-                    activeCategory === cat.id
-                      ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/15"
-                      : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              ))}
+              {CATEGORIES.map((cat) => {
+                const count = 5;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+                      activeCategory === cat.id
+                        ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/15"
+                        : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
+                    }`}
+                  >
+                    {cat.name} ({count})
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

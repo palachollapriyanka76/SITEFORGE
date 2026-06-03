@@ -1,0 +1,133 @@
+{
+  "id": "fitness_and_sports_dance_academy_elegant",
+  "name": "Elegant Dance Academy Template",
+  "category": "FITNESS_AND_SPORTS",
+  "subcategory": "Dance Academy",
+  "websiteJson": {
+    "theme": {
+      "primaryColor": "#111827",
+      "secondaryColor": "#F9FAFB",
+      "accentColor": "#374151",
+      "fontFamily": "Outfit",
+      "style": "elegant",
+      "spacing": "medium"
+    },
+    "globalSettings": {
+      "whatsappNumber": "+919876543210",
+      "whatsappButton": true,
+      "businessName": "Elite Dance Academy"
+    },
+    "pages": [
+      {
+        "name": "Home",
+        "slug": "/"
+      },
+      {
+        "name": "Services",
+        "slug": "/services"
+      },
+      {
+        "name": "Contact",
+        "slug": "/contact"
+      }
+    ],
+    "sections": [
+      {
+        "id": "hero-1",
+        "type": "hero",
+        "content": {
+          "title": "Experience the Best Dance Academy Services",
+          "subtitle": "Premium quality, expert craftsmanship, and unmatched dedication tailored specifically for your needs.",
+          "ctaText": "Explore Now",
+          "ctaLink": "#services",
+          "backgroundImage": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80"
+        }
+      },
+      {
+        "id": "about-1",
+        "type": "about",
+        "content": {
+          "title": "About Our Dance Academy",
+          "description": "We are dedicated to setting standard-setting quality in our local community. Every service is crafted meticulously, naturally sourced, and delivered daily with absolute passion.",
+          "image": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+          "highlights": [
+            "100% Genuine Care",
+            "Elite Local Team",
+            "Standard-Setting Dedication",
+            "Customer First"
+          ]
+        }
+      },
+      {
+        "id": "services-1",
+        "type": "services",
+        "content": {
+          "title": "Our Specialised Dance Academy Offerings",
+          "subtitle": "Prepared with maximum dedication and premium standards",
+          "services": [
+            {
+              "name": "Premium Advisory",
+              "description": "Get direct support from industry leaders tailored to your exact goal.",
+              "icon": "Sparkles"
+            },
+            {
+              "name": "Local On-Demand Delivery",
+              "description": "Freshly packaged orders delivered direct to your home with complete safety.",
+              "icon": "Clock"
+            },
+            {
+              "name": "Customer-First Support",
+              "description": "Connect with our representative anytime on WhatsApp for support.",
+              "icon": "Heart"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gallery-1",
+        "type": "gallery",
+        "content": {
+          "title": "Visual Gallery",
+          "subtitle": "A walkthrough of our premium spaces and Dance Academy products",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+              "caption": "Elegance in Detail"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80",
+              "caption": "Prepared Fresh"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80",
+              "caption": "Standard of Perfection"
+            }
+          ]
+        }
+      },
+      {
+        "id": "testimonials-1",
+        "type": "testimonials",
+        "content": {
+          "title": "Loved by Our Community",
+          "testimonials": [
+            {
+              "name": "Anjali Rao",
+              "role": "Local Guide",
+              "content": "Absolutely exceptional experience. Their service is always professional and product quality is standard-setting!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+            },
+            {
+              "name": "Vikram Malhotra",
+              "role": "Regular Client",
+              "content": "The absolute best in terms of reliability and product standards. Clean staff, fast response, and elite environment!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
