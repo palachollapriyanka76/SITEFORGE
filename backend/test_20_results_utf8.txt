@@ -1,0 +1,60 @@
+﻿
+### Driftwood Surf (Surf Shop)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Neon Arcade (Retro Arcade)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Crescent Moon (Astrology Reading)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Iron Forge (Blacksmith)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Sapphire Seas (Boat Rental)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Urban Bees (Apiary)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Velocity Karts (Go-Kart Track)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Zenith Climbing (Rock Climbing Gym)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Lumina Glass (Glassblowing Studio)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Timber & Grain (Woodworking)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Frosty Scoops (Ice Cream Parlor)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Sonic Boom (Record Store)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Verdant Oasis (Hydroponics Shop)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Crimson Thread (Tailor Shop)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Abyss Scuba (Dive Shop)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Rustic Hearth (Fireplace Store)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Aero Dynamics (Drone Photography)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Canine Campus (Dog Training)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Gilded Frame (Art Gallery)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]
+
+### Summit Gear (Mountaineering Store)
+* Blueprint object is missing. Full site keys: [ 'id', 'name', 'tagline', 'websiteJson' ]

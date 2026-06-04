@@ -1,0 +1,1368 @@
+﻿
+========================================================================
+TESTING: Green Thumb Nursery (Type: Plant Nursery)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: green, thumb, nursery, plant
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: plant nursery
+   - Products: Succulents | Fruit Trees
+   - Activities: Landscaping
+   - Environments: plant nursery interior | plant nursery store | plant nursery facility
+   - Customers: customer at plant nursery | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: plant nursery interior, plant nursery plant nursery store
+   - [inventory]: Succulents, Fruit Trees, plant nursery Succulents
+   - [promotions]: plant nursery
+   - [reviews]: customer at plant nursery
+   - [booking]: plant nursery
+   - [collections]: Succulents, Fruit Trees, plant nursery Succulents
+   - [locations]: plant nursery
+   - [featured-products]: Succulents, Fruit Trees, plant nursery Succulents
+   - [contact]: plant nursery
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "plant nursery interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/12297509/pexels-photo-12297509.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "plant nursery plant nursery store" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/36729234/pexels-photo-36729234.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [inventory] ---
+Query: "Succulents" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/13048685/pexels-photo-13048685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [inventory] ---
+Query: "Fruit Trees" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/6871886/pexels-photo-6871886.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [inventory] ---
+Query: "plant nursery Succulents" | Returned Count: 40
+  [Filter] Accepted: 37, Rejected: 3
+  [Selected URL]: https://images.pexels.com/photos/11678295/pexels-photo-11678295.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [promotions] ---
+Query: "plant nursery" | Returned Count: 40
+  [Filter] Accepted: 23, Rejected: 17
+  [Selected URL]: https://images.pexels.com/photos/6508571/pexels-photo-6508571.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [reviews] ---
+Query: "customer at plant nursery" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "two gardeners tending plants in a beautiful outdoor nursery. diversity and teamwork in nature."
+  [Rejected] Contains corporate blacklist term: "two gardeners arranging plants in a greenhouse filled with lush greenery, highlighting teamwork."
+  [Filter] Accepted: 10, Rejected: 30
+  [Selected URL]: https://images.pexels.com/photos/4920251/pexels-photo-4920251.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [booking] ---
+Query: "plant nursery" | Returned Count: 40
+  [Filter] Accepted: 13, Rejected: 27
+  [Selected URL]: https://images.pexels.com/photos/4531685/pexels-photo-4531685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "Succulents" | Returned Count: 40
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/31487936/pexels-photo-31487936.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "Fruit Trees" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/35155442/pexels-photo-35155442.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "plant nursery Succulents" | Returned Count: 40
+  [Filter] Accepted: 32, Rejected: 8
+  [Selected URL]: https://images.pexels.com/photos/31970490/pexels-photo-31970490.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "plant nursery" | Returned Count: 40
+  [Filter] Accepted: 12, Rejected: 28
+  [Selected URL]: https://images.pexels.com/photos/11372382/pexels-photo-11372382.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "Succulents" | Returned Count: 40
+  [Filter] Accepted: 38, Rejected: 2
+  [Selected URL]: https://images.pexels.com/photos/8925730/pexels-photo-8925730.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "Fruit Trees" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/13317132/pexels-photo-13317132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "plant nursery Succulents" | Returned Count: 40
+  [Filter] Accepted: 20, Rejected: 20
+  [Selected URL]: https://images.pexels.com/photos/12658970/pexels-photo-12658970.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "plant nursery" | Returned Count: 40
+  [Filter] Accepted: 10, Rejected: 30
+  [Selected URL]: https://images.pexels.com/photos/9792165/pexels-photo-9792165.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Banshee Cycles (Type: Motorcycle Repair)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: banshee, cycles, motorcycle, repair
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: motorcycle repair
+   - Products: Exhaust Pipes
+   - Activities: Engine Rebuilding | Tire Change
+   - Environments: motorcycle repair interior | motorcycle repair store | motorcycle repair facility
+   - Customers: customer at motorcycle repair | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: motorcycle repair interior, motorcycle repair motorcycle repair store
+   - [services]: Engine Rebuilding, Tire Change, motorcycle repair Engine Rebuilding
+   - [case-studies]: customer at motorcycle repair
+   - [team]: Engine Rebuilding, motorcycle repair facility
+   - [faq]: motorcycle repair
+   - [contact]: motorcycle repair
+   - [consultation]: Engine Rebuilding, Tire Change, motorcycle repair Engine Rebuilding
+   - [showcase]: motorcycle repair interior, customer at motorcycle repair, motorcycle repair happy client
+   - [booking]: motorcycle repair
+   - [programs]: Engine Rebuilding, Tire Change, motorcycle repair Engine Rebuilding
+   - [about]: Engine Rebuilding, motorcycle repair facility
+   - [locations]: motorcycle repair
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "motorcycle repair interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/4116201/pexels-photo-4116201.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "motorcycle repair motorcycle repair store" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/11890953/pexels-photo-11890953.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Engine Rebuilding" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics hands repairing engine, showcasing teamwork and skill."
+  [Filter] Accepted: 34, Rejected: 6
+  [Selected URL]: https://images.pexels.com/photos/8985664/pexels-photo-8985664.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Tire Change" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "an adult demonstrating how to change a tire to a teenager, focusing on teamwork and learning."
+  [Filter] Accepted: 34, Rejected: 6
+  [Selected URL]: https://images.pexels.com/photos/17600886/pexels-photo-17600886.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "motorcycle repair Engine Rebuilding" | Returned Count: 40
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/8550664/pexels-photo-8550664.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [case-studies] ---
+Query: "customer at motorcycle repair" | Returned Count: 40
+  [Filter] Accepted: 30, Rejected: 10
+  [Selected URL]: https://images.pexels.com/photos/9607020/pexels-photo-9607020.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "Engine Rebuilding" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics hands repairing engine, showcasing teamwork and skill."
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/185545/pexels-photo-185545.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "motorcycle repair facility" | Returned Count: 40
+  [Filter] Accepted: 26, Rejected: 14
+  [Selected URL]: https://images.pexels.com/photos/12741638/pexels-photo-12741638.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [faq] ---
+Query: "motorcycle repair" | Returned Count: 40
+  [Filter] Accepted: 18, Rejected: 22
+  [Selected URL]: https://images.pexels.com/photos/36875807/pexels-photo-36875807.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "motorcycle repair" | Returned Count: 40
+  [Filter] Accepted: 17, Rejected: 23
+  [Selected URL]: https://images.pexels.com/photos/3806255/pexels-photo-3806255.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Engine Rebuilding" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics hands repairing engine, showcasing teamwork and skill."
+  [Filter] Accepted: 28, Rejected: 12
+  [Selected URL]: https://images.pexels.com/photos/32797861/pexels-photo-32797861.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Tire Change" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "an adult demonstrating how to change a tire to a teenager, focusing on teamwork and learning."
+  [Filter] Accepted: 27, Rejected: 13
+  [Selected URL]: https://images.pexels.com/photos/6870331/pexels-photo-6870331.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "motorcycle repair Engine Rebuilding" | Returned Count: 40
+  [Filter] Accepted: 9, Rejected: 31
+  [Selected URL]: https://images.pexels.com/photos/30910368/pexels-photo-30910368.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "motorcycle repair interior" | Returned Count: 40
+  [Filter] Accepted: 9, Rejected: 31
+  [Selected URL]: https://images.pexels.com/photos/27704022/pexels-photo-27704022.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at motorcycle repair" | Returned Count: 40
+  [Filter] Accepted: 11, Rejected: 29
+  [Selected URL]: https://images.pexels.com/photos/1599/building-vehicle-motorbike-motorcycle.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "motorcycle repair happy client" | Returned Count: 40
+  [Filter] Accepted: 7, Rejected: 33
+  [Selected URL]: https://images.pexels.com/photos/12000095/pexels-photo-12000095.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [booking] ---
+Query: "motorcycle repair" | Returned Count: 40
+  [Filter] Accepted: 6, Rejected: 34
+  [Selected URL]: https://images.pexels.com/photos/5803328/pexels-photo-5803328.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [programs] ---
+Query: "Engine Rebuilding" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics hands repairing engine, showcasing teamwork and skill."
+  [Filter] Accepted: 21, Rejected: 19
+  [Selected URL]: https://images.pexels.com/photos/28852335/pexels-photo-28852335.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [programs] ---
+Query: "Tire Change" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "an adult demonstrating how to change a tire to a teenager, focusing on teamwork and learning."
+  [Filter] Accepted: 23, Rejected: 17
+  [Selected URL]: https://images.pexels.com/photos/34261459/pexels-photo-34261459.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [programs] ---
+Query: "motorcycle repair Engine Rebuilding" | Returned Count: 40
+  [Filter] Accepted: 4, Rejected: 36
+  [Selected URL]: https://images.pexels.com/photos/30866489/pexels-photo-30866489.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "Engine Rebuilding" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics hands repairing engine, showcasing teamwork and skill."
+  [Filter] Accepted: 20, Rejected: 20
+  [Selected URL]: https://images.pexels.com/photos/33559376/pexels-photo-33559376.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "motorcycle repair facility" | Returned Count: 40
+  [Filter] Accepted: 5, Rejected: 35
+  [Selected URL]: https://images.pexels.com/photos/5252118/pexels-photo-5252118.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "motorcycle repair" | Returned Count: 40
+  [Filter] Accepted: 3, Rejected: 37
+  [Selected URL]: https://images.pexels.com/photos/11536993/pexels-photo-11536993.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Aqua Clean (Type: Pool Cleaning)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: aqua, clean, pool, cleaning
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: pool cleaning
+   - Products: Chlorine Tabs
+   - Activities: Weekly Maintenance
+   - Environments: pool cleaning interior | pool cleaning store | pool cleaning facility
+   - Customers: customer at pool cleaning | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: pool cleaning interior, pool cleaning pool cleaning store
+   - [collections]: Chlorine Tabs, pool cleaning Chlorine Tabs
+   - [about]: Weekly Maintenance, pool cleaning facility
+   - [gallery]: pool cleaning interior, customer at pool cleaning, pool cleaning happy client
+   - [contact]: pool cleaning
+   - [services]: Weekly Maintenance, pool cleaning Weekly Maintenance
+   - [showcase]: pool cleaning interior, customer at pool cleaning, pool cleaning happy client
+   - [products]: Chlorine Tabs, pool cleaning Chlorine Tabs
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "pool cleaning interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/6908372/pexels-photo-6908372.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "pool cleaning pool cleaning store" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/8974468/pexels-photo-8974468.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "Chlorine Tabs" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/19095452/pexels-photo-19095452.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "pool cleaning Chlorine Tabs" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/8028423/pexels-photo-8028423.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "Weekly Maintenance" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "overhead shot of a creative workspace with a clipboard planner, art tools, and books, promoting productivity."
+  [Rejected] Contains corporate blacklist term: "flat lay of a weekly planner with greenery, candle, and pencil on a white background for a calming workspace vibe."
+  [Rejected] Contains corporate blacklist term: "an overhead view of a creative workspace with art supplies, photographs, and a weekly planner."
+  [Rejected] Contains corporate blacklist term: "a modern pink-themed workspace setup featuring a tablet, laptop, and succulents."
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics working on a vehicle engine, showing teamwork and precision in car maintenance."
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/760720/pexels-photo-760720.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "pool cleaning facility" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/32248272/pexels-photo-32248272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "pool cleaning interior" | Returned Count: 40
+  [Filter] Accepted: 28, Rejected: 12
+  [Selected URL]: https://images.pexels.com/photos/7222170/pexels-photo-7222170.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "customer at pool cleaning" | Returned Count: 40
+  [Filter] Accepted: 27, Rejected: 13
+  [Selected URL]: https://images.pexels.com/photos/9119784/pexels-photo-9119784.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "pool cleaning happy client" | Returned Count: 40
+  [Filter] Accepted: 32, Rejected: 8
+  [Selected URL]: https://images.pexels.com/photos/261238/pexels-photo-261238.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "pool cleaning" | Returned Count: 40
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/29733671/pexels-photo-29733671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Weekly Maintenance" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "overhead shot of a creative workspace with a clipboard planner, art tools, and books, promoting productivity."
+  [Rejected] Contains corporate blacklist term: "flat lay of a weekly planner with greenery, candle, and pencil on a white background for a calming workspace vibe."
+  [Rejected] Contains corporate blacklist term: "an overhead view of a creative workspace with art supplies, photographs, and a weekly planner."
+  [Rejected] Contains corporate blacklist term: "a modern pink-themed workspace setup featuring a tablet, laptop, and succulents."
+  [Rejected] Contains corporate blacklist term: "close-up of mechanics working on a vehicle engine, showing teamwork and precision in car maintenance."
+  [Filter] Accepted: 31, Rejected: 9
+  [Selected URL]: https://images.pexels.com/photos/768472/pexels-photo-768472.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "pool cleaning Weekly Maintenance" | Returned Count: 40
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/11061219/pexels-photo-11061219.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "pool cleaning interior" | Returned Count: 40
+  [Filter] Accepted: 22, Rejected: 18
+  [Selected URL]: https://images.pexels.com/photos/18631414/pexels-photo-18631414.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at pool cleaning" | Returned Count: 40
+  [Filter] Accepted: 22, Rejected: 18
+  [Selected URL]: https://images.pexels.com/photos/11484104/pexels-photo-11484104.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "pool cleaning happy client" | Returned Count: 40
+  [Filter] Accepted: 27, Rejected: 13
+  [Selected URL]: https://images.pexels.com/photos/30111568/pexels-photo-30111568.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [products] ---
+Query: "Chlorine Tabs" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/9030283/pexels-photo-9030283.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [products] ---
+Query: "pool cleaning Chlorine Tabs" | Returned Count: 40
+  [Filter] Accepted: 20, Rejected: 20
+  [Selected URL]: https://images.pexels.com/photos/835240/pexels-photo-835240.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Starlight Bakery (Type: Bakery)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: starlight, bakery
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: bakery
+   - Products: Cupcakes | Wedding Cakes
+   - Activities: Custom Decorating
+   - Environments: bakery interior | bakery store | bakery facility
+   - Customers: customer at bakery | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: bakery interior, bakery bakery store
+   - [collections]: Cupcakes, Wedding Cakes, bakery Cupcakes
+   - [promotions]: bakery
+   - [reviews]: customer at bakery
+   - [booking]: bakery
+   - [products]: Cupcakes, Wedding Cakes, bakery Cupcakes
+   - [featured-products]: Cupcakes, Wedding Cakes, bakery Cupcakes
+   - [contact]: bakery
+   - [locations]: bakery
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "bakery interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/32459865/pexels-photo-32459865.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "bakery bakery store" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/564883/pexels-photo-564883.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "Cupcakes" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/11128671/pexels-photo-11128671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "Wedding Cakes" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/30233153/pexels-photo-30233153.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "bakery Cupcakes" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/8525753/pexels-photo-8525753.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [promotions] ---
+Query: "bakery" | Returned Count: 40
+  [Filter] Accepted: 37, Rejected: 3
+  [Selected URL]: https://images.pexels.com/photos/14774815/pexels-photo-14774815.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [reviews] ---
+Query: "customer at bakery" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/7447274/pexels-photo-7447274.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [booking] ---
+Query: "bakery" | Returned Count: 40
+  [Filter] Accepted: 31, Rejected: 9
+  [Selected URL]: https://images.pexels.com/photos/29380155/pexels-photo-29380155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [products] ---
+Query: "Cupcakes" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/585581/pexels-photo-585581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [products] ---
+Query: "Wedding Cakes" | Returned Count: 40
+  [Filter] Accepted: 38, Rejected: 2
+  [Selected URL]: https://images.pexels.com/photos/11712500/pexels-photo-11712500.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [products] ---
+Query: "bakery Cupcakes" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/7525117/pexels-photo-7525117.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "Cupcakes" | Returned Count: 40
+  [Filter] Accepted: 31, Rejected: 9
+  [Selected URL]: https://images.pexels.com/photos/15896656/pexels-photo-15896656.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "Wedding Cakes" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/32318508/pexels-photo-32318508.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "bakery Cupcakes" | Returned Count: 40
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/9045540/pexels-photo-9045540.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "bakery" | Returned Count: 40
+  [Filter] Accepted: 30, Rejected: 10
+  [Selected URL]: https://images.pexels.com/photos/7405059/pexels-photo-7405059.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "bakery" | Returned Count: 40
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/18656839/pexels-photo-18656839.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Iron Temple (Type: Powerlifting Gym)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: iron, temple, powerlifting, gym
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: powerlifting gym
+   - Products: Chalk | Lifting Belts
+   - Activities: Strength Coaching
+   - Environments: powerlifting gym interior | powerlifting gym store | powerlifting gym facility
+   - Customers: customer at powerlifting gym | happy client | working out | fitness training
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: powerlifting gym interior, powerlifting gym powerlifting gym store
+   - [catalog]: Chalk, Lifting Belts, powerlifting gym Chalk
+   - [showcase]: powerlifting gym interior, customer at powerlifting gym, powerlifting gym happy client
+   - [reviews]: customer at powerlifting gym
+   - [locations]: powerlifting gym
+   - [menu]: Chalk, Lifting Belts, powerlifting gym Chalk
+   - [gallery]: powerlifting gym interior, customer at powerlifting gym, powerlifting gym happy client
+   - [testimonials]: customer at powerlifting gym
+   - [contact]: powerlifting gym
+   - [featured-products]: Chalk, Lifting Belts, powerlifting gym Chalk
+   - [portfolio]: powerlifting gym interior, customer at powerlifting gym, powerlifting gym happy client
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "powerlifting gym interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/931321/pexels-photo-931321.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "powerlifting gym powerlifting gym store" | Returned Count: 40
+  [Filter] Accepted: 32, Rejected: 8
+  [Selected URL]: https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [catalog] ---
+Query: "Chalk" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "adults getting ready for an indoor climbing session with chalked hands. focus on teamwork and concentration."
+  [Rejected] Contains corporate blacklist term: "children creatively drawing with chalk on pavement, showcasing diversity and teamwork."
+  [Filter] Accepted: 38, Rejected: 2
+  [Selected URL]: https://images.pexels.com/photos/5274594/pexels-photo-5274594.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [catalog] ---
+Query: "Lifting Belts" | Returned Count: 40
+  [Filter] Accepted: 38, Rejected: 2
+  [Selected URL]: https://images.pexels.com/photos/4944974/pexels-photo-4944974.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [catalog] ---
+Query: "powerlifting gym Chalk" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "adults getting ready for an indoor climbing session with chalked hands. focus on teamwork and concentration."
+  [Filter] Accepted: 28, Rejected: 12
+  [Selected URL]: https://images.pexels.com/photos/5929232/pexels-photo-5929232.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "powerlifting gym interior" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/9958665/pexels-photo-9958665.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/19132573/pexels-photo-19132573.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "powerlifting gym happy client" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/4853329/pexels-photo-4853329.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [reviews] ---
+Query: "customer at powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 22, Rejected: 18
+  [Selected URL]: https://images.pexels.com/photos/18060079/pexels-photo-18060079.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 23, Rejected: 17
+  [Selected URL]: https://images.pexels.com/photos/15373906/pexels-photo-15373906.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [menu] ---
+Query: "Chalk" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "adults getting ready for an indoor climbing session with chalked hands. focus on teamwork and concentration."
+  [Rejected] Contains corporate blacklist term: "children creatively drawing with chalk on pavement, showcasing diversity and teamwork."
+  [Filter] Accepted: 28, Rejected: 12
+  [Selected URL]: https://images.pexels.com/photos/226591/pexels-photo-226591.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [menu] ---
+Query: "Lifting Belts" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/13219986/pexels-photo-13219986.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [menu] ---
+Query: "powerlifting gym Chalk" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "adults getting ready for an indoor climbing session with chalked hands. focus on teamwork and concentration."
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/7671470/pexels-photo-7671470.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "powerlifting gym interior" | Returned Count: 40
+  [Filter] Accepted: 26, Rejected: 14
+  [Selected URL]: https://images.pexels.com/photos/31255961/pexels-photo-31255961.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "customer at powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 18, Rejected: 22
+  [Selected URL]: https://images.pexels.com/photos/14623635/pexels-photo-14623635.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "powerlifting gym happy client" | Returned Count: 40
+  [Filter] Accepted: 21, Rejected: 19
+  [Selected URL]: https://images.pexels.com/photos/15596431/pexels-photo-15596431.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [testimonials] ---
+Query: "customer at powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 15, Rejected: 25
+  [Selected URL]: https://images.pexels.com/photos/15298990/pexels-photo-15298990.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 18, Rejected: 22
+  [Selected URL]: https://images.pexels.com/photos/1552252/pexels-photo-1552252.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "Chalk" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "adults getting ready for an indoor climbing session with chalked hands. focus on teamwork and concentration."
+  [Rejected] Contains corporate blacklist term: "children creatively drawing with chalk on pavement, showcasing diversity and teamwork."
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/8034646/pexels-photo-8034646.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "Lifting Belts" | Returned Count: 40
+  [Filter] Accepted: 32, Rejected: 8
+  [Selected URL]: https://images.pexels.com/photos/33867775/pexels-photo-33867775.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [featured-products] ---
+Query: "powerlifting gym Chalk" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "adults getting ready for an indoor climbing session with chalked hands. focus on teamwork and concentration."
+  [Filter] Accepted: 19, Rejected: 21
+  [Selected URL]: https://images.pexels.com/photos/16966305/pexels-photo-16966305.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "powerlifting gym interior" | Returned Count: 40
+  [Filter] Accepted: 23, Rejected: 17
+  [Selected URL]: https://images.pexels.com/photos/17782852/pexels-photo-17782852.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "customer at powerlifting gym" | Returned Count: 40
+  [Filter] Accepted: 9, Rejected: 31
+  [Selected URL]: https://images.pexels.com/photos/16890699/pexels-photo-16890699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "powerlifting gym happy client" | Returned Count: 40
+  [Filter] Accepted: 10, Rejected: 30
+  [Selected URL]: https://images.pexels.com/photos/34043585/pexels-photo-34043585.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Happy Paws (Type: Dog Grooming)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: happy, paws, dog, grooming
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: dog grooming
+   - Products: Organic Shampoo
+   - Activities: Pet Haircuts | Nail Trimming
+   - Environments: dog grooming interior | dog grooming store | dog grooming facility
+   - Customers: customer at dog grooming | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: dog grooming interior, dog grooming dog grooming store
+   - [services]: Pet Haircuts, Nail Trimming, dog grooming Pet Haircuts
+   - [showcase]: dog grooming interior, customer at dog grooming, dog grooming happy client
+   - [team]: Pet Haircuts, dog grooming facility
+   - [faq]: dog grooming
+   - [contact]: dog grooming
+   - [consultation]: Pet Haircuts, Nail Trimming, dog grooming Pet Haircuts
+   - [case-studies]: customer at dog grooming
+   - [about]: Pet Haircuts, dog grooming facility
+   - [booking]: dog grooming
+   - [portfolio]: dog grooming interior, customer at dog grooming, dog grooming happy client
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "dog grooming interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/19145881/pexels-photo-19145881.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "dog grooming dog grooming store" | Returned Count: 40
+  [Filter] Accepted: 26, Rejected: 14
+  [Selected URL]: https://images.pexels.com/photos/7391070/pexels-photo-7391070.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Pet Haircuts" | Returned Count: 40
+  [Filter] Accepted: 30, Rejected: 10
+  [Selected URL]: https://images.pexels.com/photos/6131001/pexels-photo-6131001.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Nail Trimming" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/34807744/pexels-photo-34807744.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "dog grooming Pet Haircuts" | Returned Count: 40
+  [Filter] Accepted: 12, Rejected: 28
+  [Selected URL]: https://images.pexels.com/photos/6816866/pexels-photo-6816866.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "dog grooming interior" | Returned Count: 40
+  [Filter] Accepted: 14, Rejected: 26
+  [Selected URL]: https://images.pexels.com/photos/1436139/pexels-photo-1436139.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at dog grooming" | Returned Count: 40
+  [Filter] Accepted: 7, Rejected: 33
+  [Selected URL]: https://images.pexels.com/photos/28730603/pexels-photo-28730603.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "dog grooming happy client" | Returned Count: 40
+  [Filter] Accepted: 30, Rejected: 10
+  [Selected URL]: https://images.pexels.com/photos/9986349/pexels-photo-9986349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "Pet Haircuts" | Returned Count: 40
+  [Filter] Accepted: 2, Rejected: 38
+  [Selected URL]: https://images.pexels.com/photos/16465562/pexels-photo-16465562.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "dog grooming facility" | Returned Count: 40
+  [Filter] Accepted: 8, Rejected: 32
+  [Selected URL]: https://images.pexels.com/photos/34232518/pexels-photo-34232518.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [faq] ---
+Query: "dog grooming" | Returned Count: 40
+  [Filter] Accepted: 9, Rejected: 31
+  [Selected URL]: https://images.pexels.com/photos/8266284/pexels-photo-8266284.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "dog grooming" | Returned Count: 40
+  [Filter] Accepted: 8, Rejected: 32
+  [Selected URL]: https://images.pexels.com/photos/5584471/pexels-photo-5584471.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Pet Haircuts" | Returned Count: 40
+  [Filter] Accepted: 1, Rejected: 39
+  [Selected URL]: https://images.pexels.com/photos/8867162/pexels-photo-8867162.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Nail Trimming" | Returned Count: 40
+  [Filter] Accepted: 27, Rejected: 13
+  [Selected URL]: https://images.pexels.com/photos/6448562/pexels-photo-6448562.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "dog grooming Pet Haircuts" | Returned Count: 40
+  [Filter] Accepted: 1, Rejected: 39
+  [Selected URL]: https://images.pexels.com/photos/10248470/pexels-photo-10248470.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [case-studies] ---
+Query: "customer at dog grooming" | Returned Count: 40
+  [Filter] Accepted: 3, Rejected: 37
+  [Selected URL]: https://images.pexels.com/photos/8498543/pexels-photo-8498543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "Pet Haircuts" | Returned Count: 40
+  [Filter] Accepted: 0, Rejected: 40
+
+--- PEXELS REQUEST [about] ---
+Query: "dog grooming facility" | Returned Count: 40
+  [Filter] Accepted: 4, Rejected: 36
+  [Selected URL]: https://images.pexels.com/photos/13062569/pexels-photo-13062569.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [booking] ---
+Query: "dog grooming" | Returned Count: 40
+  [Filter] Accepted: 2, Rejected: 38
+  [Selected URL]: https://images.pexels.com/photos/17880526/pexels-photo-17880526.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "dog grooming interior" | Returned Count: 40
+  [Filter] Accepted: 7, Rejected: 33
+  [Selected URL]: https://images.pexels.com/photos/8192221/pexels-photo-8192221.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "customer at dog grooming" | Returned Count: 40
+  [Filter] Accepted: 1, Rejected: 39
+  [Selected URL]: https://images.pexels.com/photos/6222967/pexels-photo-6222967.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "dog grooming happy client" | Returned Count: 40
+  [Filter] Accepted: 21, Rejected: 19
+  [Selected URL]: https://images.pexels.com/photos/16652384/pexels-photo-16652384.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Pixel Perfect (Type: Photography Studio)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: pixel, perfect, photography, studio
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: photography studio
+   - Products: Canvas Prints
+   - Activities: Wedding Photography | Portraits
+   - Environments: photography studio interior | photography studio store | photography studio facility
+   - Customers: customer at photography studio | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: photography studio interior, photography studio photography studio store
+   - [services]: Wedding Photography, Portraits, photography studio Wedding Photography
+   - [showcase]: photography studio interior, customer at photography studio, photography studio happy client
+   - [team]: Wedding Photography, photography studio facility
+   - [faq]: photography studio
+   - [booking]: photography studio
+   - [consultation]: Wedding Photography, Portraits, photography studio Wedding Photography
+   - [case-studies]: customer at photography studio
+   - [about]: Wedding Photography, photography studio facility
+   - [locations]: photography studio
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "photography studio interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/8143699/pexels-photo-8143699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "photography studio photography studio store" | Returned Count: 40
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/30332804/pexels-photo-30332804.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Wedding Photography" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/35349365/pexels-photo-35349365.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Portraits" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "confident businesswoman taking a selfie in modern office environment."
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/12265132/pexels-photo-12265132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "photography studio Wedding Photography" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/15891240/pexels-photo-15891240.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "photography studio interior" | Returned Count: 40
+  [Filter] Accepted: 37, Rejected: 3
+  [Selected URL]: https://images.pexels.com/photos/11234300/pexels-photo-11234300.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at photography studio" | Returned Count: 40
+  [Filter] Accepted: 38, Rejected: 2
+  [Selected URL]: https://images.pexels.com/photos/35869751/pexels-photo-35869751.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "photography studio happy client" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/4123720/pexels-photo-4123720.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "Wedding Photography" | Returned Count: 40
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/14856471/pexels-photo-14856471.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "photography studio facility" | Returned Count: 40
+  [Filter] Accepted: 32, Rejected: 8
+  [Selected URL]: https://images.pexels.com/photos/7383647/pexels-photo-7383647.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [faq] ---
+Query: "photography studio" | Returned Count: 40
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/6989087/pexels-photo-6989087.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [booking] ---
+Query: "photography studio" | Returned Count: 40
+  [Filter] Accepted: 28, Rejected: 12
+  [Selected URL]: https://images.pexels.com/photos/33714905/pexels-photo-33714905.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Wedding Photography" | Returned Count: 40
+  [Filter] Accepted: 37, Rejected: 3
+  [Selected URL]: https://images.pexels.com/photos/13434418/pexels-photo-13434418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Portraits" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "confident businesswoman taking a selfie in modern office environment."
+  [Filter] Accepted: 38, Rejected: 2
+  [Selected URL]: https://images.pexels.com/photos/35659475/pexels-photo-35659475.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "photography studio Wedding Photography" | Returned Count: 40
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/14562236/pexels-photo-14562236.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [case-studies] ---
+Query: "customer at photography studio" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/36697246/pexels-photo-36697246.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "Wedding Photography" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/15601692/pexels-photo-15601692.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "photography studio facility" | Returned Count: 40
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/10910631/pexels-photo-10910631.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "photography studio" | Returned Count: 40
+  [Filter] Accepted: 21, Rejected: 19
+  [Selected URL]: https://images.pexels.com/photos/12616007/pexels-photo-12616007.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Zen Den (Type: Yoga Studio)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: zen, den, yoga, studio
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: yoga studio
+   - Products: Yoga Mats
+   - Activities: Vinyasa Classes | Meditation
+   - Environments: yoga studio interior | yoga studio store | yoga studio facility
+   - Customers: customer at yoga studio | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: yoga studio interior, yoga studio yoga studio store
+   - [consultation]: Vinyasa Classes, Meditation, yoga studio Vinyasa Classes
+   - [showcase]: yoga studio interior, customer at yoga studio, yoga studio happy client
+   - [about]: Vinyasa Classes, yoga studio facility
+   - [faq]: yoga studio
+   - [locations]: yoga studio
+   - [programs]: Vinyasa Classes, Meditation, yoga studio Vinyasa Classes
+   - [case-studies]: customer at yoga studio
+   - [team]: Vinyasa Classes, yoga studio facility
+   - [booking]: yoga studio
+   - [services]: Vinyasa Classes, Meditation, yoga studio Vinyasa Classes
+   - [contact]: yoga studio
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "yoga studio interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/8436687/pexels-photo-8436687.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "yoga studio yoga studio store" | Returned Count: 40
+  [Filter] Accepted: 19, Rejected: 21
+  [Selected URL]: https://images.pexels.com/photos/14989483/pexels-photo-14989483.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/12264018/pexels-photo-12264018.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "Meditation" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/7596956/pexels-photo-7596956.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [consultation] ---
+Query: "yoga studio Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 18, Rejected: 22
+  [Selected URL]: https://images.pexels.com/photos/28821063/pexels-photo-28821063.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "yoga studio interior" | Returned Count: 40
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/4323341/pexels-photo-4323341.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at yoga studio" | Returned Count: 40
+  [Filter] Accepted: 11, Rejected: 29
+  [Selected URL]: https://images.pexels.com/photos/5992856/pexels-photo-5992856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "yoga studio happy client" | Returned Count: 40
+  [Filter] Accepted: 13, Rejected: 27
+  [Selected URL]: https://images.pexels.com/photos/36729590/pexels-photo-36729590.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 20, Rejected: 20
+  [Selected URL]: https://images.pexels.com/photos/32848107/pexels-photo-32848107.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "yoga studio facility" | Returned Count: 40
+  [Filter] Accepted: 19, Rejected: 21
+  [Selected URL]: https://images.pexels.com/photos/35215418/pexels-photo-35215418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [faq] ---
+Query: "yoga studio" | Returned Count: 40
+  [Filter] Accepted: 12, Rejected: 28
+  [Selected URL]: https://images.pexels.com/photos/29735924/pexels-photo-29735924.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "yoga studio" | Returned Count: 40
+  [Filter] Accepted: 11, Rejected: 29
+  [Selected URL]: https://images.pexels.com/photos/3822670/pexels-photo-3822670.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [programs] ---
+Query: "Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 16, Rejected: 24
+  [Selected URL]: https://images.pexels.com/photos/6246673/pexels-photo-6246673.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [programs] ---
+Query: "Meditation" | Returned Count: 40
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/6932519/pexels-photo-6932519.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [programs] ---
+Query: "yoga studio Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 11, Rejected: 29
+  [Selected URL]: https://images.pexels.com/photos/17999506/pexels-photo-17999506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [case-studies] ---
+Query: "customer at yoga studio" | Returned Count: 40
+  [Filter] Accepted: 5, Rejected: 35
+  [Selected URL]: https://images.pexels.com/photos/16131201/pexels-photo-16131201.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 13, Rejected: 27
+  [Selected URL]: https://images.pexels.com/photos/15501252/pexels-photo-15501252.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [team] ---
+Query: "yoga studio facility" | Returned Count: 40
+  [Filter] Accepted: 15, Rejected: 25
+  [Selected URL]: https://images.pexels.com/photos/10563908/pexels-photo-10563908.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [booking] ---
+Query: "yoga studio" | Returned Count: 40
+  [Filter] Accepted: 7, Rejected: 33
+  [Selected URL]: https://images.pexels.com/photos/6303422/pexels-photo-6303422.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 11, Rejected: 29
+  [Selected URL]: https://images.pexels.com/photos/13849273/pexels-photo-13849273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Meditation" | Returned Count: 40
+  [Filter] Accepted: 26, Rejected: 14
+  [Selected URL]: https://images.pexels.com/photos/6643238/pexels-photo-6643238.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "yoga studio Vinyasa Classes" | Returned Count: 40
+  [Filter] Accepted: 6, Rejected: 34
+  [Selected URL]: https://images.pexels.com/photos/29788476/pexels-photo-29788476.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "yoga studio" | Returned Count: 40
+  [Filter] Accepted: 6, Rejected: 34
+  [Selected URL]: https://images.pexels.com/photos/3984342/pexels-photo-3984342.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Spice Route (Type: Indian Restaurant)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: spice, route, indian, restaurant
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: indian restaurant
+   - Products: Biryani | Samosas
+   - Activities: Catering Delivery
+   - Environments: indian restaurant interior | indian restaurant store | indian restaurant facility | dining area | coffee shop interior
+   - Customers: customer at indian restaurant | happy client | enjoying meal | drinking coffee
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: indian restaurant interior, indian restaurant indian restaurant store
+   - [catalog]: Biryani, Samosas, indian restaurant Biryani
+   - [showcase]: indian restaurant interior, customer at indian restaurant, indian restaurant happy client
+   - [testimonials]: customer at indian restaurant
+   - [contact]: indian restaurant
+   - [portfolio]: indian restaurant interior, customer at indian restaurant, indian restaurant happy client
+   - [reviews]: customer at indian restaurant
+   - [locations]: indian restaurant
+   - [menu]: Biryani, Samosas, indian restaurant Biryani
+   - [gallery]: indian restaurant interior, customer at indian restaurant, indian restaurant happy client
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "indian restaurant interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/3822749/pexels-photo-3822749.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "indian restaurant indian restaurant store" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/3813922/pexels-photo-3813922.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [catalog] ---
+Query: "Biryani" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/9609869/pexels-photo-9609869.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [catalog] ---
+Query: "Samosas" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/9738980/pexels-photo-9738980.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [catalog] ---
+Query: "indian restaurant Biryani" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/15059055/pexels-photo-15059055.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "indian restaurant interior" | Returned Count: 40
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/958547/pexels-photo-958547.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/37594381/pexels-photo-37594381.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "indian restaurant happy client" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "a confident young professional standing in a modern office with colleagues interacting in the background."
+  [Filter] Accepted: 37, Rejected: 3
+  [Selected URL]: https://images.pexels.com/photos/8818660/pexels-photo-8818660.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [testimonials] ---
+Query: "customer at indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/36799163/pexels-photo-36799163.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 31, Rejected: 9
+  [Selected URL]: https://images.pexels.com/photos/28674660/pexels-photo-28674660.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "indian restaurant interior" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/37708443/pexels-photo-37708443.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "customer at indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/21575653/pexels-photo-21575653.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [portfolio] ---
+Query: "indian restaurant happy client" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "a confident young professional standing in a modern office with colleagues interacting in the background."
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/6284883/pexels-photo-6284883.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [reviews] ---
+Query: "customer at indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 33, Rejected: 7
+  [Selected URL]: https://images.pexels.com/photos/35091849/pexels-photo-35091849.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 27, Rejected: 13
+  [Selected URL]: https://images.pexels.com/photos/32083370/pexels-photo-32083370.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [menu] ---
+Query: "Biryani" | Returned Count: 40
+  [Filter] Accepted: 27, Rejected: 13
+  [Selected URL]: https://images.pexels.com/photos/30748996/pexels-photo-30748996.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [menu] ---
+Query: "Samosas" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/28075291/pexels-photo-28075291.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [menu] ---
+Query: "indian restaurant Biryani" | Returned Count: 40
+  [Filter] Accepted: 18, Rejected: 22
+  [Selected URL]: https://images.pexels.com/photos/36879223/pexels-photo-36879223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "indian restaurant interior" | Returned Count: 40
+  [Filter] Accepted: 29, Rejected: 11
+  [Selected URL]: https://images.pexels.com/photos/2387675/pexels-photo-2387675.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "customer at indian restaurant" | Returned Count: 40
+  [Filter] Accepted: 31, Rejected: 9
+  [Selected URL]: https://images.pexels.com/photos/7105162/pexels-photo-7105162.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "indian restaurant happy client" | Returned Count: 40
+  [Rejected] Contains corporate blacklist term: "a confident young professional standing in a modern office with colleagues interacting in the background."
+  [Filter] Accepted: 24, Rejected: 16
+  [Selected URL]: https://images.pexels.com/photos/4307905/pexels-photo-4307905.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+
+
+========================================================================
+TESTING: Quantum Data (Type: B2B Data Analytics)
+=== STARTING DYNAMIC AI WEBSITE GENERATION ===
+[1/4] Extracting NLP Keywords...
+   - Primary: quantum, data, b2b, analytics
+
+[CONCEPT ENGINE] Extracted Strategic Domains:
+   - Industry: b2b data analytics
+   - Products: Dashboard Software
+   - Activities: Data Migration
+   - Environments: b2b data analytics interior | b2b data analytics store | b2b data analytics facility
+   - Customers: customer at b2b data analytics | happy client
+
+[2/4] Synthesizing Dynamic Blueprints...
+
+[3/4] Fetching Segmented Imagery from Pexels...
+
+[QUERY ENGINE] Generated Targeted Queries:
+   - [hero]: b2b data analytics interior, b2b data analytics b2b data analytics store
+   - [collections]: Dashboard Software, b2b data analytics Dashboard Software
+   - [about]: Data Migration, b2b data analytics facility
+   - [showcase]: b2b data analytics interior, customer at b2b data analytics, b2b data analytics happy client
+   - [locations]: b2b data analytics
+   - [services]: Data Migration, b2b data analytics Data Migration
+   - [gallery]: b2b data analytics interior, customer at b2b data analytics, b2b data analytics happy client
+   - [contact]: b2b data analytics
+
+[IMAGE DIVERSITY ENGINE] Starting Image Fetch...
+
+--- PEXELS REQUEST [hero] ---
+Query: "b2b data analytics interior" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/7109291/pexels-photo-7109291.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [hero] ---
+Query: "b2b data analytics b2b data analytics store" | Returned Count: 40
+  [Filter] Accepted: 37, Rejected: 3
+  [Selected URL]: https://images.pexels.com/photos/19891030/pexels-photo-19891030.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "Dashboard Software" | Returned Count: 40
+  [Filter] Accepted: 40, Rejected: 0
+  [Selected URL]: https://images.pexels.com/photos/97080/pexels-photo-97080.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [collections] ---
+Query: "b2b data analytics Dashboard Software" | Returned Count: 40
+  [Filter] Accepted: 35, Rejected: 5
+  [Selected URL]: https://images.pexels.com/photos/12969403/pexels-photo-12969403.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "Data Migration" | Returned Count: 40
+  [Filter] Accepted: 39, Rejected: 1
+  [Selected URL]: https://images.pexels.com/photos/29614944/pexels-photo-29614944.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [about] ---
+Query: "b2b data analytics facility" | Returned Count: 40
+  [Filter] Accepted: 34, Rejected: 6
+  [Selected URL]: https://images.pexels.com/photos/7693201/pexels-photo-7693201.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "b2b data analytics interior" | Returned Count: 40
+  [Filter] Accepted: 30, Rejected: 10
+  [Selected URL]: https://images.pexels.com/photos/577210/pexels-photo-577210.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "customer at b2b data analytics" | Returned Count: 40
+  [Filter] Accepted: 34, Rejected: 6
+  [Selected URL]: https://images.pexels.com/photos/7876664/pexels-photo-7876664.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [showcase] ---
+Query: "b2b data analytics happy client" | Returned Count: 40
+  [Filter] Accepted: 25, Rejected: 15
+  [Selected URL]: https://images.pexels.com/photos/5833879/pexels-photo-5833879.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [locations] ---
+Query: "b2b data analytics" | Returned Count: 40
+  [Filter] Accepted: 19, Rejected: 21
+  [Selected URL]: https://images.pexels.com/photos/8837512/pexels-photo-8837512.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "Data Migration" | Returned Count: 40
+  [Filter] Accepted: 36, Rejected: 4
+  [Selected URL]: https://images.pexels.com/photos/17489163/pexels-photo-17489163.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [services] ---
+Query: "b2b data analytics Data Migration" | Returned Count: 40
+  [Filter] Accepted: 17, Rejected: 23
+  [Selected URL]: https://images.pexels.com/photos/7947754/pexels-photo-7947754.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "b2b data analytics interior" | Returned Count: 40
+  [Filter] Accepted: 17, Rejected: 23
+  [Selected URL]: https://images.pexels.com/photos/8204363/pexels-photo-8204363.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "customer at b2b data analytics" | Returned Count: 40
+  [Filter] Accepted: 12, Rejected: 28
+  [Selected URL]: https://images.pexels.com/photos/7567595/pexels-photo-7567595.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [gallery] ---
+Query: "b2b data analytics happy client" | Returned Count: 40
+  [Filter] Accepted: 13, Rejected: 27
+  [Selected URL]: https://images.pexels.com/photos/8555677/pexels-photo-8555677.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+--- PEXELS REQUEST [contact] ---
+Query: "b2b data analytics" | Returned Count: 40
+  [Filter] Accepted: 7, Rejected: 33
+  [Selected URL]: https://images.pexels.com/photos/6930431/pexels-photo-6930431.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+
+[4/4] Compiling Unique Website Structures...
+=== DYNAMIC GENERATION COMPLETE ===
+

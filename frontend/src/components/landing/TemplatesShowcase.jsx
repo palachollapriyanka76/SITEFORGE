@@ -194,11 +194,7 @@ export default function TemplatesShowcase() {
                       ))}
                     </div>
 
-                    <Link href={`/templates/${tpl.previewId}`} target="_blank" className="w-full">
-                      <Button className="w-full rounded-full flex items-center justify-center gap-1.5 px-5 py-2 text-[10px] uppercase font-black tracking-widest shadow-md">
-                        Preview Layout <ArrowUpRight className="h-3.5 w-3.5" />
-                      </Button>
-                    </Link>
+                    {/* Removed Preview Link */}
                   </div>
                 </div>
 
@@ -215,23 +211,21 @@ export default function TemplatesShowcase() {
                   </div>
                   
                   <span className="text-[8px] bg-[#84A98C]/15 border border-[#84A98C]/20 text-[#52796F] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                    Ready
+                    Generated
                   </span>
                 </div>
               </motion.div>
             );
           })}
         </div>
-
-        {/* View Template Marketplace CTA */}
         <div className="mt-16 text-center">
-          <Link href="/templates">
+          <Link href="/onboarding">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               className="px-8 py-4 rounded-full bg-[#52796F] hover:bg-[#354F52] text-white text-xs font-black uppercase tracking-widest shadow-lg inline-flex items-center gap-2"
             >
-              Explore Template Marketplace (50+ Themes) <ArrowUpRight className="h-4 w-4" />
+              Generate Your Own Site Now <ArrowUpRight className="h-4 w-4" />
             </motion.button>
           </Link>
         </div>

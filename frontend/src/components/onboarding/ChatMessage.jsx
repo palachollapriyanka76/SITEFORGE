@@ -29,15 +29,6 @@ const presetStyles = [
   { id: "classic", name: "🏛 Classic", desc: "Serif type, traditional layouts" }
 ];
 
-const businessCategories = [
-  { id: "Bakery", emoji: "🍰", label: "Bakery" },
-  { id: "Restaurant", emoji: "🍽", label: "Restaurant" },
-  { id: "Salon & Spa", emoji: "💇", label: "Salon & Spa" },
-  { id: "Electronics", emoji: "💻", label: "Electronics" },
-  { id: "Fashion", emoji: "👗", label: "Fashion" },
-  { id: "Fitness Gym", emoji: "🏋", label: "Fitness Gym" },
-  { id: "Other Services", emoji: "🏢", label: "Other Services" }
-];
 
 const audienceOptions = [
   { id: "Families", emoji: "👨‍👩‍👧", label: "Families" },
@@ -121,19 +112,31 @@ export default function ChatMessage({ message, isLast, onAnswerSubmit }) {
         {isAI && isLast && (
           <div className="mt-4 w-full min-w-[280px] sm:min-w-[400px] max-w-lg space-y-4">
             
-            {/* Widget: Business Type Cards */}
+            {/* Widget: Business Type Custom Input */}
             {message.type === "type_choice" && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                {businessCategories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => onAnswerSubmit(cat.id, { type: cat.id })}
-                    className="bg-white hover:bg-[#52796F] text-[#354F52] hover:text-white border border-[#2F3E46]/12 hover:border-[#52796F] rounded-2xl h-20 text-xs font-bold transition-all duration-200 shadow-sm flex flex-col items-center justify-center gap-1.5 hover:scale-105 active:scale-95"
-                  >
-                    <span className="text-2xl">{cat.emoji}</span>
-                    <span>{cat.label}</span>
-                  </button>
-                ))}
+              <div className="flex gap-2 w-full max-w-sm">
+                <input
+                  type="text"
+                  placeholder="e.g. Scuba Dive Shop, Custom Blacksmith"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                      onAnswerSubmit(e.target.value, { type: e.target.value });
+                    }
+                  }}
+                  className="flex-1 bg-white border border-[#2F3E46]/12 text-[#2F3E46] rounded-full text-xs h-10 px-4 focus:border-[#52796F] outline-none"
+                  id="custom-business-type"
+                />
+                <button
+                  onClick={() => {
+                    const val = document.getElementById('custom-business-type').value;
+                    if (val.trim()) {
+                      onAnswerSubmit(val, { type: val });
+                    }
+                  }}
+                  className="bg-[#52796F] hover:bg-[#354F52] text-white font-bold text-xs px-5 rounded-full h-10 transition-colors shadow-sm"
+                >
+                  Confirm
+                </button>
               </div>
             )}
 

@@ -136,7 +136,7 @@ app.post('/api/generate/website-variations', async (req, res) => {
       templates = await aiGenerator.generateThreeVariations(businessData || {});
       console.log("STEP 5: Dynamic Layouts, Sections and Design Tokens generated successfully");
       console.log("STEP 6: Website JSON variation outputs parsed");
-      
+
       // Save to cache
       variationsCache.set(cacheKey, templates);
     } catch (err) {
@@ -156,7 +156,7 @@ app.post('/api/generate/website-variations', async (req, res) => {
     console.log(`- Global Settings Navigation/WhatsApp: Number=${websiteJson?.globalSettings?.whatsappNumber}, Enabled=${websiteJson?.globalSettings?.whatsappButton}`);
     console.log(`- Pages:         ${JSON.stringify(websiteJson?.pages?.map(p => ({ name: p.name, slug: p.slug })))}`);
     console.log(`- Sections:      ${JSON.stringify(websiteJson?.sections?.map(s => s.type))}`);
-    
+
     // Check if sections have images
     const sectionsWithImages = websiteJson?.sections?.filter(s => s.content?.backgroundImage || s.content?.image || s.content?.products?.some(p => p.image) || s.content?.images?.length);
     console.log(`- Sections containing imagery: ${JSON.stringify(sectionsWithImages?.map(s => s.type))}`);
@@ -288,7 +288,7 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
   }
 
   const cleanEmail = email.trim().toLowerCase();
-  
+
   console.log(`\n--- PASSWORD RECOVERY PROCESS ---`);
   console.log(`Step 1: Forgot Password Request received for email: ${cleanEmail}`);
 
@@ -309,10 +309,10 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
   try {
     // Generate secure cryptographically strong reset token (64 hex characters)
     const resetToken = crypto.randomBytes(32).toString('hex');
-    
+
     // Hash token in database for maximum security (protects database leaks)
     const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    
+
     // Token expires in 20 minutes
     const tokenExpiration = new Date(Date.now() + 20 * 60 * 1000);
 
@@ -330,7 +330,7 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
     const resetLink = `${frontendUrl}/reset-password/${resetToken}`;
 
     console.log(`Step 3: Email Service Called to send reset link to: ${user.email}`);
-    
+
     // Send email using email service
     await emailService.sendPasswordResetEmail(user.email, resetLink, 20);
 
@@ -345,7 +345,7 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
     console.error(`Step 4: Email Send Failed for ${cleanEmail}`);
     console.error(`Error Details: ${error.message}`);
     console.error(`---------------------------------\n`);
-    
+
     if (error.isConfigError || error.message === "Email service not configured.") {
       return res.status(400).json({
         success: false,
@@ -369,9 +369,9 @@ app.get('/api/auth/reset-password/:token', (req, res) => {
   }
 
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  const user = usersDb.find(u => 
-    u.resetPasswordToken === hashedToken && 
-    u.resetPasswordExpires && 
+  const user = usersDb.find(u =>
+    u.resetPasswordToken === hashedToken &&
+    u.resetPasswordExpires &&
     new Date(u.resetPasswordExpires) > new Date()
   );
 
@@ -406,9 +406,9 @@ app.post('/api/auth/reset-password/:token', async (req, res) => {
   }
 
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  const user = usersDb.find(u => 
-    u.resetPasswordToken === hashedToken && 
-    u.resetPasswordExpires && 
+  const user = usersDb.find(u =>
+    u.resetPasswordToken === hashedToken &&
+    u.resetPasswordExpires &&
     new Date(u.resetPasswordExpires) > new Date()
   );
 
@@ -423,7 +423,7 @@ app.post('/api/auth/reset-password/:token', async (req, res) => {
   try {
     // Update password securely
     user.password = hashPassword(password);
-    
+
     // Enforce "Token can only be used once" by clearing fields immediately
     delete user.resetPasswordToken;
     delete user.resetPasswordExpires;
@@ -533,7 +533,7 @@ app.get('/api/auth/check-email', (req, res) => {
 // POST /api/auth/signup — Create a new mock user and send verification email
 app.post('/api/auth/signup', async (req, res) => {
   const { name, email, password } = req.body;
-  
+
   if (!email) {
     return res.status(400).json({ success: false, error: "Missing required registration parameters" });
   }
@@ -551,13 +551,13 @@ app.post('/api/auth/signup', async (req, res) => {
   try {
     console.log(`\n--- USER SIGNUP PROCESS ---`);
     console.log(`Step 1: Creating database record for user: ${newUser.email}`);
-    
+
     // Construct email verification link hitting the backend verification endpoint
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
     const verifyLink = `${backendUrl}/auth/verify-email?email=${encodeURIComponent(newUser.email)}`;
 
     console.log(`Step 2: Dispatching Account Verification email to: ${newUser.email}`);
-    
+
     // Send verification email using the centralized Resend SDK service
     await emailService.sendVerificationEmail(newUser.email, verifyLink, newUser.name);
 
@@ -578,9 +578,9 @@ app.post('/api/auth/signup', async (req, res) => {
     console.error(`Step 3: Registration Aborted. Verification email sending failed.`);
     console.error(`Error Details: ${error.message}`);
     console.error(`---------------------------\n`);
-    
-    return res.status(500).json({ 
-      success: false, 
+
+    return res.status(500).json({
+      success: false,
       error: `Failed to send welcome/verification email: ${error.message}. Registration aborted.`
     });
   }
@@ -604,7 +604,7 @@ app.get('/api/auth/verify-email', async (req, res) => {
   try {
     console.log(`\n--- USER EMAIL ACTIVATION PROCESS ---`);
     console.log(`Step 1: Activating account for user: ${user.email}`);
-    
+
     user.verified = true;
 
     // Construct dashboard link
@@ -612,7 +612,7 @@ app.get('/api/auth/verify-email', async (req, res) => {
     const dashboardLink = `${frontendUrl}/auth/login?verified=true`;
 
     console.log(`Step 2: Dispatching Welcome email via Resend to: ${user.email}`);
-    
+
     // Send welcome email using Resend
     await emailService.sendWelcomeEmail(user.email, dashboardLink, user.name);
 
@@ -643,28 +643,28 @@ app.post('/api/auth/google', async (req, res) => {
     // === SANDBOX BYPASS FOR AUTH FLOW TESTS ===
     if (id_token.includes("sandbox") || access_token.includes("sandbox")) {
       console.log("[Google Auth] Sandbox token detected. Running offline test validation...");
-      
+
       const parts = id_token.split('.');
       if (parts.length !== 3) {
         return res.status(401).json({ success: false, error: "OAuth validation failed. Invalid ID Token." });
       }
-      
+
       const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
-      
+
       if (parts[2] !== "valid-sandbox-signature") {
         return res.status(401).json({ success: false, error: "OAuth validation failed. Invalid signature." });
       }
-      
+
       if (!payload.email_verified) {
         return res.status(401).json({ success: false, error: "Rejecting login. Email not verified by Google." });
       }
-      
+
       email = payload.email;
       name = payload.name;
     } else {
       // === REAL PRODUCTION GOOGLE OAUTH VALIDATION FLOW ===
       console.log("[Google Auth] Initializing real token verification flow...");
-      
+
       // 1. Verify id_token via Google's tokeninfo API
       let tokenInfo;
       try {
@@ -789,7 +789,7 @@ app.get('/api/websites/:id/json', (req, res) => {
 app.patch('/api/websites/:id/json', (req, res) => {
   const website = websitesDb[req.params.id];
   const reqUserId = req.headers['x-user-id'] || req.body.userId;
-  
+
   if (website && reqUserId && website.userId && website.userId !== reqUserId) {
     return res.status(403).json({ success: false, error: "Website data is strictly isolated by userId." });
   }
@@ -802,18 +802,18 @@ app.patch('/api/websites/:id/json', (req, res) => {
 app.post('/api/onboarding/complete', async (req, res) => {
   const { businessData, websiteJson, userId } = req.body;
   const mockId = `site_${Math.floor(100000 + Math.random() * 900000)}`;
-  
+
   console.log("STEP 10: Onboarding Saved - " + mockId);
   console.log("STEP 7: Website saved in memory: " + mockId);
   console.log("STEP 8: Website ID generated: " + mockId);
-  
+
   const finalJson = websiteJson || await aiGenerator.compileWebsiteJSON(businessData || {}, 'modern');
-  
+
   websitesDb[mockId] = {
     ...finalJson,
     userId: userId || "anonymous"
   };
-  
+
   res.status(201).json({
     success: true,
     data: { id: mockId }
@@ -827,4 +827,7 @@ app.use('/api/orders', ordersRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log("ENV FILE:", process.cwd());
+  console.log("GEMINI KEY:", process.env.GEMINI_API_KEY ? "FOUND" : "MISSING");
+  console.log("PEXELS KEY:", process.env.PEXELS_API_KEY ? "FOUND" : "MISSING");
 });

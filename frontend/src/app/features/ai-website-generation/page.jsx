@@ -34,14 +34,7 @@ const benefits = [
   }
 ];
 
-const categories = [
-  { name: "Bakery", icon: "🥐", desc: "Showcase sweets, sourdough, and pastry catalogs with simple pricing lists." },
-  { name: "Restaurant", icon: "🍲", desc: "Display full dine-in menus, specialties, and take online order receipts." },
-  { name: "Salon & Spa", icon: "✂️", desc: "List styling packages, treatments, and accept booking leads." },
-  { name: "Electronics", icon: "🔌", desc: "Display devices, model listings, and custom specification sheets." },
-  { name: "Grocery", icon: "🍎", desc: "List organic produce, spices, and bulk grains for WhatsApp checkouts." },
-  { name: "Fashion Boutique", icon: "👗", desc: "Showcase seasonal styles, clothing catalogs, and size sheets." }
-];
+
 
 const exampleSites = [
   { name: "Golden Crust Bakery", category: "Bakery", domain: "goldencrust.siteforge.app", rating: "4.9 ★" },
@@ -157,20 +150,17 @@ export default function AIWebsiteGenerationPage() {
 
       {/* Business Verticals and Examples */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
-        {/* Categories (7 cols) */}
-        <div className="lg:col-span-7 bg-white/60 backdrop-blur-md border border-[#2F3E46]/12 rounded-[32px] p-6 md:p-8 space-y-6">
-          <h3 className="font-display text-lg font-bold text-[#2F3E46] uppercase tracking-wider border-b border-[#2F3E46]/10 pb-4">Supported Business Categories</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {categories.map((c, i) => (
-              <div key={i} className="flex gap-3 items-start p-2 hover:bg-[#CAD2C5]/20 rounded-xl transition-colors">
-                <span className="text-xl bg-white border border-[#2F3E46]/10 h-10 w-10 rounded-xl flex items-center justify-center shadow-sm shrink-0">{c.icon}</span>
-                <div className="space-y-0.5">
-                  <h4 className="font-bold text-xs text-[#2F3E46]">{c.name}</h4>
-                  <p className="text-[10px] text-[#354F52] leading-relaxed">{c.desc}</p>
-                </div>
-              </div>
-            ))}
+        {/* Infinite Categories (7 cols) */}
+        <div className="lg:col-span-7 bg-white/60 backdrop-blur-md border border-[#2F3E46]/12 rounded-[32px] p-6 md:p-8 space-y-6 flex flex-col justify-center text-center items-center">
+          <div className="h-16 w-16 bg-[#52796F]/10 border border-[#52796F]/20 rounded-full flex items-center justify-center text-[#52796F] mb-2">
+            <Sparkles className="h-8 w-8" />
           </div>
+          <h3 className="font-display text-2xl font-black text-[#2F3E46] uppercase tracking-wider">Infinite Business Types</h3>
+          <p className="text-sm text-[#354F52] leading-relaxed max-w-md">
+            Our Concept Engine dynamically interprets <strong>any</strong> industry. 
+            Whether you run a <em>Hydroponics Shop</em>, a <em>Drone Photography Agency</em>, or a <em>Motorcycle Repair Garage</em>, 
+            SiteForge generates exact semantic layouts, custom product catalogs, and matching visual designs instantly.
+          </p>
         </div>
 
         {/* Example Websites (5 cols) */}
