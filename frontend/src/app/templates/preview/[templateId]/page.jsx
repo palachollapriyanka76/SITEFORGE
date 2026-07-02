@@ -38,6 +38,64 @@ import {
 import { TEMPLATES_LIST, generateTemplateJson, DESIGN_PRESETS } from "../../../../config/templatesRegistry";
 import { getOptimizedImageUrl } from "../../../../utils/imageOptimizer";
 
+import { 
+  LuxuryBakeryTemplate, 
+  ModernBakeryTemplate, 
+  VintageBakeryTemplate, 
+  ArtisanBakeryTemplate, 
+  MinimalBakeryTemplate 
+} from "../../../../components/templates/BakeryTemplates";
+
+import { 
+  LuxuryRestaurantTemplate, 
+  ModernRestaurantTemplate, 
+  VintageRestaurantTemplate, 
+  ArtisanRestaurantTemplate, 
+  MinimalRestaurantTemplate 
+} from "../../../../components/templates/RestaurantTemplates";
+
+import { 
+  LuxurySalonTemplate, 
+  ModernSalonTemplate, 
+  VintageSalonTemplate, 
+  ArtisanSalonTemplate, 
+  MinimalSalonTemplate 
+} from "../../../../components/templates/SalonTemplates";
+
+import { 
+  LuxuryElectronicsTemplate, 
+  ModernElectronicsTemplate, 
+  VintageElectronicsTemplate, 
+  ArtisanElectronicsTemplate, 
+  MinimalElectronicsTemplate 
+} from "../../../../components/templates/ElectronicsTemplates";
+
+const TEMPLATE_COMPONENTS = {
+  "bakery-luxury": LuxuryBakeryTemplate,
+  "bakery-modern": ModernBakeryTemplate,
+  "bakery-vintage": VintageBakeryTemplate,
+  "bakery-artisan": ArtisanBakeryTemplate,
+  "bakery-minimal": MinimalBakeryTemplate,
+
+  "restaurant-luxury": LuxuryRestaurantTemplate,
+  "restaurant-modern": ModernRestaurantTemplate,
+  "restaurant-vintage": VintageRestaurantTemplate,
+  "restaurant-artisan": ArtisanRestaurantTemplate,
+  "restaurant-minimal": MinimalRestaurantTemplate,
+
+  "beauty_salon-luxury": LuxurySalonTemplate,
+  "beauty_salon-modern": ModernSalonTemplate,
+  "beauty_salon-vintage": VintageSalonTemplate,
+  "beauty_salon-artisan": ArtisanSalonTemplate,
+  "beauty_salon-minimal": MinimalSalonTemplate,
+
+  "electronics_store-luxury": LuxuryElectronicsTemplate,
+  "electronics_store-modern": ModernElectronicsTemplate,
+  "electronics_store-vintage": VintageElectronicsTemplate,
+  "electronics_store-artisan": ArtisanElectronicsTemplate,
+  "electronics_store-minimal": MinimalElectronicsTemplate,
+};
+
 const IconMap = {
   Sparkles, Flame, Dumbbell, Scissors, Activity, Utensils, GlassWater,
   ShoppingBag, Headphones, Cpu, ShieldCheck, Cake, Cookie, Check, Star,
@@ -305,16 +363,17 @@ export default function StandalonePreviewPage({ params }) {
 
           {/* Simulated Website Pages Container */}
           <div className="flex-1 bg-white" style={{ fontFamily: theme.fontFamily }}>
-            {activeSections.map((sec) => (
-              <RenderSection 
-                key={sec.id} 
-                sec={sec} 
-                theme={theme} 
-                onAnchorClick={handleAnchorClick}
-                triggerToast={triggerToast}
-                onGalleryImageClick={setLightboxImage}
-              />
-            ))}
+            {(() => {
+              const SelectedTemplate = TEMPLATE_COMPONENTS[templateId] || ModernBakeryTemplate;
+              return (
+                <SelectedTemplate
+                  theme={theme}
+                  activeTab={activeTab}
+                  onGalleryImageClick={setLightboxImage}
+                  triggerToast={triggerToast}
+                />
+              );
+            })()}
           </div>
         </div>
       </main>

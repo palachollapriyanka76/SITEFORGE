@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import UniversalNavbar from "../../../components/templates/UniversalNavbar";
 import { 
   Sparkles, 
   Flame, 
@@ -117,14 +118,23 @@ export default function PreviewPage({ params }) {
 
   return (
     <div className="w-full min-h-screen bg-white text-zinc-800" style={fontStyle}>
-      {/* Published badge banner */}
-      <div className="fixed bottom-4 left-4 z-50 bg-zinc-900/90 border border-zinc-800 hover:bg-zinc-900 text-white px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-md flex items-center gap-2.5 text-[11px] font-bold transition-all cursor-pointer" onClick={() => window.open(`http://localhost:3000/editor/${websiteId}`, "_self")}>
-        <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-        <span>Live Site Forge Preview</span>
-        <ExternalLink className="h-3 w-3 text-zinc-450" />
-      </div>
+      <UniversalNavbar
+        businessName={websiteJSON.meta?.title?.split("|")[0].trim() || "My Business"}
+        logo={websiteJSON.meta?.logo}
+        sections={sections}
+        whatsappNumber={websiteJSON.globalSettings?.whatsappNumber}
+        primaryCTA="Contact Us"
+        theme={theme}
+      />
+      <div className="pt-[80px]">
+        {/* Published badge banner */}
+        <div className="fixed bottom-4 left-4 z-50 bg-zinc-900/90 border border-zinc-800 hover:bg-zinc-900 text-white px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-md flex items-center gap-2.5 text-[11px] font-bold transition-all cursor-pointer" onClick={() => window.open(`http://localhost:3000/editor/${websiteId}`, "_self")}>
+          <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Live Site Forge Preview</span>
+          <ExternalLink className="h-3 w-3 text-zinc-450" />
+        </div>
 
-      {sections.map((sec) => {
+        {sections.map((sec) => {
         return (
           <div id={sec.id} key={sec.id} className="relative">
             {/* HERO SECTION */}
@@ -869,6 +879,7 @@ export default function PreviewPage({ params }) {
           </div>
         );
       })}
+      </div>
 
       {/* Floating Toast Notification */}
       {toastMessage && (

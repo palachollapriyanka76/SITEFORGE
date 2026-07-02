@@ -44,7 +44,7 @@ const QUESTIONS_CONFIG = [
   {
     step: 1,
     field: "type",
-    nextPrompt: "🍰 Offerings & Specialties? (Select tags below or list custom items separated by commas)",
+    nextPrompt: "🍰 What offerings or specialties would you like to showcase? (Select tags below or list custom items separated by commas)",
     type: "products_tags"
   },
   {
@@ -195,6 +195,25 @@ export default function OnboardingChat() {
       }
     }
 
+    // Special behavior for Other Services custom category flow
+    if (configStep.field === "type" && answerText === "Other Services") {
+      updateBusinessData({ type: "Other Services" });
+      setIsAiTyping(true);
+      setTimeout(() => {
+        const customPrompt = "I couldn't find your business category in the list. Please specify your business category.";
+        addMessage({
+          id: `ai-${Date.now()}`,
+          sender: "ai",
+          text: customPrompt,
+          timestamp: new Date().toISOString(),
+          type: "custom_category_input"
+        });
+        setIsAiTyping(false);
+        speakText(customPrompt);
+      }, 500);
+      return;
+    }
+
     updateBusinessData(parsedData);
     
     // 3. Move to next step or complete onboarding
@@ -217,7 +236,11 @@ export default function OnboardingChat() {
         socialLinks: "All set!"
       };
       
-      const aiAckText = fallbacks[configStep.field] || "Perfect. Saved.";
+      let aiAckText = fallbacks[configStep.field] || "Perfect. Saved.";
+
+      if (configStep.field === "type") {
+        aiAckText = `Great! I've saved your business category as ${answerText}.`;
+      }
       
       if (isLastStep) {
         setComplete(true);

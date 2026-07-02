@@ -5,22 +5,66 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') }
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const emailService = require('./services/email.service');
+const connectDB = require('./db');
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
 
-// Secure password hashing helper using SHA-256 with standard Salt
-function hashPassword(password) {
+// Secure password hashing helper using bcrypt
+async function hashPassword(password) {
   if (!password) return "";
-  const salt = 'siteforge-secure-salt-key';
-  return crypto.createHmac('sha256', salt).update(password).digest('hex');
+  return await bcrypt.hash(password, 10);
 }
 
-// Secure password verification helper supporting both SHA-256 hash and plain-text
-function comparePassword(enteredPassword, storedHash) {
+// Secure password verification helper using bcrypt
+async function comparePassword(enteredPassword, storedHash) {
   if (!enteredPassword || !storedHash) return false;
-  const hashed = hashPassword(enteredPassword);
-  return hashed === storedHash || enteredPassword === storedHash;
+  return await bcrypt.compare(enteredPassword, storedHash);
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || 'siteforge-super-secret-jwt-key';
+
+async function seedDefaultUsers() {
+  const defaults = [
+    {
+      id: "user_test123",
+      name: "Test User",
+      email: "test@example.com",
+      password: "password123"
+    },
+    {
+      id: "user_kavithaag",
+      name: "Kavitha",
+      email: "kavithaag239@gmail.com",
+      password: "password123"
+    },
+    {
+      id: "user_priyanka",
+      name: "Priyanka",
+      email: "palachollapriyanka76@gmail.com",
+      password: "password123"
+    }
+  ];
+
+  for (const u of defaults) {
+    const cleanEmail = u.email.trim().toLowerCase();
+    const exists = await User.findOne({ email: cleanEmail });
+    if (!exists) {
+      const hashedPassword = await bcrypt.hash(u.password, 10);
+      await User.create({
+        id: u.id,
+        name: u.name,
+        email: cleanEmail,
+        password: hashedPassword,
+        verified: true
+      });
+      console.log(`[Seed] Seeded default user: ${cleanEmail}`);
+    }
+  }
+}
+
+connectDB().then(() => {
+  seedDefaultUsers().catch(err => console.error("Seeding failed:", err));
+});
 
 // Enforce critical environment variables validation at startup
 const resendApiKey = process.env.RESEND_API_KEY;
@@ -173,26 +217,7 @@ app.post('/api/generate/website-variations', async (req, res) => {
 
 
 // In-Memory users mock database with default test user pre-populated
-const usersDb = [
-  {
-    id: "user_test123",
-    name: "Test User",
-    email: "test@example.com",
-    password: hashPassword("password123")
-  },
-  {
-    id: "user_kavithaag",
-    name: "Kavitha",
-    email: "kavithaag239@gmail.com",
-    password: hashPassword("password123")
-  },
-  {
-    id: "user_priyanka",
-    name: "Priyanka",
-    email: "palachollapriyanka76@gmail.com",
-    password: hashPassword("password123")
-  }
-];
+// Database User model is utilized below
 
 // In-memory rate limiting databases for password reset requests (sliding 15 min window)
 const ipForgotPasswordLimiter = new Map();
@@ -299,10 +324,9 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
   console.log(`Step 1: Forgot Password Request received for email: ${cleanEmail}`);
 
   // Find user by normalized email
-  const user = usersDb.find(u => u.email.trim().toLowerCase() === cleanEmail);
+  const user = await User.findOne({ email: cleanEmail });
 
   // PREVENT ENUMERATION ATTACKS:
-  // If the user does not exist, return a generic success message so attackers can't list users
   if (!user) {
     console.log(`Step 1b: Security Note: User with email ${cleanEmail} is not registered. Sent generic success response (enumeration protected).`);
     console.log(`---------------------------------\n`);
@@ -328,6 +352,7 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
     if (process.env.NODE_ENV !== 'production') {
       user.tempUnhashedToken = resetToken;
     }
+    await user.save();
 
     console.log(`Step 2: Token Created (hashed & expiration set successfully)`);
 
@@ -367,7 +392,7 @@ app.post('/api/auth/forgot-password', rateLimitForgotPassword, async (req, res) 
 });
 
 // GET /api/auth/reset-password/:token — Verify if token is valid and not expired
-app.get('/api/auth/reset-password/:token', (req, res) => {
+app.get('/api/auth/reset-password/:token', async (req, res) => {
   const { token } = req.params;
 
   if (!token) {
@@ -375,11 +400,10 @@ app.get('/api/auth/reset-password/:token', (req, res) => {
   }
 
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  const user = usersDb.find(u => 
-    u.resetPasswordToken === hashedToken && 
-    u.resetPasswordExpires && 
-    new Date(u.resetPasswordExpires) > new Date()
-  );
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: new Date() }
+  });
 
   if (!user) {
     console.warn(`[Reset Password] Rejected token check: Token is invalid or has expired.`);
@@ -412,11 +436,10 @@ app.post('/api/auth/reset-password/:token', async (req, res) => {
   }
 
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  const user = usersDb.find(u => 
-    u.resetPasswordToken === hashedToken && 
-    u.resetPasswordExpires && 
-    new Date(u.resetPasswordExpires) > new Date()
-  );
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: new Date() }
+  });
 
   if (!user) {
     console.warn(`[Reset Password] Rejected password update: Token is invalid or has expired.`);
@@ -428,12 +451,13 @@ app.post('/api/auth/reset-password/:token', async (req, res) => {
 
   try {
     // Update password securely
-    user.password = hashPassword(password);
+    user.password = await hashPassword(password);
     
     // Enforce "Token can only be used once" by clearing fields immediately
-    delete user.resetPasswordToken;
-    delete user.resetPasswordExpires;
-    delete user.tempUnhashedToken;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    user.tempUnhashedToken = undefined;
+    await user.save();
 
     console.log(`[Reset Password] Password reset successfully completed for user: ${user.email}. Token has been revoked.`);
 
@@ -451,11 +475,11 @@ app.post('/api/auth/reset-password/:token', async (req, res) => {
 });
 
 // GET /api/auth/test/latest-token — Dev-only backdoor to get the unhashed token for automated testing
-app.get('/api/auth/test/latest-token', (req, res) => {
+app.get('/api/auth/test/latest-token', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     return res.status(403).json({ success: false, error: "Access denied." });
   }
-  const user = usersDb.find(u => u.email.trim().toLowerCase() === 'test@example.com');
+  const user = await User.findOne({ email: 'test@example.com' });
   if (!user || !user.tempUnhashedToken) {
     return res.status(404).json({ success: false, error: "No active token found for test user." });
   }
@@ -474,21 +498,20 @@ app.post('/api/auth/login', async (req, res) => {
 
   try {
     // Find user by normalized email
-    const user = usersDb.find(u => u.email.trim().toLowerCase() === cleanEmail);
+    const user = await User.findOne({ email: cleanEmail });
 
     console.log(`\n--- LOGIN DEBUGGING ---`);
-    console.log(`Email: "${cleanEmail}"`);
+    console.log(`Login Email: ${cleanEmail}`);
     console.log(`User Found: ${!!user}`);
     if (user) {
       console.log(`Stored User Password: "${user.password}"`);
       console.log(`Entered Password: "${password}"`);
-      console.log(`Hashed Entered Password: "${hashPassword(password)}"`);
-      console.log(`Password Match: ${comparePassword(password, user.password)}`);
+      console.log(`Password Match: ${await comparePassword(password, user.password)}`);
     }
     console.log(`-----------------------\n`);
 
     // Secure authentication check (prevent password timing attacks / enumeration alerts)
-    const isPasswordValid = user ? comparePassword(password, user.password) : false;
+    const isPasswordValid = user ? await comparePassword(password, user.password) : false;
 
     if (!user || !isPasswordValid) {
       // Return a generic error to prevent email harvesting/user enumeration
@@ -527,10 +550,10 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // GET /api/auth/check-email — Check duplicate email
-app.get('/api/auth/check-email', (req, res) => {
+app.get('/api/auth/check-email', async (req, res) => {
   const { email } = req.query;
-  const exists = usersDb.some(u => u.email.trim().toLowerCase() === String(email).trim().toLowerCase());
-  if (exists) {
+  const user = await User.findOne({ email: String(email).trim().toLowerCase() });
+  if (user) {
     return res.json({ exists: true, error: "This email is already registered. Please sign in instead." });
   }
   res.json({ exists: false });
@@ -544,50 +567,62 @@ app.post('/api/auth/signup', async (req, res) => {
     return res.status(400).json({ success: false, error: "Missing required registration parameters" });
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+
   // Validate duplicate email
-  const emailExists = usersDb.some(u => u.email.trim().toLowerCase() === email.trim().toLowerCase());
+  const emailExists = await User.findOne({ email: cleanEmail });
   if (emailExists) {
     return res.status(400).json({ success: false, error: "This email is already registered. Please sign in instead." });
   }
 
   const userId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
-  const hashedPassword = hashPassword(password);
-  const newUser = { id: userId, name: name || "Valued Merchant", email, password: hashedPassword, verified: false };
+  const hashedPassword = await hashPassword(password);
+  const newUser = new User({ id: userId, name: name || "Valued Merchant", email: cleanEmail, password: hashedPassword, verified: false });
 
   try {
     console.log(`\n--- USER SIGNUP PROCESS ---`);
-    console.log(`Step 1: Creating database record for user: ${newUser.email}`);
+    
+    // Save user to MongoDB first
+    const user = await newUser.save();
+    console.log("Signup Email:", email);
+    console.log("User Created:", user._id);
     
     // Construct email verification link hitting the backend verification endpoint
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    const verifyLink = `${backendUrl}/auth/verify-email?email=${encodeURIComponent(newUser.email)}`;
+    const verifyLink = `${backendUrl}/auth/verify-email?email=${encodeURIComponent(user.email)}`;
 
-    console.log(`Step 2: Dispatching Account Verification email to: ${newUser.email}`);
+    console.log(`Step 2: Dispatching Account Verification email to: ${user.email}`);
     
-    // Send verification email using the centralized Resend SDK service
-    await emailService.sendVerificationEmail(newUser.email, verifyLink, newUser.name);
-
-    console.log(`Step 3: Verification email accepted by Resend. Saving user and awaiting activation.`);
-    usersDb.push(newUser);
-    console.log("STEP 10: User Created - Database Record Cuid: " + userId);
-    console.log(`---------------------------\n`);
-
     // Generate secure JWT session token upon registration for immediate session capability
     const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email, name: newUser.name },
+      { userId: user.id, email: user.email, name: user.name },
       JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    res.status(201).json({ success: true, token, user: newUser });
+    let emailErrorMsg = null;
+    try {
+      // Send verification email using the centralized Resend SDK service
+      const resendResponse = await emailService.sendVerificationEmail(user.email, verifyLink, user.name);
+      console.log(`Step 3: Verification email accepted by Resend. Resend Response:`, JSON.stringify(resendResponse || {}));
+    } catch (emailErr) {
+      console.error(`[Email Error] Resend email sending failed: ${emailErr.message}`);
+      emailErrorMsg = "Account created successfully. Verification email could not be sent.";
+    }
+
+    console.log(`---------------------------\n`);
+
+    res.status(201).json({
+      success: true,
+      token,
+      user,
+      ...(emailErrorMsg ? { message: emailErrorMsg } : {})
+    });
   } catch (error) {
-    console.error(`Step 3: Registration Aborted. Verification email sending failed.`);
-    console.error(`Error Details: ${error.message}`);
-    console.error(`---------------------------\n`);
-    
+    console.error(`Registration Aborted due to database or server error:`, error.message);
     return res.status(500).json({ 
       success: false, 
-      error: `Failed to send welcome/verification email: ${error.message}. Registration aborted.`
+      error: `Failed to complete user registration: ${error.message}`
     });
   }
 });
@@ -601,7 +636,7 @@ app.get('/api/auth/verify-email', async (req, res) => {
   }
 
   const cleanEmail = email.trim().toLowerCase();
-  const user = usersDb.find(u => u.email.trim().toLowerCase() === cleanEmail);
+  const user = await User.findOne({ email: cleanEmail });
 
   if (!user) {
     return res.status(404).send("User account not found.");
@@ -612,6 +647,7 @@ app.get('/api/auth/verify-email', async (req, res) => {
     console.log(`Step 1: Activating account for user: ${user.email}`);
     
     user.verified = true;
+    await user.save();
 
     // Construct dashboard link
     const frontendUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
@@ -716,13 +752,15 @@ app.post('/api/auth/google', async (req, res) => {
 
     // === USER REGISTRATION / LOGIN PROVISIONING ===
     const cleanEmail = email.trim().toLowerCase();
-    let user = usersDb.find(u => u.email.trim().toLowerCase() === cleanEmail);
+    let user = await User.findOne({ email: cleanEmail });
 
     if (!user) {
       // Create new user (Sign Up)
       const userId = `user_${Math.floor(100000 + Math.random() * 900000)}`;
-      user = { id: userId, name: name.trim(), email: cleanEmail, password: "" };
-      usersDb.push(user);
+      const randomPass = crypto.randomBytes(16).toString('hex');
+      const dummyPass = await hashPassword(randomPass);
+      user = new User({ id: userId, name: name.trim(), email: cleanEmail, password: dummyPass });
+      await user.save();
       console.log(`[Google Auth] Created new user: ${cleanEmail} (${userId})`);
     } else {
       // Login existing user (Log In)

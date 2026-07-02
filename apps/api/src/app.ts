@@ -15,6 +15,7 @@ import onboardingRoutes from "./routes/onboarding.routes.js";
 import generationRoutes from "./routes/generation.routes.js";
 import publishRoutes from "./routes/publish.routes.js";
 import domainRoutes from "./routes/domain.routes.js";
+import dbCrudRoutes from "./routes/dbCrud.routes.js";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use("/api/onboarding", onboardingRoutes);
 app.use("/api/generate", generationRoutes);
 app.use("/api/publish", publishRoutes);
 app.use("/api/domains", domainRoutes);
+app.use("/api", dbCrudRoutes);
 
 // ---- Error Handler ----
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

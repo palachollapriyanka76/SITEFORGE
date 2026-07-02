@@ -1,5 +1,5 @@
 // =======================================================================
-// SiteForge Prisma Schema
+// SiteForge Master Vendor Knowledge Database Schema
 // =======================================================================
 
 generator client {
@@ -12,7 +12,7 @@ datasource db {
 }
 
 // -----------------------------------------------------------------------
-// User & Authentication
+// Enums
 // -----------------------------------------------------------------------
 
 enum UserRole {
@@ -27,29 +27,17 @@ enum Plan {
   BUSINESS
 }
 
-model User {
-  id        String   @id @default(cuid())
-  clerkId   String   @unique
-  email     String   @unique
-  name      String?
-  avatarUrl String?
-  plan      Plan     @default(FREE)
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  websites     Website[]
-  subscription Subscription?
-  aiJobs       AIJob[]
-
-  @@index([clerkId])
-  @@index([email])
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
 }
 
-
-// -----------------------------------------------------------------------
-// Websites & Pages
-// -----------------------------------------------------------------------
+enum BusinessStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
+}
 
 enum WebsiteStatus {
   DRAFT
@@ -57,8 +45,517 @@ enum WebsiteStatus {
   ARCHIVED
 }
 
+enum NotificationType {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  READ
+}
+
+enum FavoriteTargetType {
+  TEMPLATE
+  THEME
+  IMAGE
+}
+
+// -----------------------------------------------------------------------
+// 1. Users & Authentication
+// -----------------------------------------------------------------------
+
+model User {
+  id            String        @id @default(uuid())
+  clerkId       String        @unique
+  email         String        @unique
+  name          String?
+  avatarUrl     String?
+  role          UserRole      @default(USER)
+  status        AccountStatus @default(ACTIVE)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  deletedAt     DateTime?
+
+  businesses    Business[]
+  notifications Notification[]
+  favorites     Favorite[]
+  auditLogs     AuditLog[]
+  aiJobs        AIJob[]
+  websites      Website[]
+  subscription  Subscription?
+  plan          Plan          @default(FREE)
+
+  @@index([clerkId])
+  @@index([email])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 2. Admins & Audit Logs
+// -----------------------------------------------------------------------
+
+model Admin {
+  id          String        @id @default(uuid())
+  email       String        @unique
+  name        String
+  permissions String[]      // e.g., ["read:users", "write:templates"]
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+
+  @@index([email])
+  @@index([deletedAt])
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  userId      String?
+  action      String    // e.g., "UPDATE_TEMPLATE", "DELETE_BUSINESS"
+  tableName   String
+  recordId    String
+  description String
+  createdAt   DateTime  @default(now())
+
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([tableName, recordId])
+}
+
+// -----------------------------------------------------------------------
+// 3. Business Categories (Knowledge Roots)
+// -----------------------------------------------------------------------
+
+model BusinessCategory {
+  id             String             @id @default(uuid())
+  name           String             @unique
+  parentId       String?
+  icon           String?
+  banner         String?
+  description    String?
+  seoSlug        String             @unique
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  deletedAt      DateTime?
+
+  parent         BusinessCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children       BusinessCategory[] @relation("CategoryHierarchy")
+  
+  // Knowledge Base Relations
+  profile            BusinessCategoryProfile?
+  serviceKnowledge   CategoryServiceKnowledge[]
+  productKnowledge   CategoryProductKnowledge[]
+  faqs               CategoryFaqKnowledge[]
+  testimonials       CategoryTestimonialKnowledge[]
+  seo                CategorySeoKnowledge?
+  theme              CategoryThemeKnowledge?
+  templates          CategoryTemplateKnowledge[]
+
+  // Live Instances
+  businesses     Business[]
+  liveTemplates  Template[]
+  images         Image[]
+  products       Product[]
+  services       Service[]
+
+  @@index([parentId])
+  @@index([seoSlug])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 4. Category Knowledge Skeletons (AI-Free Instantiation Data)
+// -----------------------------------------------------------------------
+
+model BusinessCategoryProfile {
+  id                    String           @id @default(uuid())
+  categoryId            String           @unique
+  shortDescription      String?
+  longDescription       String?
+  tagline               String?
+  mission               String?
+  vision                String?
+  aboutCompany          String?
+  businessHistory       String?
+  businessHours         Json?
+  phoneFormat           String?
+  emailFormat           String?
+  googleMapsPlaceholder String?
+  socialMedia           Json?
+  heroTitles            String[]
+  heroSubtitles         String[]
+  heroButtons           Json?
+  aboutContent          String?
+  serviceIntro          String?
+  ctaTitle              String?
+  ctaSubtitle           String?
+  ctaButtonText         String?
+  footerContent         String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  deletedAt             DateTime?
+
+  category              BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([deletedAt])
+}
+
+model CategoryServiceKnowledge {
+  id          String           @id @default(uuid())
+  categoryId  String
+  name        String
+  description String?
+  priceRange  String?
+  duration    Int              @default(30)
+  imagePath   String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+
+  category    BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model CategoryProductKnowledge {
+  id          String           @id @default(uuid())
+  categoryId  String
+  name        String
+  description String?
+  priceRange  String?
+  imagePath   String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+
+  category    BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model CategoryFaqKnowledge {
+  id         String           @id @default(uuid())
+  categoryId String
+  question   String
+  answer     String
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  deletedAt  DateTime?
+
+  category   BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model CategoryTestimonialKnowledge {
+  id         String           @id @default(uuid())
+  categoryId String
+  authorName String
+  authorRole String?
+  quote      String
+  rating     Int              @default(5)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  deletedAt  DateTime?
+
+  category   BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model CategorySeoKnowledge {
+  id              String           @id @default(uuid())
+  categoryId      String           @unique
+  keywords        String[]
+  metaTitle       String?
+  metaDescription String?
+  openGraph       Json?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+
+  category        BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([deletedAt])
+}
+
+model CategoryThemeKnowledge {
+  id             String           @id @default(uuid())
+  categoryId     String           @unique
+  primaryColor   String
+  secondaryColor String
+  accentColor    String
+  background     String
+  typography     Json
+  borderRadius   String
+  shadowStyle    String
+  animationStyle String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
+
+  category       BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([deletedAt])
+}
+
+model CategoryTemplateKnowledge {
+  id         String           @id @default(uuid())
+  categoryId String
+  name       String           // Landing Page, Corporate, Premium, Minimal, Luxury, Modern, Classic, Dark, Colorful
+  layoutJson Json
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  deletedAt  DateTime?
+
+  category   BusinessCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 5. Businesses (SaaS Multi-Tenant Live Configurations)
+// -----------------------------------------------------------------------
+
+model Business {
+  id          String           @id @default(uuid())
+  userId      String
+  categoryId  String
+  name        String
+  description String?
+  phone       String?
+  email       String?
+  address     String?
+  location    Json?            // { lat: float, lng: float, formatted: string }
+  logo        String?
+  gst         String?
+  openingHours Json?           // { monday: { open: "09:00", close: "17:00" }, ... }
+  socialMedia  Json?           // { facebook: "", twitter: "", instagram: "" }
+  status      BusinessStatus   @default(ACTIVE)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    BusinessCategory @relation(fields: [categoryId], references: [id])
+  websites    Website[]
+  products    Product[]
+  services    Service[]
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 6. Themes & Layouts
+// -----------------------------------------------------------------------
+
+model Theme {
+  id             String         @id @default(uuid())
+  name           String
+  primaryColor   String
+  secondaryColor String
+  accentColor    String
+  background     String
+  typography     Json           // { headings: "Inter", body: "Roboto" }
+  borderRadius   String
+  shadowStyle    String
+  animationStyle String
+  darkMode       Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+
+  templates      Template[]
+  websites       Website[]
+  favorites      Favorite[]
+  images         Image[]
+
+  @@index([deletedAt])
+}
+
+model Layout {
+  id            String      @id @default(uuid())
+  name          String
+  description   String?
+  jsonStructure Json        // Grid/flex structural skeleton definition
+  thumbnail     String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+
+  templates     Template[]
+
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 7. Templates & Reusable Sections
+// -----------------------------------------------------------------------
+
+model Template {
+  id            String           @id @default(uuid())
+  name          String
+  categoryId    String
+  themeId       String
+  layoutId      String
+  jsonStructure Json             // Complete template JSON (Hero, About, etc.)
+  previewImage  String?
+  thumbnail     String?
+  version       String           @default("1.0.0")
+  status        String           @default("active") // "active", "draft", "retired"
+  tags          String[]
+  popularity    Int              @default(0)
+  isPremium     Boolean          @default(false)
+  createdById   String?          // Nullable if system default template
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  deletedAt     DateTime?
+
+  category      BusinessCategory @relation(fields: [categoryId], references: [id])
+  theme         Theme            @relation(fields: [themeId], references: [id])
+  layout        Layout           @relation(fields: [layoutId], references: [id])
+  websites      Website[]
+  favorites     Favorite[]
+
+  @@index([categoryId])
+  @@index([themeId])
+  @@index([layoutId])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model TemplateSection {
+  id             String    @id @default(uuid())
+  name           String
+  componentName  String    // e.g. "HeroSection", "Navbar"
+  layoutJson     Json
+  styleJson      Json
+  animationJson  Json
+  editableFields Json      // Fields like [{ name: "title", type: "text" }]
+  responsiveRules Json     // Rules for mobile/desktop layout
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 8. Image Library & Metadata
+// -----------------------------------------------------------------------
+
+model ImageCollection {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  images      Image[]
+
+  @@index([deletedAt])
+}
+
+model Image {
+  id            String           @id @default(uuid())
+  url           String
+  categoryId    String
+  collectionId  String?
+  themeId       String?
+  section       String?          // e.g. "Hero", "Gallery"
+  primaryColor  String?
+  keywords      String[]
+  aspectRatio   String?          // e.g. "16:9", "1:1"
+  resolution    String?          // e.g. "1920x1080"
+  priority      Int              @default(0)
+  altText       String?
+  description   String?
+  license       String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  deletedAt     DateTime?
+
+  category      BusinessCategory @relation(fields: [categoryId], references: [id])
+  collection    ImageCollection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  theme         Theme?           @relation(fields: [themeId], references: [id], onDelete: SetNull)
+  favorites     Favorite[]
+
+  @@index([categoryId])
+  @@index([collectionId])
+  @@index([themeId])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 9. Products & Services Databases (Multi-Tenant Live Instances)
+// -----------------------------------------------------------------------
+
+model Product {
+  id          String           @id @default(uuid())
+  businessId  String
+  categoryId  String?
+  name        String
+  price       Decimal          @db.Decimal(10, 2)
+  description String?
+  images      String[]
+  inventory   Int              @default(0)
+  tags        String[]
+  sku         String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+
+  business    Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category    BusinessCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([businessId])
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model Service {
+  id          String           @id @default(uuid())
+  businessId  String
+  categoryId  String?
+  name        String
+  description String?
+  price       Decimal          @db.Decimal(10, 2)
+  image       String?
+  duration    Int              @default(30) // Duration in minutes
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+
+  business    Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category    BusinessCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([businessId])
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 10. Websites & Customization
+// -----------------------------------------------------------------------
+
 model Website {
-  id           String        @id @default(cuid())
+  id           String        @id        @default(uuid())
   userId       String
   name         String
   slug         String        @unique
@@ -69,22 +566,187 @@ model Website {
   config       Json          @default("{}")
   status       WebsiteStatus @default(DRAFT)
   templateId   String?
+  themeId      String?
+  publishedUrl String?       @unique
+  sslEnabled   Boolean       @default(false)
+  version      String        @default("1.0.0")
+  businessId   String?
   publishedAt  DateTime?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  template Template? @relation(fields: [templateId], references: [id])
-  pages    Page[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business     Business?     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  template     Template?     @relation(fields: [templateId], references: [id])
+  theme        Theme?        @relation(fields: [themeId], references: [id])
+  customization Customization?
+  seo          Seo?
+  analytics    Analytics[]
+  pages        Page[]
+  aiJobs       AIJob[]
 
   @@index([userId])
-  @@index([slug])
-  @@index([status])
+  @@index([businessId])
   @@index([templateId])
+  @@index([themeId])
+  @@index([status])
+  @@index([slug])
+  @@index([deletedAt])
+}
+
+model Customization {
+  id          String    @id @default(uuid())
+  websiteId   String    @unique
+  logo        String?
+  colors      Json?     // Overridden theme colors
+  fonts       Json?     // Overridden fonts
+  sections    Json?     // Arranged components JSON
+  images      Json?     // Website custom image assignments
+  customCss   String?
+  animations  Json?
+  navigation  Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  website     Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 11. SEO & Analytics
+// -----------------------------------------------------------------------
+
+model Seo {
+  id              String    @id @default(uuid())
+  websiteId       String    @unique
+  metaTitle       String?
+  metaDescription String?
+  keywords        String[]
+  openGraph       Json?     // OpenGraph tag fields
+  twitterCard     Json?     // Twitter Card fields
+  structuredData  Json?     // Schema.org metadata JSON
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  website         Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([deletedAt])
+}
+
+model Analytics {
+  id             String   @id @default(uuid())
+  websiteId      String
+  date           DateTime @default(now())
+  visitors       Int      @default(0)
+  sessions       Int      @default(0)
+  orders         Int      @default(0)
+  revenue        Decimal  @default(0.00) @db.Decimal(12, 2)
+  clicks         Int      @default(0)
+  conversions    Int      @default(0)
+  bounceRate     Float    @default(0.0)
+  trafficSources Json?    // { organic: 50, direct: 20, social: 30 }
+
+  website        Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@unique([websiteId, date])
+  @@index([websiteId])
+}
+
+// -----------------------------------------------------------------------
+// 12. Notifications
+// -----------------------------------------------------------------------
+
+model Notification {
+  id        String             @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  status    NotificationStatus @default(PENDING)
+  sentAt    DateTime?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  deletedAt DateTime?
+
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+// -----------------------------------------------------------------------
+// 13. Favorites
+// -----------------------------------------------------------------------
+
+model Favorite {
+  id         String             @id @default(uuid())
+  userId     String
+  targetType FavoriteTargetType
+  templateId String?
+  themeId    String?
+  imageId    String?
+  createdAt  DateTime           @default(now())
+
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template   Template?          @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  theme      Theme?             @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  image      Image?             @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, targetType, templateId, themeId, imageId])
+  @@index([userId])
+}
+
+// -----------------------------------------------------------------------
+// Legacy AI Jobs & Pages for Compatibility
+// -----------------------------------------------------------------------
+
+enum AIJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum AIJobType {
+  GENERATE_WEBSITE
+  GENERATE_PAGE
+  GENERATE_COMPONENT
+  EDIT_CONTENT
+  GENERATE_SEO
+  GENERATE_COPY
+}
+
+model AIJob {
+  id              String      @id @default(uuid())
+  userId          String
+  websiteId       String?
+  type            AIJobType
+  status          AIJobStatus @default(PENDING)
+  prompt          String
+  context         Json        @default("{}")
+  result          Json?
+  error           String?
+  tokensUsed      Int         @default(0)
+  processingTimeMs Int?
+  createdAt       DateTime    @default(now())
+  completedAt     DateTime?
+
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  website         Website?    @relation(fields: [websiteId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@index([websiteId])
 }
 
 model Page {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   websiteId   String
   title       String
   slug        String
@@ -95,57 +757,14 @@ model Page {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  website     Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
   @@unique([websiteId, slug])
   @@index([websiteId])
 }
 
 // -----------------------------------------------------------------------
-// Templates
-// -----------------------------------------------------------------------
-
-enum TemplateCategory {
-  RESTAURANT
-  PORTFOLIO
-  ECOMMERCE
-  BLOG
-  LANDING_PAGE
-  AGENCY
-  SAAS
-  HEALTHCARE
-  EDUCATION
-  NONPROFIT
-  REAL_ESTATE
-  FITNESS
-  OTHER
-}
-
-model Template {
-  id           String           @id @default(cuid())
-  name         String
-  slug         String           @unique
-  description  String
-  thumbnailUrl String
-  previewUrl   String?
-  category     TemplateCategory
-  tags         String[]
-  config       Json             @default("{}")
-  pages        Json             @default("[]")
-  isPremium    Boolean          @default(false)
-  isActive     Boolean          @default(true)
-  usageCount   Int              @default(0)
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-
-  websites Website[]
-
-  @@index([category])
-  @@index([isActive])
-}
-
-// -----------------------------------------------------------------------
-// Subscriptions & Payments
+// Subscription Models & Enums for Billing
 // -----------------------------------------------------------------------
 
 enum SubscriptionPlan {
@@ -169,7 +788,7 @@ enum PaymentStatus {
 }
 
 model Subscription {
-  id                   String               @id @default(cuid())
+  id                   String               @id @default(uuid())
   userId               String               @unique
   stripeCustomerId     String               @unique
   stripeSubscriptionId String?              @unique
@@ -182,50 +801,7 @@ model Subscription {
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                 User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([stripeCustomerId])
-}
-
-// -----------------------------------------------------------------------
-// AI Jobs
-// -----------------------------------------------------------------------
-
-enum AIJobStatus {
-  PENDING
-  PROCESSING
-  COMPLETED
-  FAILED
-}
-
-enum AIJobType {
-  GENERATE_WEBSITE
-  GENERATE_PAGE
-  GENERATE_COMPONENT
-  EDIT_CONTENT
-  GENERATE_SEO
-  GENERATE_COPY
-}
-
-model AIJob {
-  id              String      @id @default(cuid())
-  userId          String
-  websiteId       String?
-  type            AIJobType
-  status          AIJobStatus @default(PENDING)
-  prompt          String
-  context         Json        @default("{}")
-  result          Json?
-  error           String?
-  tokensUsed      Int         @default(0)
-  processingTimeMs Int?
-  createdAt       DateTime    @default(now())
-  completedAt     DateTime?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([status])
-  @@index([type])
-  @@index([websiteId])
 }

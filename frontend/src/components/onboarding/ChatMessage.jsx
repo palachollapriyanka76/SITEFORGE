@@ -64,6 +64,8 @@ export default function ChatMessage({ message, isLast, onAnswerSubmit }) {
   const [whatsappVal, setWhatsappVal] = useState("");
   const [socialVal, setSocialVal] = useState({ instagram: "", facebook: "", twitter: "" });
   const [selectedTags, setSelectedTags] = useState([]);
+  const [customCategoryVal, setCustomCategoryVal] = useState("");
+  const [customCategoryError, setCustomCategoryError] = useState("");
 
   const handleLogoUpload = (e) => {
     const file = e.target.files?.[0];
@@ -134,6 +136,50 @@ export default function ChatMessage({ message, isLast, onAnswerSubmit }) {
                     <span>{cat.label}</span>
                   </button>
                 ))}
+              </div>
+            )}
+
+            {/* Widget: Custom Business Category Input */}
+            {message.type === "custom_category_input" && (
+              <div className="bg-white border border-[#2F3E46]/12 rounded-2xl p-5 space-y-4 shadow-sm text-[#354F52] w-full">
+                <div className="space-y-2">
+                  <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block">Specify Business Category</label>
+                  <textarea
+                    required
+                    rows={6}
+                    placeholder={`Example:\n- Event Planner\n- Pet Grooming\n- Interior Designer\n- Travel Agency\n- Freelance Developer`}
+                    value={customCategoryVal}
+                    onChange={(e) => {
+                      setCustomCategoryVal(e.target.value);
+                      if (customCategoryError) setCustomCategoryError("");
+                    }}
+                    className="w-full bg-white border border-[#2F3E46]/12 text-[#2F3E46] placeholder-zinc-400 rounded-2xl text-xs p-3.5 focus:border-[#52796F] outline-none resize-none leading-relaxed"
+                  />
+                  {customCategoryError && (
+                    <p className="text-[10px] text-red-500 font-semibold">{customCategoryError}</p>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    const trimmed = customCategoryVal.trim();
+                    if (!trimmed) {
+                      setCustomCategoryError("Business category is required.");
+                      return;
+                    }
+                    if (trimmed.length < 3) {
+                      setCustomCategoryError("Business category must be at least 3 characters.");
+                      return;
+                    }
+                    if (trimmed.length > 100) {
+                      setCustomCategoryError("Business category cannot exceed 100 characters.");
+                      return;
+                    }
+                    onAnswerSubmit(trimmed, { type: trimmed });
+                  }}
+                  className="w-full bg-[#52796F] hover:bg-[#354F52] text-white font-bold text-xs rounded-full h-11 transition-all shadow-md flex items-center justify-center"
+                >
+                  Continue
+                </button>
               </div>
             )}
 

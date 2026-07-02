@@ -99,6 +99,28 @@ function loadVariantJSON(cat, sub, variantName) {
   return null;
 }
 
+// Recursive placeholder replacer for content customization based on user's category
+function customizeTemplateContent(obj, businessType, subcategoryName) {
+  if (typeof obj === 'string') {
+    let customized = obj;
+    if (subcategoryName) {
+      const subRegex = new RegExp(subcategoryName, 'gi');
+      customized = customized.replace(subRegex, businessType);
+    }
+    customized = customized.replace(/Freelancer/gi, businessType);
+    return customized;
+  } else if (Array.isArray(obj)) {
+    return obj.map(item => customizeTemplateContent(item, businessType, subcategoryName));
+  } else if (typeof obj === 'object' && obj !== null) {
+    const newObj = {};
+    for (const [key, val] of Object.entries(obj)) {
+      newObj[key] = customizeTemplateContent(val, businessType, subcategoryName);
+    }
+    return newObj;
+  }
+  return obj;
+}
+
 async function generateThreeVariations(businessData) {
   const businessType = businessData.type || "Retail Shop";
   
@@ -112,13 +134,20 @@ async function generateThreeVariations(businessData) {
   
   for (const variant of variants) {
     // Load pre-generated static JSON from the 640 templates library
-    let websiteJson = loadVariantJSON(match.cat, match.sub, variant);
+    let loadedJson = loadVariantJSON(match.cat, match.sub, variant);
     
     // If not found, use our creative fallback
-    if (!websiteJson) {
+    if (!loadedJson) {
       console.warn(`[Template Engine] Variant ${variant} not found. Falling back.`);
-      websiteJson = loadVariantJSON('creative_services', 'freelancer', variant);
+      loadedJson = loadVariantJSON('creative_services', 'freelancer', variant);
     }
+
+    // Deep clone before customizing to avoid mutating cache
+    let websiteJson = JSON.parse(JSON.stringify(loadedJson));
+
+    // Customize template copy with user's business type
+    const subName = match.sub ? match.sub.replace(/_/g, ' ') : '';
+    websiteJson = customizeTemplateContent(websiteJson, businessType, subName);
 
     // Dynamic injections - override generic template strings with user's specific inputs
     if (websiteJson && websiteJson.globalSettings) {
@@ -135,7 +164,7 @@ async function generateThreeVariations(businessData) {
     results.push({
       id: variant,
       name: `Version ${results.length + 1}: ${variant.charAt(0).toUpperCase() + variant.slice(1)} Aesthetic`,
-      tagline: `A beautifully crafted template optimized for ${match.sub.replace(/_/g, ' ')}.`,
+      tagline: `A beautifully crafted template optimized for ${businessType}.`,
       websiteJson: websiteJson.websiteJson ? websiteJson.websiteJson : websiteJson
     });
   }

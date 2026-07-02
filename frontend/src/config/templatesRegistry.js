@@ -441,27 +441,34 @@ export function generateTemplateJson(categoryId, styleId, customName = null) {
 
 export const TEMPLATES_LIST = [];
 
-CATEGORIES.forEach(cat => {
-  const images = getCategoryUniqueImages(cat.name);
+const TARGET_FAMILIES = [
+  { catId: "bakery", catName: "Bakery" },
+  { catId: "restaurant", catName: "Restaurant" },
+  { catId: "beauty_salon", catName: "Beauty Salon" },
+  { catId: "electronics_store", catName: "Electronics Store" }
+];
+
+TARGET_FAMILIES.forEach(({ catId, catName }) => {
+  const images = getCategoryUniqueImages(catName);
   
   STYLES.forEach((style, sIdx) => {
     const capitalizedStyle = style.name;
-    const templateName = `${capitalizedStyle} ${cat.name}`;
-    const id = `${cat.id}-${style.id}`;
+    const templateName = `${capitalizedStyle} ${catName}`;
+    const id = `${catId}-${style.id}`;
 
     TEMPLATES_LIST.push({
       id,
       name: templateName,
-      category: cat.name,
-      categoryId: cat.id,
+      category: catName,
+      categoryId: catId,
       style: style.id,
-      tagline: `${style.description} Tailored design systems built specifically for ${cat.name}.`,
-      description: `Premium responsive theme for ${cat.name} shops. Configured with the ${style.name} branding design system.`,
+      tagline: `${style.description} Tailored design systems built specifically for ${catName}.`,
+      description: `Premium responsive theme for ${catName} shops. Configured with the ${style.name} branding design system.`,
       rating: parseFloat((4.7 + Math.random() * 0.29).toFixed(1)),
       reviewsCount: Math.floor(10 + Math.random() * 85),
       image: images[(sIdx * 2) % images.length],
-      mainCategoryId: cat.id,
-      mainCategory: cat.name
+      mainCategoryId: catId,
+      mainCategory: catName
     });
   });
 });

@@ -13,7 +13,9 @@ import {
   Compass, 
   Flame, 
   SlidersHorizontal,
-  LayoutGrid
+  LayoutGrid,
+  ChevronDown,
+  Check
 } from "lucide-react";
 import { CATEGORIES, STYLES, TEMPLATES_LIST, generateTemplateJson } from "../../config/templatesRegistry";
 import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
@@ -27,6 +29,17 @@ export default function TemplatesMarketplacePage() {
 
   const [visibleCount, setVisibleCount] = useState(6);
   const loaderRef = useRef(null);
+
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const [mobileSearchQuery, setMobileSearchQuery] = useState("");
+
+  const activeCategories = useMemo(() => {
+    return CATEGORIES.filter(cat => {
+      const count = TEMPLATES_LIST.filter(t => t.categoryId === cat.id).length;
+      return count > 0;
+    });
+  }, []);
 
   // Reset visibleCount when active filters change
   useEffect(() => {
@@ -153,14 +166,14 @@ export default function TemplatesMarketplacePage() {
           SaaS Template Marketplace
         </h1>
         <p className="text-[#52796F] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-          Browse {TEMPLATES_LIST.length} premium website layouts tailored across {CATEGORIES.length} distinct industries. 
+          Browse {TEMPLATES_LIST.length} premium website layouts tailored across {activeCategories.length} distinct industries. 
           Preview complete page hierarchies (Home, About, Services, Contact), customize style tokens with AI, and launch instantly.
         </p>
       </section>
 
       {/* Search & Filter Toolbar */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 space-y-6">
-        <div className="bg-white/50 border border-[#84A98C]/15 backdrop-blur-md shadow-lg rounded-[28px] p-6 md:p-8 flex flex-col gap-6">
+      <section className="sticky top-16 z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 space-y-6">
+        <div className="bg-white/80 border border-[#84A98C]/15 backdrop-blur-md shadow-lg rounded-[28px] p-6 md:p-8 flex flex-col gap-6">
           {/* Search bar & active style tabs */}
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="relative w-full md:max-w-md">
@@ -203,33 +216,110 @@ export default function TemplatesMarketplacePage() {
             <span className="text-[10px] font-black uppercase text-[#354F52]/60 mb-3 block flex items-center gap-1">
               <LayoutGrid className="h-3 w-3" /> Business Categories:
             </span>
-            <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pr-2 border border-[#84A98C]/10 p-4 rounded-2xl bg-[#EAF4EA]/10">
+
+            {/* Mobile searchable dropdown */}
+            <div className="relative md:hidden w-full">
               <button
-                onClick={() => setActiveCategory("All")}
-                className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
-                  activeCategory === "All"
-                    ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/15"
-                    : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
-                }`}
+                type="button"
+                onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+                className="w-full flex items-center justify-between bg-[#EAF4EA]/30 border border-[#84A98C]/20 rounded-xl px-4 py-3 text-xs font-bold text-[#52796F] outline-none shadow-sm"
               >
-                All Categories ({TEMPLATES_LIST.length})
+                <span>{activeCategory === "All" ? `All Categories (${TEMPLATES_LIST.length})` : `${activeCategories.find(c => c.id === activeCategory)?.name || activeCategory} (${TEMPLATES_LIST.filter(t => t.categoryId === activeCategory).length})`}</span>
+                <ChevronDown className={`h-4 w-4 text-[#52796F] transition-transform duration-200 ${mobileDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {CATEGORIES.map((cat) => {
-                const count = 5;
-                return (
+              {mobileDropdownOpen && (
+                <div className="absolute left-0 right-0 mt-2 bg-white border border-[#84A98C]/20 rounded-xl shadow-xl z-50 max-h-64 overflow-y-auto p-2 space-y-2">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#354F52]/50" />
+                    <input
+                      type="text"
+                      placeholder="Search category..."
+                      value={mobileSearchQuery}
+                      onChange={(e) => setMobileSearchQuery(e.target.value)}
+                      className="w-full bg-[#EAF4EA]/20 border border-[#84A98C]/20 rounded-lg py-2 pl-8 pr-3 text-xs text-[#2F3E46] outline-none focus:border-[#52796F]"
+                    />
+                  </div>
+                  <div className="space-y-0.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveCategory("All");
+                        setMobileDropdownOpen(false);
+                        setMobileSearchQuery("");
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold ${
+                        activeCategory === "All" ? "bg-[#52796F] text-white" : "hover:bg-[#EAF4EA]/40 text-[#52796F]"
+                      }`}
+                    >
+                      <span>All Categories ({TEMPLATES_LIST.length})</span>
+                      {activeCategory === "All" && <Check className="h-3.5 w-3.5" />}
+                    </button>
+                    {activeCategories.filter(cat => cat.name.toLowerCase().includes(mobileSearchQuery.toLowerCase())).map((cat) => {
+                      const count = TEMPLATES_LIST.filter(t => t.categoryId === cat.id).length;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button;`"
+                          onClick={() => {
+                            setActiveCategory(cat.id);
+                            setMobileDropdownOpen(false);
+                            setMobileSearchQuery("");
+                          }}
+                          className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold ${
+                            activeCategory === cat.id ? "bg-[#52796F] text-white" : "hover:bg-[#EAF4EA]/40 text-[#52796F]"
+                          }`}
+                        >
+                          <span>{cat.name} ({count})</span>
+                          {activeCategory === cat.id && <Check className="h-3.5 w-3.5" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop category chips wrapper */}
+            <div className="hidden md:block">
+              <div className="flex flex-wrap gap-1.5 p-4 rounded-2xl bg-[#EAF4EA]/10 border border-[#84A98C]/10">
+                <button
+                  onClick={() => setActiveCategory("All")}
+                  className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+                    activeCategory === "All"
+                      ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/15"
+                      : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
+                  }`}
+                >
+                  All Categories ({TEMPLATES_LIST.length})
+                </button>
+                {(showAllCategories ? activeCategories : activeCategories.slice(0, 20)).map((cat) => {
+                  const count = TEMPLATES_LIST.filter(t => t.categoryId === cat.id).length;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setActiveCategory(cat.id)}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+                        activeCategory === cat.id
+                          ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/15"
+                          : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
+                      }`}
+                    >
+                      {cat.name} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+
+              {activeCategories.length > 20 && (
+                <div className="mt-3 flex justify-center">
                   <button
-                    key={cat.id}
-                    onClick={() => setActiveCategory(cat.id)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
-                      activeCategory === cat.id
-                        ? "bg-[#52796F] text-white shadow-md shadow-[#52796F]/15"
-                        : "bg-[#84A98C]/10 text-[#52796F] border border-[#84A98C]/15 hover:bg-[#84A98C]/20"
-                    }`}
+                    onClick={() => setShowAllCategories(!showAllCategories)}
+                    className="text-xs font-bold text-[#52796F] hover:text-[#354F52] px-4 py-2 rounded-xl bg-white border border-[#84A98C]/20 hover:bg-[#EAF4EA]/20 transition-all uppercase tracking-wider"
                   >
-                    {cat.name} ({count})
+                    {showAllCategories ? "Show Less Categories" : "Show More Categories"}
                   </button>
-                );
-              })}
+                </div>
+              )}
             </div>
           </div>
         </div>

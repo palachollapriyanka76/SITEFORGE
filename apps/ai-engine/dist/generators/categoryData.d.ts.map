@@ -1,0 +1,1 @@
+{"version":3,"file":"categoryData.d.ts","sourceRoot":"","sources":["../../src/generators/categoryData.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC7B,IAAI,EAAE,MAAM,CAAC;IACb,OAAO,EAAE,MAAM,EAAE,CAAC;IAClB,QAAQ,EAAE,MAAM,EAAE,CAAC;CACpB;AAED,eAAO,MAAM,eAAe,EAAE,MAAM,CAAC,MAAM,EAAE,cAAc,CA6N1D,CAAC;AAEF,wBAAgB,cAAc,CAAC,YAAY,EAAE,MAAM,GAAG,cAAc,CAoDnE"}

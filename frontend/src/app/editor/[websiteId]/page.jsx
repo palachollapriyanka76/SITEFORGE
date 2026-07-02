@@ -8,7 +8,7 @@ const PropertiesPanel = dynamic(() => import("../../../components/editor/Propert
 const AIAssistant = dynamic(() => import("../../../components/editor/AIAssistant"), { ssr: false });
 const AssetsPanel = dynamic(() => import("../../../components/editor/AssetsPanel"), { ssr: false });
 const ThemePanel = dynamic(() => import("../../../components/editor/ThemePanel"), { ssr: false });
-
+import UniversalNavbar from "../../../components/templates/UniversalNavbar";
 
 import { 
   Sparkles, 
@@ -1154,8 +1154,17 @@ export default function EditorPage({ params }) {
               maxWidth: device === "mobile" ? "375px" : device === "tablet" ? "768px" : "1200px"
             }}
           >
-            {/* Embedded site sections renderer */}
-            {sections.map((sec) => {
+            <UniversalNavbar
+              businessName={websiteJSON.meta?.title?.split("|")[0].trim() || "My Business"}
+              logo={websiteJSON.meta?.logo}
+              sections={sections}
+              whatsappNumber={websiteJSON.globalSettings?.whatsappNumber}
+              primaryCTA="Contact Us"
+              theme={theme}
+            />
+            <div className="pt-[80px]">
+              {/* Embedded site sections renderer */}
+              {sections.map((sec) => {
               const isSectionActive = activeSectionId === sec.id;
               
               return (
@@ -1584,7 +1593,8 @@ export default function EditorPage({ params }) {
               );
             })}
           </div>
-        </main>
+        </div>
+      </main>
 
         {/* Right Sidebar (Contextual Properties Panel) */}
         <aside className="w-72 border-l border-zinc-850 bg-zinc-900 flex flex-col shrink-0 z-10 overflow-y-auto p-5 space-y-6">

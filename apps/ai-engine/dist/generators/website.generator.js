@@ -1,9 +1,55 @@
 import OpenAI from "openai";
 import { buildWebsitePrompt } from "../prompts/website.prompt.js";
 import { generateColorPalette } from "./color.generator.js";
+import { detectCategory } from "./categoryData.js";
+import { searchUnsplashImages } from "./unsplash.js";
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || "sk-placeholder",
 });
+const VISUAL_STYLES = [
+    "Minimal Modern", "Luxury Premium", "Creative Studio", "Corporate Professional",
+    "Elegant Classic", "Bold Contemporary", "Dark Mode Premium", "Organic Natural",
+    "Artistic Showcase", "Glassmorphism", "Neumorphism", "Magazine Layout"
+];
+const NAVIGATION_STYLES = ["Horizontal", "Sidebar", "Centered", "Floating", "Fullscreen"];
+const HERO_STYLES = [
+    "Split Screen", "Full Width", "Video Hero", "Carousel",
+    "Masonry", "Product Focus", "Story Focus", "Background Image"
+];
+const CARD_DESIGNS = [
+    "Clean flat design with thin gray borders, minimal padding, and light gray background",
+    "Luxury style cards with subtle gold accent borders, serif typography, and elegant shadows",
+    "Glassmorphism styling with semi-transparent backdrop blur, light white border, and subtle white glow",
+    "Neumorphism cards with dual light/dark soft drop shadows producing a raised physical effect",
+    "Bold contemporary block cards with thick black borders, solid primary color shadows, and high contrast",
+    "Minimal borderless cards with large typography, bold headings, and premium organic spacing"
+];
+const FOOTER_DESIGNS = [
+    "Simple clean single row with copyright text on left and social icons on right",
+    "Complex three-column grid containing brand description, detailed navigation links, and full contact details",
+    "Two-column minimal row with logo on left, legal links and copyright on right",
+    "Artistic modern centered layout with large newsletter input box, social links, and small copyright notice"
+];
+const DEFAULT_FALLBACK_IMAGES = [
+    "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=800&q=80",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=800&q=80"
+];
+function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
 export const generateLocalMockWebsite = (businessData) => {
     const name = businessData.name || "My Business Shop";
     const type = businessData.type || "Retail Shop";
@@ -13,23 +59,32 @@ export const generateLocalMockWebsite = (businessData) => {
         : ["Premium Product A", "Premium Product B", "Custom Services"];
     const themePreference = businessData.colorTheme || businessData.themePreference;
     const palette = generateColorPalette(themePreference, type);
+    const categoryConfig = detectCategory(type);
+    const visualStyle = VISUAL_STYLES[Math.floor(Math.random() * VISUAL_STYLES.length)];
+    const navigationStyle = NAVIGATION_STYLES[Math.floor(Math.random() * NAVIGATION_STYLES.length)];
+    const heroStyle = HERO_STYLES[Math.floor(Math.random() * HERO_STYLES.length)];
+    const coreSections = ["about", "services", "products", "gallery", "testimonials", "faq", "contact"];
+    const shuffledInBetweens = shuffleArray(coreSections);
+    const sectionOrdering = ["hero", ...shuffledInBetweens, "footer"];
+    // Unique local fallback images mapping
+    const localImages = DEFAULT_FALLBACK_IMAGES;
     return {
         meta: {
-            title: `${name} | Pune's Finest ${type}`,
+            title: `${name} | Pune's Finest ${categoryConfig.name}`,
             description: `Welcome to ${name}. We offer high-quality ${type.toLowerCase()} specialties tailored for ${audience} in Pune, Maharashtra.`,
             favicon: "✨",
-            keywords: [name.toLowerCase(), type.toLowerCase(), "Pune services", "local business"]
+            keywords: [name.toLowerCase(), categoryConfig.name.toLowerCase(), "Pune services", "local business"]
         },
         theme: {
             primaryColor: palette.primaryColor,
             secondaryColor: palette.secondaryColor,
             accentColor: palette.accentColor,
             fontFamily: "Outfit",
-            style: businessData.style || "modern"
+            style: visualStyle.toLowerCase().replace(/[^a-z0-9]+/g, "")
         },
         globalSettings: {
-            navbarStyle: "glass",
-            footerStyle: "simple",
+            navbarStyle: navigationStyle.toLowerCase(),
+            footerStyle: "complex",
             whatsappButton: businessData.whatsappEnabled !== undefined ? businessData.whatsappEnabled : true,
             whatsappNumber: businessData.whatsappNumber || null
         },
@@ -37,116 +92,151 @@ export const generateLocalMockWebsite = (businessData) => {
             {
                 name: "Home",
                 slug: "/",
-                sections: [
-                    {
-                        id: "sec_hero_mock",
-                        type: "hero",
-                        order: 0,
-                        visible: true,
-                        content: {
-                            title: `Experience the Finest ${type} at ${name}`,
-                            subtitle: `Handcrafted premium quality tailored specifically for ${audience}. Order fresh and enjoy local delivery.`,
-                            ctaText: "Order on WhatsApp",
-                            ctaLink: businessData.whatsappNumber ? `https://wa.me/${businessData.whatsappNumber}` : "#contact",
-                            backgroundImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
-                        },
-                        styles: {},
-                        animations: {}
-                    },
-                    {
-                        id: "sec_about_mock",
-                        type: "about",
-                        order: 1,
-                        visible: true,
-                        content: {
-                            title: "Our Story of Passion",
-                            description: `At ${name}, we are dedicated to setting standard-setting quality in our community. Every selection is prepared naturally, handcrafted with elite ingredients, and delivered fresh daily with maximum care.`,
-                            image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=800&q=80",
-                            highlights: ["100% Premium Quality", "Local Pune Craftsmanship", "Customer-First Care"]
-                        },
-                        styles: {},
-                        animations: {}
-                    },
-                    {
-                        id: "sec_services_mock",
-                        type: "services",
-                        order: 2,
-                        visible: true,
-                        content: {
-                            title: "What We Offer Fresh Daily",
-                            subtitle: "Signature local Pune specialties prepared daily with maximum care",
-                            services: productsList.map((prod, idx) => ({
-                                name: prod,
-                                description: `Handcrafted ${prod} made with fresh organic ingredients and traditional techniques.`,
-                                icon: idx % 3 === 0 ? "Sparkles" : idx % 3 === 1 ? "Clock" : "Heart"
-                            }))
-                        },
-                        styles: {},
-                        animations: {}
-                    },
-                    {
-                        id: "sec_testimonials_mock",
-                        type: "testimonials",
-                        order: 3,
-                        visible: true,
-                        content: {
-                            title: "Loved by the Community",
-                            testimonials: [
-                                { name: "Priyanka Sharma", role: "Local Guide", content: `Absolutely exceptional experience at ${name}. Their service is always professional and product quality is outstanding!`, rating: 5 },
-                                { name: "Rohan Deshmukh", role: "Regular Client", content: `The absolute best in Koregaon Park. Warm staff, great pricing, and pristine cleanliness!`, rating: 5 }
-                            ]
-                        },
-                        styles: {},
-                        animations: {}
-                    },
-                    {
-                        id: "sec_faq_mock",
-                        type: "faq",
-                        order: 4,
-                        visible: true,
-                        content: {
-                            title: "Frequently Asked Questions",
-                            faqs: [
-                                { question: "What are your delivery areas in Pune?", answer: "We deliver across Pune including Koregaon Park, Kalyani Nagar, Viman Nagar, and Baner." },
-                                { question: "Do you accept custom orders?", answer: "Yes! We specialize in custom party orders and corporate bookings. Contact us 24 hours in advance." }
-                            ]
-                        },
-                        styles: {},
-                        animations: {}
-                    },
-                    {
-                        id: "sec_contact_mock",
-                        type: "contact",
-                        order: 5,
-                        visible: true,
-                        content: {
-                            title: "Get in Touch Today",
-                            phone: businessData.whatsappNumber || "+91 98765 43210",
-                            email: `hello@${name.toLowerCase().replace(/[^a-z0-9]+/g, "")}.com`,
-                            address: "Shop No. 12, Koregaon Park Plaza, Pune, Maharashtra 411001"
-                        },
-                        styles: {},
-                        animations: {}
-                    },
-                    {
-                        id: "sec_footer_mock",
-                        type: "footer",
-                        order: 6,
-                        visible: true,
-                        content: {
-                            businessName: name,
-                            copyright: `© ${new Date().getFullYear()} ${name}. All Rights Reserved.`,
-                            links: [{ label: "Home", href: "/" }]
-                        },
-                        styles: {},
-                        animations: {}
+                sections: sectionOrdering.map((sectionType, index) => {
+                    const id = `sec_${sectionType}_mock_${Math.random().toString(36).substring(2, 6)}`;
+                    let content = {};
+                    switch (sectionType) {
+                        case "hero":
+                            content = {
+                                title: `Experience the Finest ${categoryConfig.name} at ${name}`,
+                                subtitle: `Handcrafted premium quality tailored specifically for ${audience}. Order fresh and enjoy local delivery.`,
+                                ctaText: "Order on WhatsApp",
+                                ctaLink: businessData.whatsappNumber ? `https://wa.me/${businessData.whatsappNumber}` : "#contact",
+                                backgroundImage: localImages[0]
+                            };
+                            break;
+                        case "about":
+                            content = {
+                                title: `Our Story of Passion & Dedication`,
+                                description: `At ${name}, we are dedicated to setting standard-setting quality in our community. Every selection is prepared naturally, handcrafted with elite ingredients, and delivered fresh daily with maximum care.`,
+                                image: localImages[1],
+                                highlights: ["100% Premium Quality", "Local Pune Craftsmanship", "Customer-First Care"]
+                            };
+                            break;
+                        case "services":
+                            content = {
+                                title: `What We Offer Fresh Daily`,
+                                subtitle: `Signature local Pune specialties prepared daily with maximum care`,
+                                services: productsList.map((prod, idx) => ({
+                                    name: prod,
+                                    description: `Handcrafted ${prod} made with fresh organic ingredients and traditional techniques.`,
+                                    icon: idx % 3 === 0 ? "Sparkles" : idx % 3 === 1 ? "Clock" : "Heart"
+                                }))
+                            };
+                            break;
+                        case "products":
+                            content = {
+                                title: `Featured ${categoryConfig.name} Catalog`,
+                                subtitle: "Premium collections prepared daily",
+                                products: productsList.map((prod, idx) => ({
+                                    name: prod,
+                                    price: `Rs. ${(idx + 1) * 150}`,
+                                    description: `Finest quality ${prod} crafted with premium ingredients.`,
+                                    image: localImages[(2 + idx) % localImages.length]
+                                }))
+                            };
+                            break;
+                        case "gallery":
+                            content = {
+                                title: "Visual Showcase",
+                                subtitle: "A glimpse into our daily creations",
+                                images: [
+                                    { url: localImages[4], caption: "Freshly Made" },
+                                    { url: localImages[5], caption: "Handcrafted Delight" },
+                                    { url: localImages[6], caption: "Signature Showcase" }
+                                ]
+                            };
+                            break;
+                        case "testimonials":
+                            content = {
+                                title: "Loved by the Community",
+                                testimonials: [
+                                    { name: "Priyanka Sharma", role: "Local Guide", content: `Absolutely exceptional experience at ${name}. Their service is always professional and product quality is outstanding!`, rating: 5 },
+                                    { name: "Rohan Deshmukh", role: "Regular Client", content: `The absolute best in Koregaon Park. Warm staff, great pricing, and pristine cleanliness!`, rating: 5 }
+                                ]
+                            };
+                            break;
+                        case "faq":
+                            content = {
+                                title: "Frequently Asked Questions",
+                                faqs: [
+                                    { question: "What are your delivery areas in Pune?", answer: "We deliver across Pune including Koregaon Park, Kalyani Nagar, Viman Nagar, and Baner." },
+                                    { question: "Do you accept custom orders?", answer: "Yes! We specialize in custom party orders and corporate bookings. Contact us 24 hours in advance." }
+                                ]
+                            };
+                            break;
+                        case "contact":
+                            content = {
+                                title: "Get in Touch Today",
+                                phone: businessData.whatsappNumber || "+91 98765 43210",
+                                email: `hello@${name.toLowerCase().replace(/[^a-z0-9]+/g, "")}.com`,
+                                address: "Shop No. 12, Koregaon Park Plaza, Pune, Maharashtra 411001"
+                            };
+                            break;
+                        case "footer":
+                            content = {
+                                businessName: name,
+                                copyright: `© ${new Date().getFullYear()} ${name}. All Rights Reserved.`,
+                                links: [{ label: "Home", href: "/" }]
+                            };
+                            break;
                     }
-                ]
+                    return {
+                        id,
+                        type: sectionType,
+                        order: index,
+                        visible: true,
+                        content,
+                        styles: {},
+                        animations: {}
+                    };
+                })
             }
         ]
     };
 };
 export const generateWebsite = async (businessData) => {
+    const type = businessData.type || businessData.category || "Retail Shop";
+    const categoryConfig = detectCategory(type);
+    // 1. Fetch relevant Unsplash images
+    let imagePool = [];
+    try {
+        for (const query of categoryConfig.queries) {
+            const urls = await searchUnsplashImages(query);
+            if (urls && urls.length > 0) {
+                imagePool = [...imagePool, ...urls];
+            }
+        }
+    }
+    catch (err) {
+        console.error("[AI Engine] Error fetching Unsplash images:", err);
+    }
+    // De-duplicate and filter
+    imagePool = Array.from(new Set(imagePool)).filter(url => url && url.startsWith("http"));
+    if (imagePool.length < 15) {
+        imagePool = [...imagePool, ...DEFAULT_FALLBACK_IMAGES];
+        imagePool = Array.from(new Set(imagePool));
+    }
+    // 2. Pre-select randomized styles
+    const visualStyle = VISUAL_STYLES[Math.floor(Math.random() * VISUAL_STYLES.length)];
+    const navigationStyle = NAVIGATION_STYLES[Math.floor(Math.random() * NAVIGATION_STYLES.length)];
+    const heroStyle = HERO_STYLES[Math.floor(Math.random() * HERO_STYLES.length)];
+    const cardDesign = CARD_DESIGNS[Math.floor(Math.random() * CARD_DESIGNS.length)];
+    const footerDesign = FOOTER_DESIGNS[Math.floor(Math.random() * FOOTER_DESIGNS.length)];
+    // Randomized sections ordering (Home page must have at least 6 sections)
+    const coreSections = ["about", "services", "products", "gallery", "testimonials", "faq", "contact"];
+    const shuffledInBetweens = shuffleArray(coreSections);
+    const sectionOrdering = ["hero", ...shuffledInBetweens, "footer"];
+    const randomConfig = {
+        visualStyle,
+        navigationStyle,
+        heroStyle,
+        sectionOrdering,
+        cardDesign,
+        footerDesign,
+        categoryName: categoryConfig.name,
+        categorySections: categoryConfig.sections
+    };
     const hasRealKey = process.env.OPENAI_API_KEY &&
         !process.env.OPENAI_API_KEY.includes("placeholder") &&
         process.env.OPENAI_API_KEY.startsWith("sk-");
@@ -154,7 +244,7 @@ export const generateWebsite = async (businessData) => {
         console.warn("[AI Engine] OpenAI API Key is missing or placeholder. Running fallback mockup website generation locally...");
         return generateLocalMockWebsite(businessData);
     }
-    const prompt = buildWebsitePrompt(businessData);
+    const prompt = buildWebsitePrompt(businessData, randomConfig, imagePool);
     const MAX_RETRIES = 3;
     let attempt = 0;
     while (attempt < MAX_RETRIES) {
@@ -174,7 +264,7 @@ export const generateWebsite = async (businessData) => {
             if (!responseContent) {
                 throw new Error("Received empty response from OpenAI");
             }
-            // Clean markdown if OpenAI accidentally included it despite instructions
+            // Clean markdown code blocks
             let cleanedContent = responseContent.trim();
             if (cleanedContent.startsWith("```json")) {
                 cleanedContent = cleanedContent.replace(/^```json\n/, "").replace(/\n```$/, "");
@@ -189,7 +279,7 @@ export const generateWebsite = async (businessData) => {
             catch (err) {
                 throw new Error(`Failed to parse response content as JSON: ${err.message}`);
             }
-            // 1. TOP LEVEL VALIDATION & DEFAULT FALLBACKS
+            // 3. TOP LEVEL VALIDATION & DEFAULT FALLBACKS
             if (!parsedJSON.meta)
                 parsedJSON.meta = {};
             parsedJSON.meta.title = parsedJSON.meta.title || `${businessData.name || "My Business"} | Premium Services`;
@@ -202,125 +292,81 @@ export const generateWebsite = async (businessData) => {
             parsedJSON.theme.secondaryColor = parsedJSON.theme.secondaryColor || "#334155";
             parsedJSON.theme.accentColor = parsedJSON.theme.accentColor || "#38BDF8";
             parsedJSON.theme.fontFamily = parsedJSON.theme.fontFamily || "Inter";
-            parsedJSON.theme.style = parsedJSON.theme.style || "modern";
+            parsedJSON.theme.style = parsedJSON.theme.style || visualStyle.toLowerCase().replace(/[^a-z0-9]+/g, "");
             if (!parsedJSON.globalSettings)
                 parsedJSON.globalSettings = {};
-            parsedJSON.globalSettings.navbarStyle = parsedJSON.globalSettings.navbarStyle || "glass";
-            parsedJSON.globalSettings.footerStyle = parsedJSON.globalSettings.footerStyle || "simple";
+            parsedJSON.globalSettings.navbarStyle = parsedJSON.globalSettings.navbarStyle || navigationStyle.toLowerCase();
+            parsedJSON.globalSettings.footerStyle = parsedJSON.globalSettings.footerStyle || "complex";
             parsedJSON.globalSettings.whatsappButton = parsedJSON.globalSettings.whatsappButton !== undefined ? parsedJSON.globalSettings.whatsappButton : true;
             parsedJSON.globalSettings.whatsappNumber = parsedJSON.globalSettings.whatsappNumber || businessData.whatsappNumber || null;
-            // 2. PAGES VALIDATION
+            // 4. PAGES & SECTIONS VALIDATION
             if (!parsedJSON.pages || !Array.isArray(parsedJSON.pages) || parsedJSON.pages.length === 0) {
-                // Fallback: Generate home page
-                parsedJSON.pages = [
-                    {
-                        name: "Home",
-                        slug: "/",
-                        sections: []
-                    }
-                ];
+                parsedJSON.pages = [{ name: "Home", slug: "/", sections: [] }];
             }
-            // 3. SECTION VALIDATION, ID DE-DUPLICATION, & ORDERING
             const usedIds = new Set();
             let sectionCounter = 1;
+            // Image uniqueness registry to detect duplicates
+            const assignedImages = new Set();
+            let poolIndex = 0;
             parsedJSON.pages.forEach((page, pIndex) => {
                 if (!page.name)
                     page.name = pIndex === 0 ? "Home" : `Page ${pIndex + 1}`;
                 if (!page.slug)
                     page.slug = pIndex === 0 ? "/" : `/${page.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-                if (!page.sections || !Array.isArray(page.sections) || page.sections.length === 0) {
-                    // Generate default sections for a home page as fallback
-                    page.sections = [
-                        {
-                            id: `sec_fallback_hero_${Math.random().toString(36).substring(2, 5)}`,
-                            type: "hero",
-                            order: 0,
-                            visible: true,
-                            content: {
-                                title: `Welcome to ${businessData.name || "Our Business"}`,
-                                subtitle: `High-quality ${businessData.type || "services"} tailored to your exact needs.`,
-                                ctaText: "Get in Touch",
-                                ctaLink: "#contact",
-                                backgroundImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
-                            },
-                            styles: {},
-                            animations: {}
-                        },
-                        {
-                            id: `sec_fallback_about_${Math.random().toString(36).substring(2, 5)}`,
-                            type: "about",
-                            order: 1,
-                            visible: true,
-                            content: {
-                                title: "About Us",
-                                description: `We are proud to serve our community with standard-setting dedication and craftsmanship. Our focus is delivering top tier quality.`,
-                                image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=800&q=80",
-                                highlights: ["High Quality", "Professional Staff", "Customer First"]
-                            },
-                            styles: {},
-                            animations: {}
-                        },
-                        {
-                            id: `sec_fallback_contact_${Math.random().toString(36).substring(2, 5)}`,
-                            type: "contact",
-                            order: 2,
-                            visible: true,
-                            content: {
-                                title: "Contact Us",
-                                phone: businessData.whatsappNumber || "+91 99999 99999",
-                                email: "info@business.com",
-                                address: "Pune, Maharashtra, India"
-                            },
-                            styles: {},
-                            animations: {}
-                        },
-                        {
-                            id: `sec_fallback_footer_${Math.random().toString(36).substring(2, 5)}`,
-                            type: "footer",
-                            order: 3,
-                            visible: true,
-                            content: {
-                                businessName: businessData.name || "Our Business",
-                                copyright: `© ${new Date().getFullYear()} ${businessData.name || "Our Business"}. All Rights Reserved.`,
-                                links: [{ label: "Home", href: "/" }]
-                            },
-                            styles: {},
-                            animations: {}
-                        }
-                    ];
+                // Enforce the pre-selected section order on the Home Page
+                if (pIndex === 0 && (!page.sections || page.sections.length === 0)) {
+                    // If sections missing, generate them
+                    page.sections = sectionOrdering.map((st, i) => ({ type: st, order: i }));
                 }
                 page.sections.forEach((section, sIndex) => {
-                    // Verify required fields
                     section.order = typeof section.order === "number" ? section.order : sIndex;
                     section.visible = section.visible !== undefined ? section.visible : true;
                     section.styles = section.styles || {};
                     section.animations = section.animations || {};
-                    // Fix or generate ID
                     if (!section.id || usedIds.has(section.id)) {
                         section.id = `sec_${section.type || "comp"}_${sectionCounter++}_${Math.random().toString(36).substring(2, 5)}`;
                     }
                     usedIds.add(section.id);
-                    // Standardize section type
-                    const allowedTypes = ["hero", "about", "services", "products", "gallery", "testimonials", "faq", "contact", "footer"];
-                    if (!section.type || !allowedTypes.includes(section.type)) {
-                        section.type = "about"; // Safe fallback
-                    }
-                    // Verify or generate standard content based on section type
                     if (!section.content || typeof section.content !== "object") {
                         section.content = {};
                     }
+                    // Enforce unique images from the category imagePool
+                    const getUniqueImage = () => {
+                        while (poolIndex < imagePool.length) {
+                            const candidate = imagePool[poolIndex++];
+                            if (!assignedImages.has(candidate)) {
+                                assignedImages.add(candidate);
+                                return candidate;
+                            }
+                        }
+                        // Fallback if pool is exhausted: generate cache-busting Unsplash parameter
+                        const fallback = `https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&h=800&q=80&sig=${Math.floor(Math.random() * 100000)}`;
+                        assignedImages.add(fallback);
+                        return fallback;
+                    };
+                    // Sanitize & replace duplicates/empty images
                     switch (section.type) {
                         case "hero":
                             section.content.title = section.content.title || `Welcome to ${businessData.name || "Our Shop"}`;
                             section.content.subtitle = section.content.subtitle || `Serving the best products and experiences in town.`;
                             section.content.ctaText = section.content.ctaText || "Learn More";
                             section.content.ctaLink = section.content.ctaLink || "#about";
-                            section.content.backgroundImage = section.content.backgroundImage || "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80";
+                            if (!section.content.backgroundImage || assignedImages.has(section.content.backgroundImage)) {
+                                section.content.backgroundImage = getUniqueImage();
+                            }
+                            else {
+                                assignedImages.add(section.content.backgroundImage);
+                            }
                             break;
                         case "about":
                             section.content.title = section.content.title || "Our Journey & Story";
                             section.content.description = section.content.description || `Dedicated to excellence since our establishment, we work tirelessly to create beautiful products and premium customer care.`;
-                            section.content.image = section.content.image || "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=800&q=80";
+                            if (!section.content.image || assignedImages.has(section.content.image)) {
+                                section.content.image = getUniqueImage();
+                            }
+                            else {
+                                assignedImages.add(section.content.image);
+                            }
                             section.content.highlights = Array.isArray(section.content.highlights) ? section.content.highlights : ["Premium Quality", "Customer First", "Handcrafted Craftsmanship"];
                             break;
                         case "services":
@@ -334,15 +380,45 @@ export const generateWebsite = async (businessData) => {
                         case "products":
                             section.content.title = section.content.title || "Our Bestsellers";
                             section.content.subtitle = section.content.subtitle || "Popular choices you'll fall in love with";
-                            section.content.products = Array.isArray(section.content.products) ? section.content.products : [
-                                { name: "Signature Collection Item", price: "Rs. 499", description: "Crafted meticulously with premium local ingredients.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" }
-                            ];
+                            if (Array.isArray(section.content.products)) {
+                                section.content.products.forEach((prod) => {
+                                    if (!prod.image || assignedImages.has(prod.image)) {
+                                        prod.image = getUniqueImage();
+                                    }
+                                    else {
+                                        assignedImages.add(prod.image);
+                                    }
+                                });
+                            }
+                            else {
+                                section.content.products = [
+                                    {
+                                        name: "Signature Item",
+                                        price: "Rs. 499",
+                                        description: "Crafted meticulously with premium local ingredients.",
+                                        image: getUniqueImage()
+                                    }
+                                ];
+                            }
                             break;
                         case "gallery":
                             section.content.title = section.content.title || "Moments & Creations";
-                            section.content.images = Array.isArray(section.content.images) ? section.content.images : [
-                                { url: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80", caption: "Premium Quality" }
-                            ];
+                            if (Array.isArray(section.content.images)) {
+                                section.content.images.forEach((img) => {
+                                    if (!img.url || assignedImages.has(img.url)) {
+                                        img.url = getUniqueImage();
+                                    }
+                                    else {
+                                        assignedImages.add(img.url);
+                                    }
+                                });
+                            }
+                            else {
+                                section.content.images = [
+                                    { url: getUniqueImage(), caption: "Premium Quality" },
+                                    { url: getUniqueImage(), caption: "Artisan Craft" }
+                                ];
+                            }
                             break;
                         case "testimonials":
                             section.content.title = section.content.title || "What Our Clients Say";
@@ -372,15 +448,14 @@ export const generateWebsite = async (businessData) => {
                     }
                 });
             });
-            // Override colors if preference is provided in business data, otherwise rely on AI or color generator
+            // Color Palette updates based on businessType or chosen visualStyle
             if (businessData.colorTheme || businessData.themePreference) {
-                const palette = generateColorPalette(businessData.colorTheme || businessData.themePreference, businessData.type || "");
+                const palette = generateColorPalette(businessData.colorTheme || businessData.themePreference, type);
                 parsedJSON.theme.primaryColor = palette.primaryColor;
                 parsedJSON.theme.secondaryColor = palette.secondaryColor;
                 parsedJSON.theme.accentColor = palette.accentColor;
             }
-            const validatedJSON = parsedJSON;
-            return validatedJSON;
+            return parsedJSON;
         }
         catch (error) {
             console.error(`[AI Engine] Attempt ${attempt + 1} failed:`, error);
