@@ -1,0 +1,133 @@
+{
+  "id": "gifts_and_specialty_toy_store_vibrant",
+  "name": "Vibrant Toy Store Template",
+  "category": "GIFTS_AND_SPECIALTY",
+  "subcategory": "Toy Store",
+  "websiteJson": {
+    "theme": {
+      "primaryColor": "#9333EA",
+      "secondaryColor": "#FAF5FF",
+      "accentColor": "#A855F7",
+      "fontFamily": "Outfit",
+      "style": "vibrant",
+      "spacing": "medium"
+    },
+    "globalSettings": {
+      "whatsappNumber": "+919876543210",
+      "whatsappButton": true,
+      "businessName": "Elite Toy Store"
+    },
+    "pages": [
+      {
+        "name": "Home",
+        "slug": "/"
+      },
+      {
+        "name": "Services",
+        "slug": "/services"
+      },
+      {
+        "name": "Contact",
+        "slug": "/contact"
+      }
+    ],
+    "sections": [
+      {
+        "id": "hero-1",
+        "type": "hero",
+        "content": {
+          "title": "Experience the Best Toy Store Services",
+          "subtitle": "Premium quality, expert craftsmanship, and unmatched dedication tailored specifically for your needs.",
+          "ctaText": "Explore Now",
+          "ctaLink": "#services",
+          "backgroundImage": "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=800&q=80"
+        }
+      },
+      {
+        "id": "about-1",
+        "type": "about",
+        "content": {
+          "title": "About Our Toy Store",
+          "description": "We are dedicated to setting standard-setting quality in our local community. Every service is crafted meticulously, naturally sourced, and delivered daily with absolute passion.",
+          "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80",
+          "highlights": [
+            "100% Genuine Care",
+            "Elite Local Team",
+            "Standard-Setting Dedication",
+            "Customer First"
+          ]
+        }
+      },
+      {
+        "id": "services-1",
+        "type": "services",
+        "content": {
+          "title": "Our Specialised Toy Store Offerings",
+          "subtitle": "Prepared with maximum dedication and premium standards",
+          "services": [
+            {
+              "name": "Premium Advisory",
+              "description": "Get direct support from industry leaders tailored to your exact goal.",
+              "icon": "Sparkles"
+            },
+            {
+              "name": "Local On-Demand Delivery",
+              "description": "Freshly packaged orders delivered direct to your home with complete safety.",
+              "icon": "Clock"
+            },
+            {
+              "name": "Customer-First Support",
+              "description": "Connect with our representative anytime on WhatsApp for support.",
+              "icon": "Heart"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gallery-1",
+        "type": "gallery",
+        "content": {
+          "title": "Visual Gallery",
+          "subtitle": "A walkthrough of our premium spaces and Toy Store products",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1501726058097-40899cc35c36?auto=format&fit=crop&w=800&q=80",
+              "caption": "Elegance in Detail"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+              "caption": "Prepared Fresh"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&w=800&q=80",
+              "caption": "Standard of Perfection"
+            }
+          ]
+        }
+      },
+      {
+        "id": "testimonials-1",
+        "type": "testimonials",
+        "content": {
+          "title": "Loved by Our Community",
+          "testimonials": [
+            {
+              "name": "Anjali Rao",
+              "role": "Local Guide",
+              "content": "Absolutely exceptional experience. Their service is always professional and product quality is standard-setting!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+            },
+            {
+              "name": "Vikram Malhotra",
+              "role": "Regular Client",
+              "content": "The absolute best in terms of reliability and product standards. Clean staff, fast response, and elite environment!",
+              "rating": 5,
+              "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

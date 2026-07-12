@@ -53,7 +53,7 @@ export default function SignupPage() {
       );
 
       if (signupResponse.data.success) {
-        const { token, user } = signupResponse.data;
+        const { token, user, message } = signupResponse.data;
         
         // Securely store in localStorage for full backward-compatibility with other views
         localStorage.setItem("siteforge-auth-user", user.id);
@@ -63,6 +63,10 @@ export default function SignupPage() {
         document.cookie = `siteforge-auth-user=${user.id}; path=/; max-age=86400; SameSite=Lax`;
         
         console.log("STEP 10: User Created - " + user.id);
+
+        if (message) {
+          alert(message);
+        }
         
         // Go to onboarding
         router.push("/onboarding");

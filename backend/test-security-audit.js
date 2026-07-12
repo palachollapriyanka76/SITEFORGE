@@ -93,7 +93,7 @@ async function runSecurityAudit() {
       assert(res.data.user.email === testEmail, "Should return correct registered email");
       assert(res.data.token && res.data.token.length > 20, "Signup should immediately issue signed JWT token");
       assert(res.data.user.password !== testPassword, "Stored password in database MUST NOT be plain-text");
-      assert(res.data.user.password.length === 64, `Stored password MUST be secure SHA-256 hash (64 hex characters)`);
+      assert(res.data.user.password.startsWith('$2a$') || res.data.user.password.startsWith('$2b$') || res.data.user.password.length === 60, "Stored password MUST be secure bcrypt hash");
       
       registeredUser = res.data.user;
       registrationToken = res.data.token;
