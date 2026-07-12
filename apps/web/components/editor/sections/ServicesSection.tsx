@@ -83,24 +83,33 @@ export function ServicesSection({ section, theme, isEditing }: ServicesSectionPr
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service: any, idx: number) => (
-            <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              {getIconComponent(service.icon)}
-              <h3 
-                className="text-xl font-bold mb-2 outline-none"
-                contentEditable={isEditing}
-                suppressContentEditableWarning
-                onBlur={handleServiceChange(idx, "name")}
-              >
-                {service.name}
-              </h3>
-              <p 
-                className="text-slate-500 text-sm leading-relaxed outline-none"
-                contentEditable={isEditing}
-                suppressContentEditableWarning
-                onBlur={handleServiceChange(idx, "description")}
-              >
-                {service.description}
-              </p>
+            <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow overflow-hidden flex flex-col justify-between group">
+              {service.image && (
+                <div className="h-48 w-full relative overflow-hidden bg-slate-100 shrink-0">
+                  <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+              )}
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  {getIconComponent(service.icon)}
+                  <h3 
+                    className="text-xl font-bold mb-2 outline-none"
+                    contentEditable={isEditing}
+                    suppressContentEditableWarning
+                    onBlur={handleServiceChange(idx, "name")}
+                  >
+                    {service.name}
+                  </h3>
+                  <p 
+                    className="text-slate-500 text-sm leading-relaxed outline-none"
+                    contentEditable={isEditing}
+                    suppressContentEditableWarning
+                    onBlur={handleServiceChange(idx, "description")}
+                  >
+                    {service.description}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>

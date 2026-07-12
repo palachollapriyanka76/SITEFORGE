@@ -57,7 +57,9 @@ Be very supportive. Do NOT ask any new questions. Just acknowledge and validate.
     const fallbacks: Record<string, string> = {
       name: "Wah! That's a beautiful name for your business.",
       type: "Perfect! Running a business in this sector is fantastic.",
-      products: "Aacha, these products and services sound excellent! Customers will love them.",
+      products: "Aacha, these products sound excellent! Customers will love them.",
+      services: "Superb! Complementary service offerings will make your business stand out.",
+      categories: "Great! Clean navigation categories will make your catalog very easy to browse.",
       audience: "Superb! Focus on your target customers is key.",
       style: "Wah! That layout style will make your site look extremely premium.",
       colorTheme: "Superb choice! These colors will give a very modern look to your brand.",

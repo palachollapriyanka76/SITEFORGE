@@ -11,7 +11,6 @@ export default function AssetsPanel({
   handleAssetOptimize,
   handleAssetCrop,
   handleAssetAiGenerate,
-  presetPhotos,
   getWebsiteImages,
   handleAssetReplace,
   handleAssetSelect
@@ -42,6 +41,24 @@ export default function AssetsPanel({
 
           {/* Action buttons */}
           <div className="space-y-2">
+            {/* Local Upload */}
+            <label className="w-full flex items-center justify-center gap-1.5 text-[10px] font-extrabold bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg text-white shadow-md cursor-pointer transition-all active:scale-95">
+              <input 
+                type="file" 
+                accept="image/*" 
+                className="hidden" 
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => handleAssetReplace(reader.result);
+                    reader.readAsDataURL(file);
+                  }
+                }} 
+              />
+              <span>📁 Upload from Computer</span>
+            </label>
+
             <button
               onClick={handleAssetOptimize}
               className="w-full flex items-center justify-center gap-1.5 text-[10px] font-extrabold bg-zinc-900 border border-zinc-850 hover:bg-zinc-800 py-2 rounded-lg text-emerald-400 shadow-sm"
@@ -92,46 +109,53 @@ export default function AssetsPanel({
                 Generate Asset
               </button>
             </div>
-
-            {/* Presets library */}
-            <div className="space-y-1.5 pt-1.5">
-              <span className="text-[9px] font-bold text-zinc-450 uppercase block">
-                Preset Photos
-              </span>
-              <div className="grid grid-cols-3 gap-1">
-                {presetPhotos.map((ph, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => handleAssetReplace(ph)}
-                    className="aspect-square bg-zinc-900 rounded overflow-hidden border border-zinc-800 cursor-pointer hover:border-indigo-500 transition-colors"
-                  >
-                    <img src={ph} className="w-full h-full object-cover" alt="preset preview" />
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-2">
-          {getWebsiteImages().map((img) => (
-            <div
-              key={img.id}
-              onClick={() => handleAssetSelect(img)}
-              className="group aspect-video bg-zinc-950 border border-zinc-850 hover:border-indigo-500 rounded-lg overflow-hidden relative cursor-pointer transition-all"
-            >
-              <img
-                src={img.url}
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                alt={img.label}
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-1.5">
-                <span className="text-[8.5px] font-bold text-white truncate w-full">
-                  {img.label}
-                </span>
+        <div className="space-y-3">
+          <label className="w-full flex items-center justify-center gap-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl text-white shadow-lg cursor-pointer transition-all">
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    handleAssetSelect({
+                      sectionId: "custom_upload",
+                      type: "custom",
+                      url: reader.result,
+                      label: file.name
+                    });
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }} 
+            />
+            <span>📁 Upload Local Image</span>
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {getWebsiteImages().map((img) => (
+              <div
+                key={img.id}
+                onClick={() => handleAssetSelect(img)}
+                className="group aspect-video bg-zinc-950 border border-zinc-850 hover:border-indigo-500 rounded-lg overflow-hidden relative cursor-pointer transition-all"
+              >
+                <img
+                  src={img.url}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                  alt={img.label}
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-1.5">
+                  <span className="text-[8.5px] font-bold text-white truncate w-full">
+                    {img.label}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

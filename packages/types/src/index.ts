@@ -7,6 +7,5 @@ export * from "./website";
 export * from "./page";
 export * from "./subscription";
 export * from "./ai";
-export * from "./template";
 export * from "./api";
 export * from "./website.types";

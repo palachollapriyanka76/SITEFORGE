@@ -3,7 +3,6 @@ import Navbar from "../components/landing/Navbar";
 import Hero from "../components/landing/Hero";
 import SocialProof from "../components/landing/SocialProof";
 import Features from "../components/landing/Features";
-import TemplatesShowcase from "../components/landing/TemplatesShowcase";
 import AIDemoSection from "../components/landing/AIDemoSection";
 import TrustSection from "../components/landing/TrustSection";
 import Testimonials from "../components/landing/Testimonials";
@@ -31,9 +30,6 @@ export default function Home() {
 
       {/* Bento grid layout features panel */}
       <Features />
-
-      {/* Realistic templates section */}
-      <TemplatesShowcase />
 
       {/* AI Realtime chat conversation demo */}
       <AIDemoSection />

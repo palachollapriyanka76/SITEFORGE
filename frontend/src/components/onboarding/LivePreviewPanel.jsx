@@ -22,12 +22,73 @@ import {
 const HERO_IMAGES = {
   "Bakery": "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=800&q=80",
   "Restaurant": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
+  "Cafe": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80",
   "Salon & Spa": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80",
+  "Salon": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80",
   "Electronics": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
   "Fashion": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80",
   "Fitness Gym": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+  "Gym": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+  "Furniture": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80",
+  "Footwear": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+  "Jewelry": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+  "Hospital": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80",
+  "Healthcare": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80",
+  "Plant Nursery": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80",
+  "Pharmacy": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=800&q=80",
+  "Hotel": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+  "Real Estate": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+  "Book Store": "https://images.unsplash.com/photo-1507842229356-51c6150fe5a3?w=800&q=80",
   "Other Services": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
 };
+
+export function getHeroImageForPreview(type = "", name = "") {
+  if (HERO_IMAGES[type]) return HERO_IMAGES[type];
+  const checkStr = `${type} ${name}`.toLowerCase();
+  if (checkStr.includes("cafe") || checkStr.includes("coffee") || checkStr.includes("tea")) return HERO_IMAGES["Cafe"];
+  if (checkStr.includes("bakery") || checkStr.includes("cake") || checkStr.includes("pastry")) return HERO_IMAGES["Bakery"];
+  if (checkStr.includes("restaurant") || checkStr.includes("dining") || checkStr.includes("food")) return HERO_IMAGES["Restaurant"];
+  if (checkStr.includes("furniture") || checkStr.includes("sofa") || checkStr.includes("decor")) return HERO_IMAGES["Furniture"];
+  if (checkStr.includes("shoe") || checkStr.includes("footwear") || checkStr.includes("sneaker")) return HERO_IMAGES["Footwear"];
+  if (checkStr.includes("jewel") || checkStr.includes("diamond") || checkStr.includes("gold")) return HERO_IMAGES["Jewelry"];
+  if (checkStr.includes("gym") || checkStr.includes("fitness") || checkStr.includes("sport")) return HERO_IMAGES["Gym"];
+  if (checkStr.includes("salon") || checkStr.includes("hair") || checkStr.includes("beauty") || checkStr.includes("spa")) return HERO_IMAGES["Salon"];
+  if (checkStr.includes("electronic") || checkStr.includes("gadget") || checkStr.includes("tech")) return HERO_IMAGES["Electronics"];
+  if (checkStr.includes("nursery") || checkStr.includes("plant") || checkStr.includes("flower")) return HERO_IMAGES["Plant Nursery"];
+  if (checkStr.includes("hospital") || checkStr.includes("clinic") || checkStr.includes("doctor") || checkStr.includes("health")) return HERO_IMAGES["Hospital"];
+  if (checkStr.includes("pharmacy") || checkStr.includes("medicine") || checkStr.includes("pill")) return HERO_IMAGES["Pharmacy"];
+  if (checkStr.includes("hotel") || checkStr.includes("resort") || checkStr.includes("stay")) return HERO_IMAGES["Hotel"];
+  if (checkStr.includes("real estate") || checkStr.includes("property")) return HERO_IMAGES["Real Estate"];
+  if (checkStr.includes("book") || checkStr.includes("library")) return HERO_IMAGES["Book Store"];
+  return HERO_IMAGES["Other Services"];
+}
+
+export function getPreviewLogoBadge(name = "Brand", type = "", activeColor = "#52796F") {
+  const checkStr = `${name} ${type}`.toLowerCase();
+  let emojiChar = "🏷️";
+  if (checkStr.includes("cafe") || checkStr.includes("coffee") || checkStr.includes("tea")) emojiChar = "☕";
+  else if (checkStr.includes("bakery") || checkStr.includes("cake") || checkStr.includes("pastry")) emojiChar = "🥐";
+  else if (checkStr.includes("restaurant") || checkStr.includes("dining") || checkStr.includes("food")) emojiChar = "🍽️";
+  else if (checkStr.includes("furniture") || checkStr.includes("sofa") || checkStr.includes("decor")) emojiChar = "🛋️";
+  else if (checkStr.includes("shoe") || checkStr.includes("footwear") || checkStr.includes("sneaker")) emojiChar = "👟";
+  else if (checkStr.includes("jewel") || checkStr.includes("diamond") || checkStr.includes("gold")) emojiChar = "💎";
+  else if (checkStr.includes("gym") || checkStr.includes("fitness") || checkStr.includes("sport")) emojiChar = "🏋️";
+  else if (checkStr.includes("salon") || checkStr.includes("hair") || checkStr.includes("beauty")) emojiChar = "✂️";
+  else if (checkStr.includes("electronic") || checkStr.includes("gadget") || checkStr.includes("tech")) emojiChar = "💻";
+  else if (checkStr.includes("nursery") || checkStr.includes("plant") || checkStr.includes("flower")) emojiChar = "🌿";
+  else if (checkStr.includes("hospital") || checkStr.includes("clinic") || checkStr.includes("doctor")) emojiChar = "🏥";
+  else if (checkStr.includes("pharmacy") || checkStr.includes("medicine")) emojiChar = "💊";
+  else if (checkStr.includes("hotel") || checkStr.includes("resort")) emojiChar = "🏨";
+  else if (checkStr.includes("real estate") || checkStr.includes("property")) emojiChar = "🏠";
+  else if (checkStr.includes("book") || checkStr.includes("library")) emojiChar = "📚";
+
+  return (
+    <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-[#2F3E46]/10 shadow-sm bg-white">
+      <span className="text-sm">{emojiChar}</span>
+      <span className="text-xs font-black tracking-tight" style={{ color: activeColor }}>{name || "My Business"}</span>
+    </div>
+  );
+}
 
 // Category-specific product images
 const PRODUCT_IMAGES = {
@@ -85,6 +146,42 @@ const TAGLINES = {
   "Other Services": "Professional solutions, personal touch.",
 };
 
+const ITEM_PREVIEW_DATABASE = {
+  "fruit tart": "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=400&q=75",
+  "chocolate cake": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=75",
+  "red velvet cake": "https://images.unsplash.com/photo-1586788680434-30d324b2d46f?auto=format&fit=crop&w=400&q=75",
+  "plum cake": "https://images.unsplash.com/photo-1607920592419-be960c15d18b?auto=format&fit=crop&w=400&q=75",
+  "cupcakes": "https://images.unsplash.com/photo-1576618148400-46de339d7516?auto=format&fit=crop&w=400&q=75",
+  "cookies": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=400&q=75",
+  "brownies": "https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=400&q=75",
+  "croissant": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=400&q=75",
+  "donuts": "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=400&q=75",
+  "running shoes": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=75",
+  "casual sneakers": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=400&q=75",
+  "leather boots": "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=400&q=75",
+  "men sandals": "https://images.unsplash.com/photo-1603400521630-9f2de124b33b?auto=format&fit=crop&w=400&q=75",
+  "black formal shoes": "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=400&q=75",
+  "wooden dining table": "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=400&q=75",
+  "modern fabric sofa": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=75",
+  "wood wardrobe": "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=400&q=75",
+  "gold ring jewelry": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=75",
+  "diamond necklace": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=75",
+  "pepperoni pizza": "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=75",
+  "beef burger": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=75",
+  "creamy pasta": "https://images.unsplash.com/photo-1621996346565-e3d5d6281298?auto=format&fit=crop&w=400&q=75"
+};
+
+function getItemPreviewImage(itemName, fallbackList = [], idx = 0) {
+  if (!itemName || typeof itemName !== 'string') return fallbackList[idx] || null;
+  const key = itemName.toLowerCase().trim();
+  for (const [dbKey, url] of Object.entries(ITEM_PREVIEW_DATABASE)) {
+    if (key === dbKey || key.includes(dbKey) || dbKey.includes(key)) {
+      return url;
+    }
+  }
+  return `https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=75&query=${encodeURIComponent(key)}`;
+}
+
 export default function LivePreviewPanel() {
   const { businessData: rawBusinessData } = useOnboardingStore();
   const [businessData, setBusinessData] = useState(rawBusinessData);
@@ -114,7 +211,7 @@ export default function LivePreviewPanel() {
 
   const fonts = getFontClasses();
   const activeColor = businessData.colorTheme || "#52796F";
-  const heroImg = HERO_IMAGES[businessData.type] || null;
+  const heroImg = getHeroImageForPreview(businessData.type, businessData.name);
   const productImgs = PRODUCT_IMAGES[businessData.type] || [];
   const tagline = TAGLINES[businessData.type] || "Your premium local business.";
 
@@ -142,15 +239,10 @@ export default function LivePreviewPanel() {
         <header className="flex items-center justify-between px-4 py-3 border-b border-[#2F3E46]/10 sticky top-0 bg-white/90 backdrop-blur-sm z-10">
           <div className="flex items-center gap-1.5">
             {businessData.logoUrl ? (
-              <img src={businessData.logoUrl} alt="Logo" className="h-6 w-6 rounded-md object-cover border border-[#2F3E46]/10" />
+              <img src={businessData.logoUrl} alt="Logo" className="h-6 w-auto rounded-md object-contain border border-[#2F3E46]/10" />
             ) : (
-              <div className="h-5 w-5 rounded bg-[#CAD2C5]/20 border border-[#2F3E46]/10 flex items-center justify-center text-[10px] font-bold" style={{ color: activeColor }}>
-                {businessData.name ? businessData.name.charAt(0).toUpperCase() : "S"}
-              </div>
+              getPreviewLogoBadge(businessData.name, businessData.type, activeColor)
             )}
-            <span className={`text-xs font-bold text-[#2F3E46] ${fonts.display}`}>
-              {businessData.name || "My Business"}
-            </span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -252,9 +344,9 @@ export default function LivePreviewPanel() {
               <div className="grid grid-cols-2 gap-2.5">
                 {businessData.products.slice(0, 4).map((item, idx) => (
                   <div key={idx} className="rounded-xl overflow-hidden border border-[#2F3E46]/8 bg-white group hover:shadow-md transition-all">
-                    {productImgs[idx] && (
+                    {getItemPreviewImage(item, productImgs, idx) && (
                       <img 
-                        src={getOptimizedImageUrl(productImgs[idx], 'micro')} 
+                        src={getOptimizedImageUrl(getItemPreviewImage(item, productImgs, idx), 'micro')} 
                         alt={item} 
                         className="w-full h-16 object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
@@ -282,6 +374,39 @@ export default function LivePreviewPanel() {
               </div>
             )}
           </section>
+
+          {/* Section 3.1: Services Grid */}
+          {businessData.services && businessData.services.length > 0 && (
+            <section className="px-4 py-3 space-y-2.5 border-t border-[#2F3E46]/8">
+              <h3 className={`text-[11px] font-extrabold uppercase tracking-wider text-[#2F3E46] ${fonts.display}`}>
+                Our Services
+              </h3>
+              <div className="grid grid-cols-1 gap-1.5">
+                {businessData.services.slice(0, 4).map((srv, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-[#CAD2C5]/15 border border-[#2F3E46]/8 text-[10px] font-semibold text-[#2F3E46]">
+                    <span className="truncate flex-1">✓ {srv}</span>
+                    <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-white text-[#52796F]">Featured</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Section 3.2: Categories Tags */}
+          {businessData.categories && businessData.categories.length > 0 && (
+            <section className="px-4 py-3 space-y-2 border-t border-[#2F3E46]/8">
+              <h3 className={`text-[10px] font-extrabold uppercase tracking-wider text-[#2F3E46] ${fonts.display}`}>
+                Catalog Navigation
+              </h3>
+              <div className="flex flex-wrap gap-1.5">
+                {businessData.categories.slice(0, 6).map((cat, idx) => (
+                  <span key={idx} className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-white border border-[#2F3E46]/15 text-[#354F52]">
+                    {cat}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Section 4: Testimonial */}
           {businessData.audience && (

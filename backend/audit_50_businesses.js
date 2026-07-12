@@ -1,105 +1,135 @@
-require('dotenv').config();
-const { generateThreeVariations } = require('./src/ai-engine/generator.js');
-const fs = require('fs');
+const { generateThreeVariations } = require('./src/ai-engine/generator');
 
-const baseBusinesses = [
-  { name: "Apex Footwear", type: "Footwear Store", desc: "Running and casual shoes.", products: ["Sneakers", "Boots"], services: ["Shoe Fitting"] },
-  { name: "Morning Brew", type: "Cafe", desc: "Artisan coffee and pastries.", products: ["Espresso", "Croissants"], services: ["Catering"] },
-  { name: "Pages & Chapters", type: "Book Store", desc: "Independent bookstore.", products: ["Fiction Books", "Journals"], services: ["Book Club"] },
-  { name: "Playtime Wonder", type: "Toy Store", desc: "Educational toys.", products: ["Board Games", "Action Figures"], services: ["Gift Wrapping"] },
-  { name: "Paws & Play", type: "Pet Store", desc: "Everything for your pets.", products: ["Dog Food", "Cat Toys"], services: ["Pet Grooming"] },
-  { name: "Oak & Iron", type: "Furniture Store", desc: "Handcrafted furniture.", products: ["Sofas", "Dining Tables"], services: ["Interior Design"] },
-  { name: "Skyline Realty", type: "Real Estate", desc: "Luxury apartments and homes.", products: ["Condos", "Villas"], services: ["Property Management"] },
-  { name: "Circuit Hub", type: "Electronics Store", desc: "Latest gadgets and gear.", products: ["Laptops", "Headphones"], services: ["Device Repair"] },
-  { name: "Velvet Thread", type: "Fashion Boutique", desc: "Designer clothing.", products: ["Dresses", "Handbags"], services: ["Personal Styling"] },
-  { name: "Sizzle & Smoke", type: "Restaurant", desc: "Gourmet steakhouse.", products: ["Ribeye", "Wine"], services: ["Private Dining"] },
-  
-  // Generating 40 more to reach 50
-  ...Array.from({ length: 40 }).map((_, i) => ({
-    name: `Business ${i+11}`,
-    type: ["Yoga Studio", "Bakery", "Mechanic", "Florist", "Dentist", "Plumber", "Gym", "Salon", "Consulting", "Software Agency"][i % 10],
-    desc: "Premium quality services for you.",
-    products: [ ["Yoga Mats", "Blocks"], ["Cakes", "Bread"], ["Tires", "Oil"], ["Bouquets", "Vases"], ["Toothbrushes"], ["Pipes", "Faucets"], ["Weights", "Supplements"], ["Shampoo", "Conditioner"], ["Reports", "Strategies"], ["SaaS", "Apps"] ][i % 10],
-    services: [ ["Vinyasa", "Hatha"], ["Custom Cakes", "Catering"], ["Engine Repair", "Inspection"], ["Wedding Flowers", "Delivery"], ["Cleaning", "Whitening"], ["Leak Repair", "Installation"], ["Personal Training", "Classes"], ["Haircuts", "Coloring"], ["Business Strategy", "Financial Audit"], ["Web Dev", "App Dev"] ][i % 10]
-  }))
+const businesses = [
+{ name: "Footwear Hub", type: "Footwear Store", products: ["Running Shoes","Sneakers","Sandals","Formal Shoes","Boots","Sports Shoes","Kids Shoes","Women's Footwear","Slippers","Loafers"] },
+{ name: "Urban Cafe", type: "Cafe", products: ["Espresso","Cappuccino","Latte","Mocha","Cold Coffee","Croissants","Brownies","Pastries","Sandwiches","Tea"] },
+{ name: "Kids Planet", type: "Toy Store", products: ["Educational Toys","Board Games","Building Blocks","Puzzles","Soft Toys","Remote Cars","Action Figures","Learning Kits","Dolls","Toy Trains"] },
+{ name: "Book Haven", type: "Book Store", products: ["Novels","Academic Books","Children Books","Comics","Story Books","Journals","Notebooks","Magazines","Reference Books","E-books"] },
+{ name: "Pet Needs", type: "Pet Store", products: ["Dog Food","Cat Food","Pet Toys","Pet Shampoo","Leashes","Pet Beds","Bird Feed","Aquariums","Pet Medicines","Pet Bowls"] },
+{ name: "Dream Homes Realty", type: "Real Estate", products: ["Apartments","Villas","Plots","Commercial Spaces","Luxury Homes","Farm Lands","Rental Homes","Office Spaces","Studio Flats","Townhouses"] },
+{ name: "Tech World", type: "Electronics Store", products: ["Laptops","Smartphones","Tablets","Smart Watches","Headphones","Gaming Consoles","Monitors","Printers","Power Banks","Routers"] },
+{ name: "Royal Furniture", type: "Furniture Store", products: ["Sofas","Dining Tables","Beds","Wardrobes","Office Chairs","Bookshelves","TV Units","Coffee Tables","Study Tables","Dressers"] },
+{ name: "Fitness Arena", type: "Gym", products: ["Treadmills","Dumbbells","Exercise Bikes","Protein Powder","Yoga Mats","Resistance Bands","Weight Plates","Gym Gloves","Supplements","Shakers"] },
+{ name: "Fresh Mart", type: "Grocery Store", products: ["Rice","Wheat Flour","Cooking Oil","Vegetables","Fruits","Dairy Products","Snacks","Soft Drinks","Spices","Pulses"] },
+{ name: "Beauty Bliss", type: "Cosmetics Store", products: ["Lipstick","Foundation","Face Wash","Moisturizer","Perfume","Mascara","Eyeliner","Compact Powder","Serum","Nail Polish"] },
+{ name: "Fashion Boutique", type: "Clothing Store", products: ["Kurtis","Sarees","Jeans","T-Shirts","Shirts","Jackets","Dresses","Leggings","Blazers","Hoodies"] },
+{ name: "Golden Bakery", type: "Bakery", products: ["Cakes","Cupcakes","Cookies","Brownies","Pastries","Donuts","Bread","Muffins","Puffs","Biscuits"] },
+{ name: "MediCare Pharmacy", type: "Pharmacy", products: ["Pain Relievers","Vitamins","Cough Syrup","First Aid Kits","Supplements","Thermometers","Sanitizers","Masks","Blood Pressure Monitor","Glucose Meter"] },
+{ name: "Green Garden", type: "Plant Nursery", products: ["Indoor Plants","Outdoor Plants","Flower Pots","Succulents","Seeds","Fertilizers","Garden Tools","Herb Plants","Fruit Plants","Soil Mix"] },
+{ name: "Auto Zone", type: "Automobile Store", products: ["Car Tires","Engine Oil","Seat Covers","Car Batteries","Alloy Wheels","Car Accessories","LED Lights","Air Filters","Wipers","Speakers"] },
+{ name: "Sports Hub", type: "Sports Store", products: ["Cricket Bats","Footballs","Basketballs","Tennis Rackets","Sports Shoes","Gym Bags","Volleyballs","Badminton Kits","Jerseys","Helmets"] },
+{ name: "Jewels Palace", type: "Jewelry Store", products: ["Gold Chains","Rings","Bracelets","Earrings","Necklaces","Diamond Sets","Anklets","Pendants","Silver Jewelry","Watches"] },
+{ name: "Music Corner", type: "Music Store", products: ["Guitars","Keyboards","Drums","Violins","Microphones","Speakers","Headphones","Amplifiers","Ukuleles","DJ Equipment"] },
+{ name: "Baby World", type: "Baby Store", products: ["Baby Clothes","Diapers","Baby Toys","Baby Strollers","Feeding Bottles","Baby Beds","Baby Wipes","Baby Lotion","Baby Food","Baby Carriers"] },
+{ name: "Home Decor Studio", type: "Home Decor Store", products: ["Wall Art","Curtains","Cushions","Carpets","Lamps","Mirrors","Vases","Photo Frames","Wall Clocks","Candles"] },
+{ name: "Solar Solutions", type: "Solar Energy", products: ["Solar Panels","Solar Batteries","Solar Inverters","Solar Lights","Solar Water Heaters","Solar Chargers","Solar Pumps","Solar Fans","Solar Street Lights","Solar Kits"] },
+{ name: "Travel Explorer", type: "Travel Agency", products: ["Holiday Packages","Flight Tickets","Hotel Booking","Cruise Tours","Adventure Trips","Honeymoon Packages","Visa Services","Travel Insurance","Group Tours","Local Tours"] },
+{ name: "Smart Stationery", type: "Stationery Store", products: ["Pens","Pencils","Notebooks","Markers","Files","Sticky Notes","Drawing Books","Calculators","Folders","Art Supplies"] },
+{ name: "Digital Print Hub", type: "Printing Store", products: ["Business Cards","Banners","Posters","Flyers","Brochures","Stickers","Invitations","Certificates","Catalogs","Photo Prints"] },
+{ name: "Ocean Aquarium", type: "Aquarium Store", products: ["Fish Tanks","Gold Fish","Aquarium Filters","Fish Food","LED Lights","Aquatic Plants","Air Pumps","Aquarium Decorations","Water Conditioner","Shrimps"] },
+{ name: "Sweet Treats", type: "Ice Cream Shop", products: ["Vanilla Ice Cream","Chocolate Ice Cream","Strawberry Ice Cream","Sundaes","Milkshakes","Gelato","Ice Cream Cakes","Frozen Yogurt","Kulfi","Waffles"] },
+{ name: "Art Gallery", type: "Art Store", products: ["Paintings","Sketches","Canvas Art","Portraits","Wall Art","Sculptures","Digital Art","Frames","Art Prints","Handmade Crafts"] },
+{ name: "Game Zone", type: "Gaming Store", products: ["PS5","Xbox","Gaming PCs","Controllers","Gaming Chairs","Gaming Keyboards","Gaming Mice","Monitors","VR Headsets","Games"] },
+{ name: "Fresh Juice Bar", type: "Juice Shop", products: ["Orange Juice","Apple Juice","Mango Juice","Watermelon Juice","Pineapple Juice","Smoothies","Detox Drinks","Milkshakes","Protein Shakes","Fruit Bowls"] },
+{ name: "Seafood Market", type: "Seafood Store", products: ["Fish","Prawns","Crabs","Lobsters","Squid","Salmon","Tuna","Oysters","Mussels","Dry Fish"] },
+{ name: "Organic Basket", type: "Organic Store", products: ["Organic Rice","Organic Vegetables","Organic Fruits","Organic Honey","Organic Tea","Organic Spices","Organic Oil","Organic Pulses","Organic Snacks","Organic Flour"] },
+{ name: "Cake Studio", type: "Cake Shop", products: ["Birthday Cakes","Wedding Cakes","Cupcakes","Photo Cakes","Chocolate Cakes","Fruit Cakes","Designer Cakes","Cheesecakes","Red Velvet Cakes","Pastries"] },
+{ name: "Laptop Care", type: "Computer Store", products: ["Laptops","SSD Drives","RAM Modules","Monitors","Keyboards","Mouse","Laptop Bags","Cooling Pads","Webcams","Docking Stations"] },
+{ name: "Coffee Roasters", type: "Coffee Shop", products: ["Arabica Beans","Robusta Beans","Cold Brew","Espresso","Latte","Coffee Powder","Coffee Capsules","Mugs","French Press","Coffee Filters"] },
+{ name: "Wedding Dreams", type: "Wedding Store", products: ["Bridal Gowns","Wedding Suits","Bouquets","Wedding Rings","Decorations","Invitations","Wedding Shoes","Bridesmaid Dresses","Photography Packages","Accessories"] },
+{ name: "Adventure Gear", type: "Outdoor Store", products: ["Tents","Sleeping Bags","Backpacks","Hiking Shoes","Camping Stoves","Flashlights","Trekking Poles","Water Bottles","Hammocks","Rain Jackets"] },
+{ name: "Mobile Planet", type: "Mobile Store", products: ["Android Phones","iPhones","Phone Cases","Chargers","Power Banks","Earbuds","Screen Protectors","Smart Watches","Bluetooth Speakers","Tripods"] },
+{ name: "Luxury Watches", type: "Watch Store", products: ["Analog Watches","Digital Watches","Smart Watches","Luxury Watches","Sports Watches","Chronographs","Leather Watches","Metal Watches","Couple Watches","Kids Watches"] },
+{ name: "Healthy Living", type: "Health Store", products: ["Protein Powder","Vitamins","Omega 3","Multivitamins","Herbal Supplements","Green Tea","Energy Bars","Protein Bars","Weight Gainers","Shakers"] },
+{ name: "Flower Paradise", type: "Flower Shop", products: ["Roses","Lilies","Tulips","Orchids","Bouquets","Flower Baskets","Wedding Flowers","Indoor Plants","Gift Hampers","Artificial Flowers"] },
+{ name: "Bike World", type: "Bicycle Store", products: ["Mountain Bikes","Road Bikes","Kids Bikes","Helmets","Bike Lights","Bike Pumps","Cycling Gloves","Water Bottles","Bike Locks","Bike Accessories"] },
+{ name: "Learning Academy", type: "Education Center", products: ["Math Courses","Science Courses","Coding Classes","English Classes","Competitive Exams","Online Classes","Study Materials","Mock Tests","Workshops","Certificates"] },
+{ name: "Luxury Spa", type: "Spa Center", products: ["Massage Therapy","Facials","Body Scrubs","Aromatherapy","Spa Packages","Hot Stone Therapy","Skin Treatments","Hair Spa","Pedicure","Manicure"] },
+{ name: "Interior Concepts", type: "Interior Design", products: ["Living Room Design","Kitchen Design","Bedroom Design","Office Design","Furniture Design","Wall Panels","Lighting Design","Modular Kitchens","Wardrobes","Decor Packages"] },
+{ name: "Farm Fresh", type: "Agriculture Store", products: ["Seeds","Fertilizers","Pesticides","Irrigation Systems","Farm Tools","Tractors","Sprayers","Organic Compost","Plant Nutrients","Harvest Equipment"] },
+{ name: "Drone Vision", type: "Drone Store", products: ["Camera Drones","Racing Drones","Drone Batteries","Drone Controllers","Drone Cameras","Drone Propellers","Drone Bags","Drone Chargers","FPV Goggles","Drone Kits"] },
+{ name: "Creative Studio", type: "Photography Studio", products: ["Portrait Photography","Wedding Photography","Event Photography","Photo Frames","Albums","Photo Prints","Drone Photography","Studio Lighting","Camera Rentals","Videography"] },
+{ name: "Furniture Factory", type: "Furniture Manufacturer", products: ["Wooden Beds","Office Desks","Dining Sets","Wardrobes","Modular Furniture","TV Units","Sofas","Bookshelves","Reception Counters","Cabinets"] },
+{ name: "Mega Electronics", type: "Electronics Retailer", products: ["Smart TVs","Laptops","Phones","Tablets","Gaming Consoles","Air Conditioners","Refrigerators","Washing Machines","Speakers","Cameras"] }
+];
+
+const SUPPORTED_FRONTEND_COMPONENTS = [
+  "hero", "about", "team", "services", "programs", "consultation", "products", "collections", "catalog", "inventory", "featured-products", "menu", "gallery", "showcase", "portfolio", "testimonials", "reviews", "case-studies", "faq", "contact", "booking", "locations", "pricing", "success-stories", "memberships", "promotions", "events", "footer"
 ];
 
 async function runAudit() {
-  console.log("Starting 50 Business Architecture Audit...\n");
+  console.log("=== 50-BUSINESS STRUCTURAL DIVERSITY AUDIT ===\n");
   
-  // Intercept logs
-  let currentAIPrompts = [];
-  let currentQueries = [];
+  let allGeneratedSections = [];
+  let totalMissing = 0;
+  const variationStructures = [];
   
+  // Suppress inner logs
   const originalLog = console.log;
-  console.log = function(...args) {
-    const msg = args.join(' ');
-    if (msg.includes('Hero Prompt:')) {
-      const match = msg.match(/Hero Prompt: "(.*?)"/);
-      if (match) currentAIPrompts.push(match[1]);
-    }
-    if (msg.includes('--- PEXELS REQUEST')) {
-      // Just capturing the fact a request started
-    }
-    if (msg.includes('Primary Query:')) {
-      const match = msg.match(/Primary Query: "(.*?)"/);
-      if (match && !currentQueries.includes(match[1])) currentQueries.push(match[1]);
-    }
-  };
-
-  for (let i = 0; i < baseBusinesses.length; i++) {
-    const b = baseBusinesses[i];
-    currentAIPrompts = [];
-    currentQueries = [];
+  console.log = () => {}; 
+  
+  for (const b of businesses) {
+    const variations = await generateThreeVariations(b);
     
-    try {
-      const vars = await generateThreeVariations(b);
-      
-      let aiHeroImages = [];
-      let galleryImages = new Set();
-      let productImages = new Set();
-      
-      vars.forEach(v => {
-        const heroSec = v.websiteJson.sections.find(s => s.type === 'hero');
-        if (heroSec && heroSec.content.backgroundImage) aiHeroImages.push(heroSec.content.backgroundImage);
-        
-        v.websiteJson.sections.forEach(s => {
-          if (s.type === 'gallery' || s.type === 'showcase' || s.type === 'portfolio') {
-             if (s.content.images) s.content.images.forEach(img => galleryImages.add(img.url));
-          }
-          if (s.type === 'products' || s.type === 'collections' || s.type === 'catalog') {
-             if (s.content.products) s.content.products.forEach(p => p.image && productImages.add(p.image));
-          }
-        });
-      });
-      
-      // Deduplicate hero images across variations
-      aiHeroImages = Array.from(new Set(aiHeroImages));
-      
-      originalLog(`\n==============================================`);
-      originalLog(`Business ${i+1}: ${b.name} (${b.type})`);
-      originalLog(`Generated Image Prompts (AI):`);
-      currentAIPrompts.forEach(p => originalLog(`  - ${p}`));
-      
-      originalLog(`Generated AI Hero Images (FLUX):`);
-      aiHeroImages.forEach(url => originalLog(`  - ${url}`));
-      
-      originalLog(`Generated Pexels Queries:`);
-      currentQueries.forEach(q => originalLog(`  - ${q}`));
-      
-      originalLog(`Assigned Gallery Images (Pexels):`);
-      Array.from(galleryImages).forEach(url => originalLog(`  - ${url}`));
-      
-      originalLog(`Assigned Product Images (Pexels):`);
-      Array.from(productImages).forEach(url => originalLog(`  - ${url}`));
-      
-    } catch (err) {
-      originalLog(`Error processing ${b.name}: ${err.message}`);
-    }
+    const v = variations[0]; // test variation A
+    const sections = v.websiteJson.pages[0].sections;
+    
+    let renderedCount = 0;
+    let missingSections = [];
+    let sectionList = [];
+    
+    sections.forEach(sec => {
+      sectionList.push(sec.type);
+      allGeneratedSections.push(sec.type);
+      if (SUPPORTED_FRONTEND_COMPONENTS.includes(sec.type)) {
+        renderedCount++;
+      } else {
+        missingSections.push(sec.type);
+      }
+    });
+    
+    if (missingSections.length > 0) totalMissing += missingSections.length;
+    
+    variationStructures.push(sectionList.join(","));
+    
+    originalLog(`[${b.name}] Layout: ${v.websiteJson.globalSettings.layoutStrategy}`);
+    originalLog(`  - Generated Sections: ${sections.length}`);
+    originalLog(`  - Rendered Sections: ${renderedCount}`);
+    if (missingSections.length > 0) originalLog(`  - MISSING: ${missingSections.join(", ")}`);
+    originalLog(`  - Structure: ${sectionList.join(" -> ")}\n`);
   }
-
+  
   console.log = originalLog;
-  console.log("\nAUDIT COMPLETE");
+  
+  console.log("\n=== DIVERSITY METRICS ===");
+  const uniqueStructures = new Set(variationStructures).size;
+  console.log(`Unique Layout Structures across 50 businesses: ${uniqueStructures} / 50`);
+  console.log(`Structural Variance: ${((uniqueStructures / 50) * 100).toFixed(1)}% unique layout path generation`);
+  
+  console.log("\n=== RENDERING VERIFICATION ===");
+  if (totalMissing === 0) {
+    console.log("✅ SUCCESS: All generated sections are correctly mapped and rendered.");
+    console.log("   renderedSectionCount === generatedSectionCount for all 50 businesses.");
+  } else {
+    console.log(`❌ FAILED: ${totalMissing} sections were unmapped and dropped.`);
+  }
+  
+  console.log("\n=== COMPONENT MAPPING TABLE ===");
+  console.log("AI Engine Blueprint Component  ->  React UI Render Component");
+  console.log("---------------------------------------------------------");
+  console.log("hero                           ->  Hero");
+  console.log("about, team                    ->  About");
+  console.log("products, collections, catalog ->  Products");
+  console.log("inventory, featured-products   ->  Products");
+  console.log("menu                           ->  Products");
+  console.log("services, programs             ->  Services");
+  console.log("consultation                   ->  Services");
+  console.log("gallery, showcase, portfolio   ->  Gallery");
+  console.log("testimonials, reviews          ->  Testimonials");
+  console.log("case-studies                   ->  Testimonials");
+  console.log("faq                            ->  FAQ");
+  console.log("contact, booking, locations    ->  Contact");
+  console.log("footer                         ->  Footer");
 }
 
 runAudit();

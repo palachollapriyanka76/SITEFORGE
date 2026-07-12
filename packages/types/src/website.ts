@@ -29,7 +29,6 @@ export interface Website {
   faviconUrl: string | null;
   config: WebsiteConfig;
   status: WebsiteStatus;
-  templateId: string | null;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -39,7 +38,6 @@ export interface CreateWebsiteInput {
   name: string;
   slug: string;
   description?: string;
-  templateId?: string;
   config?: Partial<WebsiteConfig>;
 }
 

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SectionRenderer } from "@/components/editor/SectionRenderer";
+import { HeaderSection } from "@/components/editor/sections/HeaderSection";
 import { WebsiteJSON } from "@siteforge/types";
 
 // Mock DB Fetch
@@ -98,11 +99,18 @@ export default async function PublishedSitePage({ params }: { params: { subdomai
     <div className="w-full min-h-screen bg-white" style={{ fontFamily: siteData.theme.fontFamily }}>
       {/* Dynamic Content */}
       <main>
+        {!page.sections.some(s => s.type === "header" || s.type === "navbar") && (
+          <HeaderSection 
+            section={{ id: "auto-header", type: "header", content: { title: siteData.meta?.title?.split(" - ")[1] || "Our Business" }, order: -1, visible: true }} 
+            theme={{ ...(siteData.theme || {}), logo: siteData.theme?.logo || (siteData as any).logo || (siteData as any).logoUrl, websiteLogo: (siteData as any).logo || (siteData as any).logoUrl } as any} 
+            isEditing={false} 
+          />
+        )}
         {page.sections.filter(s => s.visible).sort((a, b) => a.order - b.order).map(section => (
           <SectionRenderer 
             key={section.id} 
             section={section} 
-            theme={siteData.theme}
+            theme={{ ...(siteData.theme || {}), logo: siteData.theme?.logo || (siteData as any).logo || (siteData as any).logoUrl, websiteLogo: (siteData as any).logo || (siteData as any).logoUrl } as any}
             // In publish mode, we do NOT pass isEditing
           />
         ))}

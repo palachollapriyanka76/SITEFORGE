@@ -14,6 +14,7 @@ import { TestimonialsSection } from "./sections/TestimonialsSection";
 import { FAQSection } from "./sections/FAQSection";
 import { ContactSection } from "./sections/ContactSection";
 import { FooterSection } from "./sections/FooterSection";
+import { HeaderSection } from "./sections/HeaderSection";
 
 // Simple fallback for unimplemented sections
 const FallbackSection = ({ section, isEditing }: any) => (
@@ -24,14 +25,32 @@ const FallbackSection = ({ section, isEditing }: any) => (
 );
 
 const SECTION_MAP: Record<string, any> = {
+  header: HeaderSection,
+  navbar: HeaderSection,
   hero: HeroSection,
   about: AboutSection,
+  team: AboutSection,
+  agents: AboutSection,
   services: ServicesSection,
+  programs: ServicesSection,
+  consultation: ServicesSection,
   products: ProductsSection,
+  collections: ProductsSection,
+  catalog: ProductsSection,
+  inventory: ProductsSection,
+  "featured-products": ProductsSection,
+  menu: ProductsSection,
+  "popular-dishes": ProductsSection,
+  properties: ProductsSection,
   gallery: GallerySection,
+  showcase: GallerySection,
+  portfolio: GallerySection,
   testimonials: TestimonialsSection,
+  reviews: TestimonialsSection,
   faq: FAQSection,
   contact: ContactSection,
+  booking: ContactSection,
+  locations: ContactSection,
   footer: FooterSection,
 };
 

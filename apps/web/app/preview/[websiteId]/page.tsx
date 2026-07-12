@@ -16,16 +16,35 @@ import { TestimonialsSection } from "@/components/editor/sections/TestimonialsSe
 import { FAQSection } from "@/components/editor/sections/FAQSection";
 import { ContactSection } from "@/components/editor/sections/ContactSection";
 import { FooterSection } from "@/components/editor/sections/FooterSection";
+import { HeaderSection } from "@/components/editor/sections/HeaderSection";
 
 const SECTION_MAP: Record<string, any> = {
+  header: HeaderSection,
+  navbar: HeaderSection,
   hero: HeroSection,
   about: AboutSection,
+  team: AboutSection,
+  agents: AboutSection,
   services: ServicesSection,
+  programs: ServicesSection,
+  consultation: ServicesSection,
   products: ProductsSection,
+  collections: ProductsSection,
+  catalog: ProductsSection,
+  inventory: ProductsSection,
+  "featured-products": ProductsSection,
+  menu: ProductsSection,
+  "popular-dishes": ProductsSection,
+  properties: ProductsSection,
   gallery: GallerySection,
+  showcase: GallerySection,
+  portfolio: GallerySection,
   testimonials: TestimonialsSection,
+  reviews: TestimonialsSection,
   faq: FAQSection,
   contact: ContactSection,
+  booking: ContactSection,
+  locations: ContactSection,
   footer: FooterSection,
 };
 
@@ -141,6 +160,13 @@ export default function FullscreenPreviewPage({ params }: { params: { websiteId:
 
       {/* Render the sections completely clean and realistic */}
       <main className="w-full">
+        {!sections.some((s: any) => s.type === "header" || s.type === "navbar") && (
+          <HeaderSection 
+            section={{ id: "auto-header", type: "header", content: { title: websiteJson.meta?.title?.split(" | ")[0] || "Our Business" }, order: -1, visible: true }} 
+            theme={{ ...(websiteJson.theme || {}), logo: websiteJson.theme?.logo || (websiteJson as any).logo || (websiteJson as any).logoUrl, websiteLogo: (websiteJson as any).logo || (websiteJson as any).logoUrl } as any} 
+            isEditing={false} 
+          />
+        )}
         {sections
           .filter((s: any) => s.visible !== false)
           .sort((a: any, b: any) => a.order - b.order)
@@ -150,7 +176,7 @@ export default function FullscreenPreviewPage({ params }: { params: { websiteId:
               <SectionComponent
                 key={section.id}
                 section={section}
-                theme={websiteJson.theme}
+                theme={{ ...(websiteJson.theme || {}), logo: websiteJson.theme?.logo || (websiteJson as any).logo || (websiteJson as any).logoUrl, websiteLogo: (websiteJson as any).logo || (websiteJson as any).logoUrl } as any}
                 isEditing={false}
               />
             );

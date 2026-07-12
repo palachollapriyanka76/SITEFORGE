@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Heart, Search, Sparkles, Plus, Trash, Palette, Check, RefreshCw } from "lucide-react";
+import axios from "axios";
 
 const CATEGORIES = {
   FAVORITES: { name: "Saved Favorites", icon: "⭐" },
@@ -207,8 +208,116 @@ export default function ThemePanel({
   const favoritePalettes = allPalettes.filter(p => favorites.includes(p.id));
   const hasFavorites = favoritePalettes.length > 0 && searchQuery === "";
 
+  const handleGenerateNewDesign = async () => {
+    if (!websiteJSON) return;
+    triggerToast("AI Engine is generating a completely fresh architecture and design structure...");
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const response = await axios.post(`${apiUrl}/generate/regenerate-design`, {
+        businessData: websiteJSON.meta?.businessData || {},
+        currentJson: websiteJSON,
+        seedOffset: Math.floor(Math.random() * 90 + 10)
+      });
+      if (response.data?.success && response.data?.data) {
+        updateWebsiteJSON(response.data.data);
+        triggerToast("Successfully generated & applied brand new design architecture!");
+      } else {
+        throw new Error("Failed to generate design");
+      }
+    } catch (e) {
+      console.error("AI Regeneration error, falling back to local design permutation:", e);
+      const newJSON = JSON.parse(JSON.stringify(websiteJSON));
+      const randomPalette = allPalettes[Math.floor(Math.random() * allPalettes.length)];
+      newJSON.theme.primaryColor = randomPalette.colors[2] || randomPalette.colors[0];
+      newJSON.theme.accentColor = randomPalette.colors[3] || randomPalette.colors[1];
+      newJSON.theme.palette = randomPalette.colors;
+
+      const fonts = ["Inter", "Outfit", "Playfair Display", "Space Grotesk", "Plus Jakarta Sans", "Poppins", "Montserrat", "Syne"];
+      const spacings = ["compact", "normal", "large"];
+      const radii = ["0px", "8px", "16px", "24px"];
+      const btnStyles = ["solid", "outline", "pill", "glass"];
+
+      newJSON.theme.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
+      newJSON.theme.spacing = spacings[Math.floor(Math.random() * spacings.length)];
+      newJSON.theme.cardRadius = radii[Math.floor(Math.random() * radii.length)];
+      newJSON.theme.buttonStyle = btnStyles[Math.floor(Math.random() * btnStyles.length)];
+
+      const secList = newJSON.pages[0].sections;
+      if (secList && secList.length > 3) {
+        const middle = secList.slice(1, -1);
+        for (let i = middle.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [middle[i], middle[j]] = [middle[j], middle[i]];
+        }
+        newJSON.pages[0].sections = [secList[0], ...middle, secList[secList.length - 1]];
+        newJSON.pages[0].sections.forEach((s, idx) => s.order = idx);
+      }
+
+      updateWebsiteJSON(newJSON);
+      triggerToast(`Generated fresh design variation (${randomPalette.name})!`);
+    }
+  };
+
+
+  const handleSwitchVariation = (versionIdx) => {
+    if (!websiteJSON) return;
+    const newJSON = JSON.parse(JSON.stringify(websiteJSON));
+    
+    const versionPalettes = [allPalettes[0], allPalettes[3], allPalettes[6]];
+    const pal = versionPalettes[versionIdx % versionPalettes.length] || allPalettes[0];
+    
+    newJSON.theme.primaryColor = pal.colors[2] || pal.colors[0];
+    newJSON.theme.accentColor = pal.colors[3] || pal.colors[1];
+    newJSON.theme.palette = pal.colors;
+    
+    const versionFonts = ["Inter", "Outfit", "Playfair Display"];
+    const versionRadii = ["8px", "16px", "0px"];
+    
+    newJSON.theme.fontFamily = versionFonts[versionIdx % versionFonts.length];
+    newJSON.theme.cardRadius = versionRadii[versionIdx % versionRadii.length];
+    newJSON.theme.style = `Version ${versionIdx + 1}`;
+
+    updateWebsiteJSON(newJSON);
+    triggerToast(`Switched to Design Version ${versionIdx + 1}!`);
+  };
+
   return (
     <div className="p-5 space-y-6">
+      
+      {/* GENERATE NEW DESIGNS BANNER */}
+      <div className="bg-gradient-to-r from-indigo-900/60 to-purple-900/60 border border-indigo-500/30 p-4 rounded-2xl space-y-3 shadow-xl">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-black text-white flex items-center gap-1.5 uppercase tracking-wider">
+            <Sparkles className="h-4 w-4 text-indigo-400 animate-spin-slow" /> Design Variations
+          </span>
+          <span className="text-[9px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-mono">
+            No Data Reset
+          </span>
+        </div>
+        <p className="text-[10px] text-zinc-300 leading-normal">
+          Regenerate layout strategies, typography, and color vectors instantly while keeping all your business text and products intact!
+        </p>
+        <div className="flex flex-col gap-2 pt-1">
+          <button 
+            onClick={handleGenerateNewDesign}
+            className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 active:scale-95"
+          >
+            <RefreshCw className="h-3.5 w-3.5" /> Generate New Design
+          </button>
+          <div className="grid grid-cols-3 gap-1.5 pt-1">
+            <button onClick={() => handleSwitchVariation(0)} className="py-1.5 bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-750 rounded-lg text-[10px] font-bold text-zinc-300 hover:text-white transition-all">
+              Version 1
+            </button>
+            <button onClick={() => handleSwitchVariation(1)} className="py-1.5 bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-750 rounded-lg text-[10px] font-bold text-zinc-300 hover:text-white transition-all">
+              Version 2
+            </button>
+            <button onClick={() => handleSwitchVariation(2)} className="py-1.5 bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-750 rounded-lg text-[10px] font-bold text-zinc-300 hover:text-white transition-all">
+              Version 3
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className="space-y-1">
         <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Global Color System</h3>
         <p className="text-[10px] text-zinc-500">Pick or create professional color themes.</p>
@@ -353,7 +462,7 @@ export default function ThemePanel({
           ))}
       </div>
 
-      {/* Presets and details details (Fonts, Spacing) */}
+      {/* Presets and details details (Fonts, Spacing, Card Radius, Button Style) */}
       <div className="border-t border-zinc-850 pt-4 space-y-4">
         {/* Brand Theme Inputs */}
         <div className="space-y-2.5">
@@ -407,8 +516,13 @@ export default function ThemePanel({
             className="w-full bg-zinc-950 border border-zinc-800 text-xs p-2 rounded text-white outline-none"
           >
             <option value="Inter">Inter (Clean Sans)</option>
-            <option value="Playfair Display">Playfair Display (Luxury Serif)</option>
             <option value="Outfit">Outfit (Dynamic Modern)</option>
+            <option value="Playfair Display">Playfair Display (Luxury Serif)</option>
+            <option value="Space Grotesk">Space Grotesk (Tech & Bold)</option>
+            <option value="Plus Jakarta Sans">Plus Jakarta Sans (Modern Professional)</option>
+            <option value="Poppins">Poppins (Friendly Sans)</option>
+            <option value="Montserrat">Montserrat (Classic Geometric)</option>
+            <option value="Syne">Syne (Artistic & Avant-Garde)</option>
             <option value="Roboto">Roboto (Classic Sans)</option>
             <option value="monospace">Courier Mono (Industrial)</option>
           </select>
@@ -429,6 +543,44 @@ export default function ThemePanel({
             <option value="compact">Compact Spacing</option>
             <option value="normal">Normal Spacing</option>
             <option value="large">Spacious Margins</option>
+          </select>
+        </div>
+
+        {/* Card Radius Select */}
+        <div className="space-y-1.5">
+          <span className="text-[9px] font-bold text-zinc-450 uppercase block">Card Border Radius</span>
+          <select
+            value={theme.cardRadius || "16px"}
+            onChange={(e) => {
+              const newJSON = JSON.parse(JSON.stringify(websiteJSON));
+              newJSON.theme.cardRadius = e.target.value;
+              updateWebsiteJSON(newJSON);
+            }}
+            className="w-full bg-zinc-950 border border-zinc-800 text-xs p-2 rounded text-white outline-none"
+          >
+            <option value="0px">Sharp (0px)</option>
+            <option value="8px">Subtle Rounded (8px)</option>
+            <option value="16px">Modern Pill (16px)</option>
+            <option value="24px">Soft & Playful (24px)</option>
+          </select>
+        </div>
+
+        {/* Button Style Select */}
+        <div className="space-y-1.5">
+          <span className="text-[9px] font-bold text-zinc-450 uppercase block">Button Style</span>
+          <select
+            value={theme.buttonStyle || "solid"}
+            onChange={(e) => {
+              const newJSON = JSON.parse(JSON.stringify(websiteJSON));
+              newJSON.theme.buttonStyle = e.target.value;
+              updateWebsiteJSON(newJSON);
+            }}
+            className="w-full bg-zinc-950 border border-zinc-800 text-xs p-2 rounded text-white outline-none"
+          >
+            <option value="solid">Solid Accent Fill</option>
+            <option value="outline">Modern Outline</option>
+            <option value="pill">Soft Pill CTA</option>
+            <option value="glass">Glassmorphism Blur</option>
           </select>
         </div>
       </div>

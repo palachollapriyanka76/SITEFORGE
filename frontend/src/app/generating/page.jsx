@@ -51,6 +51,7 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
       );
 
     case "about":
+    case "team":
       return (
         <section className="py-12 px-6 border-b border-zinc-100" style={{ backgroundColor: isMinimal ? "#ffffff" : "#fafafa" }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -74,6 +75,8 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
           </div>
         </section>
       );    case "services":
+    case "programs":
+    case "consultation":
       return (
         <section className="py-12 px-6 bg-white border-b border-zinc-100">
           <div className="space-y-6">
@@ -94,6 +97,11 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
       );
 
     case "products":
+    case "collections":
+    case "catalog":
+    case "inventory":
+    case "featured-products":
+    case "menu":
       return (
         <section className="py-12 px-6 bg-white border-b border-zinc-100">
           <div className="space-y-6">
@@ -124,6 +132,8 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
       );
 
     case "gallery":
+    case "showcase":
+    case "portfolio":
       return (
         <section className="py-12 px-6 bg-zinc-50 border-b border-zinc-100">
           <div className="space-y-6">
@@ -142,30 +152,7 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
         </section>
       );
 
-    case "team":
-      return (
-        <section className="py-12 px-6 bg-white border-b border-zinc-100">
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-sm font-black text-zinc-955">{sec.content.title}</h2>
-              <p className="text-[9px] text-zinc-400 uppercase tracking-widest">{sec.content.subtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {(sec.content.members || []).map((mem, idx) => (
-                <div key={idx} className={`p-4 text-center space-y-2 ${theme.cardStyle || `border border-zinc-100 ${isMinimal ? "" : "rounded-xl"} bg-zinc-50`}`}>
-                  <div className="h-10 w-10 rounded-full mx-auto overflow-hidden bg-zinc-200">
-                    <img src={mem.image} className="w-full h-full object-cover" alt={mem.name} />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-black text-zinc-900 block">{mem.name}</span>
-                    <span className="text-[8px] font-bold text-zinc-400 block uppercase tracking-wider">{mem.role}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
+
 
     case "pricing":
       return (
@@ -199,6 +186,8 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
           </div>
         </section>
       );      case "testimonials":
+    case "reviews":
+    case "case-studies":
       return (
         <section className="py-12 px-6 bg-zinc-50 border-b border-zinc-100">
           <div className="space-y-6">
@@ -242,6 +231,8 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
       );
 
     case "contact":
+    case "booking":
+    case "locations":
       return (
         <section className="py-12 px-6 bg-zinc-50 border-b border-zinc-100 text-left">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -262,77 +253,7 @@ const PreviewSectionRenderer = ({ sec, theme }) => {
         </section>
       );
 
-    case "booking":
-      return (
-        <section className="py-12 px-6 bg-zinc-50 border-b border-zinc-100">
-          <div className="max-w-xs mx-auto space-y-4 text-center">
-            <h2 className="text-sm font-black text-zinc-955">{sec.content.title}</h2>
-            <div className={`p-4 text-left space-y-3 ${theme.cardStyle || `border border-zinc-100 bg-white shadow-sm ${isMinimal ? "" : "rounded-xl"}`}`}>
-              {(sec.content.fields || []).slice(0, 3).map((fld, idx) => (
-                <div key={idx} className="space-y-1">
-                  <label className="text-[8px] font-bold text-zinc-400 block uppercase">{fld.label}</label>
-                  <input type="text" placeholder={fld.placeholder} className="w-full h-8 px-2 border text-[9px] outline-none" style={{ borderRadius: isMinimal ? "0px" : "4px" }} />
-                </div>
-              ))}
-              <button className={`w-full h-8 text-[8px] font-black text-white uppercase tracking-widest ${theme.buttonStyle}`} style={{ backgroundColor: primaryColor }}>{sec.content.submitText}</button>
-            </div>
-          </div>
-        </section>
-      );
 
-    case "menu":
-      return (
-        <section className="py-12 px-6 bg-white border-b border-zinc-100">
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-sm font-black text-zinc-955">{sec.content.title}</h2>
-              <p className="text-[9px] text-zinc-400 uppercase tracking-widest">{sec.content.subtitle}</p>
-            </div>
-            <div className="space-y-6 text-left">
-              {(sec.content.categories || []).map((cat, idx) => (
-                <div key={idx} className="space-y-3">
-                  <span className="text-[10px] font-black text-zinc-900 block border-l-2 pl-2" style={{ borderColor: primaryColor }}>{cat.name}</span>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {(cat.items || []).map((item, iidx) => (
-                      <div key={iidx} className={`p-3 flex justify-between items-start ${theme.cardStyle || `border border-zinc-100 rounded-lg bg-zinc-50/50`}`}>
-                        <div className="space-y-0.5">
-                          <span className="text-[10px] font-extrabold text-zinc-900 block">{item.name}</span>
-                          <p className="text-[8.5px] text-zinc-450 leading-normal">{item.desc || item.description}</p>
-                        </div>
-                        <span className="text-[10px] font-black text-zinc-955">{item.price}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-
-    case "portfolio":
-      return (
-        <section className="py-12 px-6 bg-zinc-50 border-b border-zinc-100">
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-sm font-black text-zinc-950">{sec.content.title}</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {(sec.content.projects || []).map((proj, idx) => (
-                <div key={idx} className={`overflow-hidden ${theme.cardStyle || `border border-zinc-100 bg-white ${isMinimal ? "" : "rounded-xl"}`}`}>
-                  <div className="aspect-[4/3] overflow-hidden bg-zinc-100">
-                    <img src={proj.image} className="w-full h-full object-cover" alt={proj.name} />
-                  </div>
-                  <div className="p-3 text-left">
-                    <span className="text-[10px] font-extrabold text-zinc-900 block">{proj.name}</span>
-                    <span className="text-[8.5px] font-bold text-zinc-400 block mt-0.5">{proj.category}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
 
     case "success-stories":
       return (
@@ -477,6 +398,7 @@ export default function GeneratingPage() {
   const [error, setError] = useState(null);
   const [stage, setStage] = useState("loading");
   const [previewDevice, setPreviewDevice] = useState("desktop");
+  const [seedOffset, setSeedOffset] = useState(0);
 
   // Step 10 Logs
   useEffect(() => {
@@ -494,11 +416,13 @@ export default function GeneratingPage() {
   };
 
   // variations API
-  const fetchVariations = async () => {
+  const fetchVariations = async (customSeed = 0, isRefresh = false) => {
     try {
       setError(null);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/generate/website-variations`, {
-        businessData
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/generate/website-variations`, {
+        businessData,
+        seedOffset: customSeed,
+        refresh: isRefresh
       });
       
       if (response.data && response.data.success) {
@@ -515,7 +439,7 @@ export default function GeneratingPage() {
   };
 
   useEffect(() => {
-    fetchVariations();
+    fetchVariations(seedOffset, false);
   }, [businessData]);
 
   // Dynamically load Google Fonts when templates update
@@ -586,12 +510,14 @@ export default function GeneratingPage() {
 
   // Restart generation (Tertiary action)
   const handleGenerateNewVersion = () => {
+    const nextSeed = seedOffset + 3;
+    setSeedOffset(nextSeed);
     setProgress(0);
     setActiveStepIndex(0);
     setTimeLeft(12);
     setTemplates(null);
     setStage("loading");
-    fetchVariations();
+    fetchVariations(nextSeed, true);
   };
 
   // Instant fallback to mock template
@@ -601,7 +527,7 @@ export default function GeneratingPage() {
       setError(null);
       addLog("[System] Launching instant fallback industry template...");
       
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/generate/website-variations`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/generate/website-variations`, {
         businessData: { ...businessData, useFallbackOnly: true }
       });
       
@@ -629,7 +555,7 @@ export default function GeneratingPage() {
     addLog(`[Database] Saving chosen template configuration "${chosen.name}"...`);
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api"}/onboarding/complete`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/onboarding/complete`, {
         businessData,
         websiteJson: chosen.websiteJson,
         userId: localStorage.getItem("siteforge-auth-user") || "anonymous"
@@ -663,7 +589,7 @@ export default function GeneratingPage() {
   const previewServices = previewSections.find((s) => s.type === "services");
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-zinc-955 text-zinc-100 p-4 md:p-8 selection:bg-indigo-600 selection:text-white font-sans relative overflow-hidden">
+    <div className={`flex flex-col justify-center items-center min-h-screen bg-zinc-955 text-zinc-100 p-3 sm:p-4 md:p-8 selection:bg-indigo-600 selection:text-white font-sans relative ${stage === "loading" ? "overflow-hidden fixed inset-0 w-full h-full z-50" : "overflow-x-hidden"}`}>
       
       {/* Background ambient glowing nodes */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-3xl -z-10 animate-pulse" />
@@ -708,107 +634,112 @@ export default function GeneratingPage() {
 
       <AnimatePresence mode="wait">
         {stage === "loading" ? (
-          // STAGE 1: Real-time progress tracker
+          // STAGE 1: Real-time progress tracker (Viewport bounded modal)
           <motion.div 
             key="generating-stage"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.04 }}
-            className="w-full max-w-2xl bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/80 rounded-3xl p-8 shadow-2xl space-y-8"
+            style={{ maxHeight: "90vh", height: "auto" }}
+            className="w-full max-w-2xl bg-zinc-900/80 backdrop-blur-xl border border-zinc-800/80 rounded-2xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
           >
-            <div className="flex items-center justify-between">
+            {/* Fixed Header */}
+            <div className="p-4 sm:p-5 md:p-6 border-b border-zinc-800/80 shrink-0 flex items-center justify-between bg-zinc-900/90">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 bg-indigo-600/10 border border-indigo-500/20 rounded-xl text-indigo-400">
-                  <Sparkles className="h-5 w-5 animate-pulse" />
+                  <Sparkles className="h-4 sm:h-5 w-4 sm:w-5 animate-pulse" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-extrabold text-white tracking-wide">SiteForge Design Studio</h1>
-                  <p className="text-xs text-zinc-400">Transforming your answers into an elite digital brand</p>
+                  <h1 className="text-sm sm:text-base md:text-lg font-extrabold text-white tracking-wide">SiteForge Design Studio</h1>
+                  <p className="text-[10px] sm:text-xs text-zinc-400">Transforming your answers into an elite digital brand</p>
                 </div>
               </div>
-              <div className="text-right">
-                <span className="text-xs font-mono font-bold text-indigo-400">ETA: {Math.ceil(timeLeft)}s</span>
+              <div className="text-right shrink-0 ml-2">
+                <span className="text-xs sm:text-sm font-mono font-bold text-indigo-400">ETA: {Math.ceil(timeLeft)}s</span>
               </div>
             </div>
 
-            {/* Checklist items list */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 bg-zinc-950/40 border border-zinc-800 p-6 rounded-2xl">
-              {CHECKLIST_STEPS.map((step, idx) => {
-                const isDone = progress >= 100 || activeStepIndex > idx;
-                const isActive = activeStepIndex === idx && progress < 100;
-                
-                return (
-                  <div 
-                    key={step.label}
-                    className={`flex items-center gap-3 text-xs transition-all duration-300 ${
-                      isDone ? "text-zinc-300 font-semibold" : isActive ? "text-indigo-400 font-bold" : "text-zinc-650"
-                    }`}
-                  >
-                    {isDone ? (
-                      <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500 shrink-0" />
-                    ) : isActive ? (
-                      <Loader2 className="h-4.5 w-4.5 animate-spin text-indigo-400 shrink-0" />
-                    ) : (
-                      <div className="h-4.5 w-4.5 rounded-full border border-zinc-800 shrink-0" />
-                    )}
-                    <span>{step.label}</span>
+            {/* Scrollable Content Area */}
+            <div className="p-4 sm:p-5 md:p-6 space-y-3.5 sm:space-y-4 md:space-y-5 overflow-y-auto flex-1">
+              {/* Checklist items list */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-2.5 md:gap-3 bg-zinc-950/50 border border-zinc-800/80 p-3.5 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl shrink-0">
+                {CHECKLIST_STEPS.map((step, idx) => {
+                  const isDone = progress >= 100 || activeStepIndex > idx;
+                  const isActive = activeStepIndex === idx && progress < 100;
+                  
+                  return (
+                    <div 
+                      key={step.label}
+                      className={`flex items-center gap-2 sm:gap-2.5 text-[11px] sm:text-xs transition-all duration-300 ${
+                        isDone ? "text-zinc-300 font-semibold" : isActive ? "text-indigo-400 font-bold" : "text-zinc-600"
+                      }`}
+                    >
+                      {isDone ? (
+                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                      ) : isActive ? (
+                        <Loader2 className="h-4 w-4 animate-spin text-indigo-400 shrink-0" />
+                      ) : (
+                        <div className="h-4 w-4 rounded-full border border-zinc-800 shrink-0" />
+                      )}
+                      <span className="truncate">{step.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Progress bar container */}
+              <div className="space-y-1.5 sm:space-y-2 shrink-0">
+                <div className="flex items-center justify-between text-[10px] sm:text-xs font-mono font-bold text-zinc-400 px-1">
+                  <span>SYSTEM PROGRESS</span>
+                  <span>{progress}%</span>
+                </div>
+                <div className="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-800 rounded-full overflow-hidden p-0.5">
+                  <motion.div 
+                    className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 shadow-md"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
+
+              {/* Terminal Live logs */}
+              <div className="bg-zinc-950/90 border border-zinc-800/80 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl font-mono text-[9px] sm:text-[10px] text-emerald-400/90 space-y-1.5 sm:space-y-2 shadow-inner shrink-0">
+                <div className="flex items-center gap-2 text-zinc-500 border-b border-zinc-900 pb-1.5 mb-1.5 font-bold text-[9px] uppercase tracking-wider">
+                  <Terminal className="h-3 w-3" /> Live Generation Logs
+                </div>
+                {logs.map((log, i) => (
+                  <div key={i} className="truncate select-none">{log}</div>
+                ))}
+              </div>
+
+              {/* Fail Safe Controls */}
+              {error && (
+                <div className="p-4 sm:p-5 bg-red-950/20 border border-red-500/20 rounded-xl sm:rounded-2xl space-y-3 shrink-0">
+                  <p className="text-xs text-red-300 leading-relaxed text-center font-bold">⚠️ {error}</p>
+                  <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+                    <button 
+                      onClick={handleGenerateNewVersion}
+                      className="flex items-center gap-1.5 px-3.5 h-8 sm:h-9 bg-red-900 hover:bg-red-800 text-white rounded-lg text-xs font-extrabold transition-colors shadow"
+                    >
+                      <RefreshCw className="h-3.5 w-3.5" /> Retry Generation
+                    </button>
+                    <button 
+                      onClick={handleUseTemplateInstead}
+                      className="flex items-center gap-1.5 px-3.5 h-8 sm:h-9 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 rounded-lg text-xs font-extrabold transition-colors"
+                    >
+                      <Layout className="h-3.5 w-3.5" /> Use Template Instead
+                    </button>
+                    <button 
+                      onClick={() => window.location.href = "/onboarding"}
+                      className="px-3.5 h-8 sm:h-9 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 border border-zinc-850 rounded-lg text-xs font-semibold transition-colors"
+                    >
+                      Return to Onboarding
+                    </button>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Progress bar container */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-mono font-bold text-zinc-400 px-1">
-                <span>SYSTEM PROGRESS</span>
-                <span>{progress}%</span>
-              </div>
-              <div className="w-full h-3 bg-zinc-950 border border-zinc-800 rounded-full overflow-hidden p-0.5">
-                <motion.div 
-                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 shadow-md"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-            </div>
-
-            {/* Terminal Live logs */}
-            <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-2xl font-mono text-[10px] text-emerald-400/90 space-y-2 shadow-inner">
-              <div className="flex items-center gap-2 text-zinc-500 border-b border-zinc-900 pb-2 mb-2 font-bold text-[9px] uppercase tracking-wider">
-                <Terminal className="h-3 w-3" /> Live Generation Logs
-              </div>
-              {logs.map((log, i) => (
-                <div key={i} className="truncate select-none">{log}</div>
-              ))}
-            </div>
-
-            {/* Fail Safe Controls */}
-            {error && (
-              <div className="p-6 bg-red-950/20 border border-red-500/20 rounded-2xl space-y-4">
-                <p className="text-xs text-red-300 leading-relaxed text-center font-bold">⚠️ {error}</p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  <button 
-                    onClick={handleGenerateNewVersion}
-                    className="flex items-center gap-1.5 px-4 h-9 bg-red-900 hover:bg-red-800 text-white rounded-lg text-xs font-extrabold transition-colors shadow"
-                  >
-                    <RefreshCw className="h-3.5 w-3.5" /> Retry Generation
-                  </button>
-                  <button 
-                    onClick={handleUseTemplateInstead}
-                    className="flex items-center gap-1.5 px-4 h-9 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 rounded-lg text-xs font-extrabold transition-colors"
-                  >
-                    <Layout className="h-3.5 w-3.5" /> Use Template Instead
-                  </button>
-                  <button 
-                    onClick={() => window.location.href = "/onboarding"}
-                    className="px-4 h-9 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 border border-zinc-850 rounded-lg text-xs font-semibold transition-colors"
-                  >
-                    Return to Onboarding
-                  </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </motion.div>
         ) : (
           // STAGE 2: Upgraded visual design, interactive viewports, checklists, summary card

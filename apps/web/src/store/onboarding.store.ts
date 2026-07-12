@@ -6,7 +6,7 @@ export interface Message {
   sender: "ai" | "user";
   text: string;
   timestamp: string;
-  type?: "text" | "type_choice" | "style_choice" | "color_choice" | "logo_upload" | "boolean_choice" | "whatsapp_input" | "social_input";
+  type?: "text" | "type_choice" | "products_suggestions" | "services_suggestions" | "categories_suggestions" | "audience_choice" | "style_choice" | "color_choice" | "logo_upload" | "boolean_choice" | "whatsapp_input" | "social_input";
   choices?: string[];
 }
 
@@ -14,6 +14,8 @@ export interface BusinessData {
   name: string;
   type: string;
   products: string[];
+  services: string[];
+  categories: string[];
   audience: string;
   style: string;
   colorTheme: string;
@@ -48,6 +50,8 @@ const initialBusinessData: BusinessData = {
   name: "",
   type: "",
   products: [],
+  services: [],
+  categories: [],
   audience: "",
   style: "",
   colorTheme: "",

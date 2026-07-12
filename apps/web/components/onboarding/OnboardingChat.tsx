@@ -25,75 +25,89 @@ import { useUser } from "@clerk/nextjs";
 const STEPS_CHECKLIST = [
   { step: 0, label: "Business Name" },
   { step: 1, label: "Industry Category" },
-  { step: 2, label: "Products / Services" },
-  { step: 3, label: "Target Audience" },
-  { step: 4, label: "Visual Style" },
-  { step: 5, label: "Color Palette" },
-  { step: 6, label: "Business Logo" },
-  { step: 7, label: "Online Ordering" },
-  { step: 8, label: "WhatsApp Chat" },
-  { step: 9, label: "Social Networks" }
+  { step: 2, label: "Product Catalog" },
+  { step: 3, label: "Service Offerings" },
+  { step: 4, label: "Catalog Categories" },
+  { step: 5, label: "Target Audience" },
+  { step: 6, label: "Visual Style" },
+  { step: 7, label: "Color Palette" },
+  { step: 8, label: "Business Logo" },
+  { step: 9, label: "Online Ordering" },
+  { step: 10, label: "WhatsApp Chat" },
+  { step: 11, label: "Social Networks" }
 ];
 
 const QUESTIONS_CONFIG = [
   {
     step: 0,
     field: "name",
-    nextPrompt: "Great! Next, what type of business is it? (Select from choices below or speak it)",
+    nextPrompt: "🏪 Business Category? What type of business or industry are you in? (e.g., Footwear Store, Toys & Games, Grocery Store, Bakery, Salon, Gym, etc.)",
     type: "type_choice"
   },
   {
     step: 1,
     field: "type",
-    nextPrompt: "Nice. What are the key products or services you offer? Separate them with commas.",
-    type: "text"
+    nextPrompt: "✨ As your AI Business Consultant, I instantly understand your business category! I have automatically generated a curated list of top-selling realistic products tailored specifically for you. Review below: keep them all, remove unwanted items, add custom products, or edit any name before continuing:",
+    type: "products_suggestions"
   },
   {
     step: 2,
     field: "products",
-    nextPrompt: "Got it! Who is your target audience? (e.g., 'families', 'young professionals', 'fitness enthusiasts')",
-    type: "text"
+    nextPrompt: "🛠️ Excellent catalog! A successful business also thrives on value-added services to boost customer retention and revenue. I have generated realistic, high-impact services tailored to your business below. Customize or keep all suggestions before continuing:",
+    type: "services_suggestions"
   },
   {
     step: 3,
-    field: "audience",
-    nextPrompt: "Understood. Let's design the layout. Select a visual style for your website:",
-    type: "style_choice"
+    field: "services",
+    nextPrompt: "📑 Perfect! To organize your catalog cleanly across your website navigation, I have automatically generated suitable catalog categories. Review and customize your catalog categories below:",
+    type: "categories_suggestions"
   },
   {
     step: 4,
-    field: "style",
-    nextPrompt: "Superb choice! Now pick a color theme that matches your brand energy:",
-    type: "color_choice"
+    field: "categories",
+    nextPrompt: "🎯 Catalog structure locked in! Who is your primary target audience?",
+    type: "audience_choice"
   },
   {
     step: 5,
-    field: "colorTheme",
-    nextPrompt: "Looking fantastic! Upload your shop logo (optional):",
-    type: "logo_upload"
+    field: "audience",
+    nextPrompt: "🎨 Select Visual Style Layout:",
+    type: "style_choice"
   },
   {
     step: 6,
-    field: "logoUrl",
-    nextPrompt: "Almost there! Do you need online ordering enabled on your catalog?",
-    type: "boolean_choice"
+    field: "style",
+    nextPrompt: "🌈 Pick Color Theme Palette:",
+    type: "color_choice"
   },
   {
     step: 7,
-    field: "ordering",
-    nextPrompt: "Excellent! Do you want to connect a floating WhatsApp widget to receive customer orders in your inbox?",
-    type: "whatsapp_input"
+    field: "colorTheme",
+    nextPrompt: "📷 Upload logo:",
+    type: "logo_upload"
   },
   {
     step: 8,
-    field: "whatsappEnabled",
-    nextPrompt: "Perfect! Lastly, paste any social media links (optional):",
-    type: "social_input"
+    field: "logoUrl",
+    nextPrompt: "🛒 Enable online orders?",
+    type: "boolean_choice"
   },
   {
     step: 9,
+    field: "ordering",
+    nextPrompt: "📱 Add a WhatsApp widget for direct orders?",
+    type: "whatsapp_input"
+  },
+  {
+    step: 10,
+    field: "whatsappEnabled",
+    nextPrompt: "🌐 Add social handles?",
+    type: "social_input"
+  },
+  {
+    step: 11,
     field: "socialLinks",
-    nextPrompt: "All details verified! Generating your website now...",
+    nextPrompt: "✨ Creating your site...",
     type: "text"
   }
 ];
@@ -154,8 +168,8 @@ export default function OnboardingChat() {
     
     // Fallback if user typed text instead of clicking a widget choice
     if (!updatedData) {
-      if (configStep.field === "products") {
-        parsedData = { products: answerText.split(",").map(p => p.trim()).filter(Boolean) };
+      if (configStep.field === "products" || configStep.field === "services" || configStep.field === "categories") {
+        parsedData = { [configStep.field]: answerText.split(",").map(p => p.trim()).filter(Boolean) };
       } else if (configStep.field === "ordering") {
         parsedData = { ordering: answerText.toLowerCase().includes("yes") };
       } else if (configStep.field === "whatsappEnabled") {

@@ -21,7 +21,7 @@ export function HeroSection({ section, theme, isEditing }: HeroSectionProps) {
 
   const title = section.content.title || "Hero Title";
   const subtitle = section.content.subtitle || "A catchy subtitle for your website.";
-  const backgroundImage = section.content.backgroundImage || section.content.image;
+  const backgroundImage = section.content.backgroundImage || section.content.image || (section.content as any).bgImage || "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80";
 
   const sectionStyle = {
     backgroundImage: backgroundImage ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.75)), url(${backgroundImage})` : undefined,

@@ -5,6 +5,8 @@ const initialBusinessData = {
   name: "",
   type: "",
   products: [],
+  services: [],
+  categories: [],
   audience: "",
   style: "",
   colorTheme: "",
@@ -90,6 +92,78 @@ export const useOnboardingStore = create(
     }),
     {
       name: "siteforge-onboarding-store",
+    }
+  )
+);
+
+export const useCartStore = create(
+  persist(
+    (set, get) => ({
+      items: [],
+      wishlist: [],
+      isOpen: false,
+      setOpen: (status) => set({ isOpen: status }),
+      toggleOpen: () => set((state) => ({ isOpen: !state.isOpen })),
+      addToCart: (product, quantity = 1, variant = null) => {
+        set((state) => {
+          const selectedVariant = variant || (product.variants && product.variants.length > 0 ? product.variants[0] : "Standard");
+          const existingIndex = state.items.findIndex(
+            (item) => item.id === product.id && item.selectedVariant === selectedVariant
+          );
+          if (existingIndex > -1) {
+            const updatedItems = [...state.items];
+            updatedItems[existingIndex].quantity += quantity;
+            return { items: updatedItems, isOpen: true };
+          } else {
+            return {
+              items: [
+                ...state.items,
+                {
+                  ...product,
+                  quantity,
+                  selectedVariant,
+                },
+              ],
+              isOpen: true,
+            };
+          }
+        });
+      },
+      removeFromCart: (productId, variant = null) => {
+        set((state) => ({
+          items: state.items.filter((item) => {
+            if (variant) return !(item.id === productId && item.selectedVariant === variant);
+            return item.id !== productId;
+          }),
+        }));
+      },
+      updateQuantity: (productId, quantity, variant = null) => {
+        if (quantity <= 0) {
+          get().removeFromCart(productId, variant);
+          return;
+        }
+        set((state) => ({
+          items: state.items.map((item) => {
+            const match = variant ? item.id === productId && item.selectedVariant === variant : item.id === productId;
+            if (match) return { ...item, quantity };
+            return item;
+          }),
+        }));
+      },
+      clearCart: () => set({ items: [] }),
+      toggleWishlist: (product) => {
+        set((state) => {
+          const exists = state.wishlist.some((item) => item.id === product.id);
+          if (exists) {
+            return { wishlist: state.wishlist.filter((item) => item.id !== product.id) };
+          } else {
+            return { wishlist: [...state.wishlist, product] };
+          }
+        });
+      },
+    }),
+    {
+      name: "siteforge-cart-store",
     }
   )
 );

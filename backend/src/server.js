@@ -69,7 +69,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // In-Memory websites mock database to match PostgreSQL
 const websitesDb = {};
@@ -94,8 +95,8 @@ const variationsCache = new Map();
 
 // POST /api/generate/website-variations
 app.post('/api/generate/website-variations', async (req, res) => {
-  const { businessData } = req.body;
-  console.log("STEP 3: Generation API called for variations (AI-Driven)");
+  const { businessData, refresh, seedOffset = 0 } = req.body;
+  console.log(`STEP 3: Generation API called for variations (AI-Driven, SeedOffset: ${seedOffset}, Refresh: ${refresh})`);
   console.log("STEP 4: AI Analysis & Design Generation started");
 
   // AUDIT LOG ONBOARDING STATE
@@ -125,15 +126,16 @@ app.post('/api/generate/website-variations', async (req, res) => {
     console.log("[SUCCESS] All core onboarding inputs are present!");
   }
 
-  const cacheKey = JSON.stringify(businessData || {});
+  const isRefreshRequested = refresh === true || refresh === "true" || Number(seedOffset) > 0 || req.query?.refresh === "true";
+  const cacheKey = "v3_" + JSON.stringify(businessData || {}) + `_seed_${seedOffset}`;
   let templates;
 
-  if (variationsCache.has(cacheKey)) {
+  if (!isRefreshRequested && variationsCache.has(cacheKey)) {
     console.log("[Cache Hit] Returning cached website variations from memory cache");
     templates = variationsCache.get(cacheKey);
   } else {
     try {
-      templates = await aiGenerator.generateThreeVariations(businessData || {});
+      templates = await aiGenerator.generateThreeVariations(businessData || {}, Number(seedOffset) || 0);
       console.log("STEP 5: Dynamic Layouts, Sections and Design Tokens generated successfully");
       console.log("STEP 6: Website JSON variation outputs parsed");
 
@@ -169,6 +171,32 @@ app.post('/api/generate/website-variations', async (req, res) => {
   console.log("======================================================");
 
   res.json({ success: true, data: { templates } });
+});
+
+// POST /api/generate/regenerate-design — True Backend AI Regeneration for existing websites
+app.post('/api/generate/regenerate-design', async (req, res) => {
+  try {
+    const { businessData, currentJson, seedOffset } = req.body;
+    const seed = Number(seedOffset) || Math.floor(Math.random() * 90 + 10);
+    console.log(`[AI Engine] Regenerating full website design (Seed: ${seed})...`);
+
+    const bData = businessData || currentJson?.meta?.businessData || {
+      name: currentJson?.meta?.title || currentJson?.theme?.logo?.text || "Brand",
+      type: currentJson?.theme?.logo?.icon || "Business",
+      description: currentJson?.pages?.[0]?.sections?.[0]?.content?.subtitle || ""
+    };
+
+    const variations = await aiGenerator.generateThreeVariations(bData, seed);
+    const chosen = variations[seed % variations.length] || variations[0];
+    
+    // Preserve custom prices/products if the user already modified them, or let fresh ones take over if requested
+    const freshJson = chosen.websiteJson;
+    
+    res.json({ success: true, data: freshJson });
+  } catch (err) {
+    console.error("Regenerate design failed:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 
@@ -796,6 +824,20 @@ app.patch('/api/websites/:id/json', (req, res) => {
 
   websitesDb[req.params.id] = req.body;
   res.json({ success: true, data: { saved: true } });
+});
+
+// GET /api/ai/search-image — Dynamic backend AI image search via Pexels
+app.get('/api/ai/search-image', async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.json({ success: true, url: "" });
+  try {
+    const results = await aiGenerator.queryPexels(query);
+    const firstUrl = results && results.length > 0 ? (results[0].src?.large2x || results[0].src?.large || "") : "";
+    return res.json({ success: true, url: firstUrl });
+  } catch (err) {
+    console.error("[AI Image Search Error]", err.message);
+    return res.json({ success: true, url: "" });
+  }
 });
 
 // POST /api/onboarding/complete (mock)
